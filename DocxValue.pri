@@ -1,1 +1,2 @@
 SOURCE_PATH = $$PWD
+CONFIG += c++11
