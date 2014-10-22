@@ -69,3 +69,8 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+lib/MyDocx.dll.embed.manifest
+lib/MyDocx.dll_manifest.rc
+lib/MyDocx.dll_manifest.res
+lib/MyDocx.ilk
+lib/MyDocx.pdb
