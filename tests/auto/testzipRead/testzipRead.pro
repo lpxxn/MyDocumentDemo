@@ -1,5 +1,5 @@
 QT      += testlib
-QT      += core
+#QT      += core
 
 CONFIG  += testcase
 CONFIG  += console
