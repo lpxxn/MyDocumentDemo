@@ -7,7 +7,7 @@
 class QZipReader;
 class QIODevice;
 
-class DocxZipReader
+class DOCX_EXPORT DocxZipReader
 {
 public:
     explicit DocxZipReader(const QString &fileName);
