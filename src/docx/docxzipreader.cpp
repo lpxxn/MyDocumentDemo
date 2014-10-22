@@ -2,6 +2,8 @@
 #include <private/qzipreader_p.h>
 #include <QDebug>
 
+namespace TDocx
+{
 DocxZipReader::DocxZipReader(const QString &filePath) :
     m_reader(new QZipReader(filePath))
 {
@@ -47,4 +49,6 @@ void DocxZipReader::init()
             m_filePaths.append(fi.filePath);
         }
     }
+}
+
 }

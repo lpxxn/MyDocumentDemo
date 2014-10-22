@@ -7,6 +7,8 @@
 class QZipReader;
 class QIODevice;
 
+namespace TDocx
+{
 class DOCX_EXPORT DocxZipReader
 {
 public:
@@ -24,5 +26,6 @@ private:
     QScopedPointer<QZipReader> m_reader;
     QStringList m_filePaths;
 };
+}
 
 #endif // DOCXZIPREADER_H

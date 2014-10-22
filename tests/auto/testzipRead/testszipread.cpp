@@ -5,6 +5,7 @@
 
 //#include "../../../src/docx/docxzipreader.h"
 #include "docxzipreader.h"
+using namespace TDocx;
 
 class TestZipDemo : public QObject
 {
