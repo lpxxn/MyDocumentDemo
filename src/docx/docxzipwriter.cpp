@@ -1,7 +1,6 @@
 #include "docxzipwriter.h"
 
 #include <private/qzipwriter_p.h>
-#include <QDebug>
 
 namespace TDocx
 {
