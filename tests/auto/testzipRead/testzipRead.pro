@@ -1,5 +1,4 @@
 QT      += testlib
-#QT      += core
 
 CONFIG  += testcase
 CONFIG  += console
@@ -13,11 +12,9 @@ TARGET   = test_read
 include(../../../DocxValue.pri)
 
 DESTDIR = $$SOURCE_PATH/lib
-#INCLUDEPATH += "D:/QtCode/QTCODEDEMO/MyDocumentDemo/src/docx"
-INCLUDEPATH += $$SOURCE_PATH/src/docx
-message("$$INCLUDEPATH")
 
-#LIBS += D:/QtCode/QTCODEDEMO/MyDocumentDemo/lib/MyDocx.lib#-lMyDocx
+INCLUDEPATH += $$SOURCE_PATH/src/docx
+
 LIBS +=  $$SOURCE_PATH/lib/MyDocx.lib
 
 SOURCES += \
