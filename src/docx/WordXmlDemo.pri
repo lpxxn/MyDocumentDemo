@@ -5,8 +5,14 @@ DEFINES += DOCX_LIBRARY
 HEADERS += \
     docx_global.h \
     docxzipreader.h \
-    $$PWD/docxzipwriter.h
+    docxzipwriter.h \
+    abstractooxmlfile.h \
+    abstractooxmlfileprivate.h \
+    relationships.h
 
 SOURCES += \
     docxzipreader.cpp \
-    $$PWD/docxzipwriter.cpp
+    docxzipwriter.cpp \
+    abstractooxmlfile.cpp \
+    abstractooxmlfileprivate.cpp \
+    relationships.cpp

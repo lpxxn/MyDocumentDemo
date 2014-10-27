@@ -7,7 +7,7 @@ CONFIG  -= app_bundle
 
 TEMPLATE = app
 
-TARGET   = test_read
+TARGET   = test_relationship
 
 include(../../../DocxValue.pri)
 
@@ -18,6 +18,4 @@ INCLUDEPATH += $$SOURCE_PATH/src/docx
 LIBS +=  $$SOURCE_PATH/lib/MyDocx.lib
 
 SOURCES += \
-    testszipread.cpp \
-
-
+        testrelationships.cpp \

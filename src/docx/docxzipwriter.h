@@ -1,12 +1,13 @@
 #ifndef DOCXZIPWRITER_H
 #define DOCXZIPWRITER_H
+#include "docx_global.h"
 
 #include <QString>
 class QIODevice;
 class QZipWriter;
 namespace TDocx
 {
-class DocxZipWriter
+class DOCX_EXPORT DocxZipWriter
 {
 public:
     explicit DocxZipWriter(const QString &filePath);

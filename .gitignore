@@ -78,3 +78,8 @@ lib/MyDocx.pdb
 /lib/*.rc
 /lib/*.ilk
 /lib/*.pdb
+*.pdb
+*.zip
+*.manifest
+*.res
+*.txt
