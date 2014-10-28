@@ -83,3 +83,6 @@ lib/MyDocx.pdb
 *.manifest
 *.res
 *.txt
+*.rc
+*.exp
+*.ilk

@@ -11,7 +11,7 @@ TARGET   = test_relationship
 
 include(../../../DocxValue.pri)
 
-DESTDIR = $$SOURCE_PATH/lib
+DESTDIR = $$DOCX_TEST_APP_PATH
 
 INCLUDEPATH += $$SOURCE_PATH/src/docx
 
