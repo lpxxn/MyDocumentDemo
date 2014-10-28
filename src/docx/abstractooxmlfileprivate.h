@@ -19,8 +19,6 @@ public:
 
     virtual ~AbstractOOXmlFilePrivate();
 
-
-
 };
 }
 

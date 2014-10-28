@@ -9,7 +9,7 @@ namespace TDocx
 const QString schema_package = QStringLiteral("http://schemas.openxmlformats.org/package/2006/relationships");
 
 // e.g .rels :  officeDocument" Target="word/document.xml"
-const QString schema_doc = QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/relationships/");
+const QString schema_doc = QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/relationships");
 
 // e.g document.xml.rels :  stylesWithEffects" Target="stylesWithEffects.xml"
 const QString schema_msPackage = QStringLiteral("http://schemas.microsoft.com/office/2007/relationships");
@@ -93,7 +93,7 @@ QList<DocxRelationship> Relationships::relationships(const QString &type) const
 {
     QList<DocxRelationship> res;
     for (DocxRelationship ship : m_relationShips) {
-        if (ship.type.compare(type))
+        if (ship.type == type)
         res.append(ship);
     }
     return res;

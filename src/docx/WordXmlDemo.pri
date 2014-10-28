@@ -8,11 +8,17 @@ HEADERS += \
     docxzipwriter.h \
     abstractooxmlfile.h \
     abstractooxmlfileprivate.h \
-    relationships.h
+    relationships.h \
+    contenttypes.h \
+    docpropsapp.h \
+    docpropscore.h
 
 SOURCES += \
     docxzipreader.cpp \
     docxzipwriter.cpp \
     abstractooxmlfile.cpp \
     abstractooxmlfileprivate.cpp \
-    relationships.cpp
+    relationships.cpp \
+    contenttypes.cpp \
+    docpropsapp.cpp \
+    docpropscore.cpp
