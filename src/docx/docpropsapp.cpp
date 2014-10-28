@@ -84,9 +84,11 @@ void docPropsApp::saveToXmlFile(QIODevice *device) const
 
     writer.writeStartDocument(QStringLiteral("1.0"), true);
     writer.writeStartElement(QStringLiteral("Properties"));
-    writer.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"));
-    writer.writeAttribute(QStringLiteral("xmlns:vt"), QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"));
-
+    //    writer.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"));
+    //    writer.writeAttribute(QStringLiteral("xmlns:vt"), QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"));
+    //    same as flow
+    writer.writeDefaultNamespace(QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"));
+    writer.writeNamespace(QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"), QStringLiteral("vt"));
     QMapIterator<QString, QString> propertyIt(m_properties);
     while (propertyIt.hasNext()) {
         propertyIt.next();
@@ -103,12 +105,12 @@ bool docPropsApp::loadFromXmlFile(QIODevice *device)
 
     QXmlStreamReader reader(device);
     while (!reader.atEnd()) {
-         QXmlStreamReader::TokenType token = reader.readNext();
-         if (token == QXmlStreamReader::StartElement) {
-             if (reader.name() == QLatin1String("Properties"))
-                 continue;
-             m_properties.insert(reader.name().toString(), reader.readElementText());
-         }
+        QXmlStreamReader::TokenType token = reader.readNext();
+        if (token == QXmlStreamReader::StartElement) {
+            if (reader.name() == QLatin1String("Properties"))
+                continue;
+            m_properties.insert(reader.name().toString(), reader.readElementText());
+        }
     }
 
     return true;

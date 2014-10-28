@@ -7,6 +7,7 @@
 #include "docxzipwriter.h"
 #include "abstractooxmlfile.h"
 #include "contenttypes.h"
+#include "docpropsapp.h"
 
 using namespace TDocx;
 
@@ -46,6 +47,12 @@ void TestRelationShips::testRelation()
     ContentTypes contenType(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     contenType.addOverrideDefault();
     writer.addFile(QStringLiteral("[Content_Types].xml"), contenType.saveToXmlData());
+
+    // docProps/app.xml
+    docPropsApp appXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    appXml.initDefaultProperties();
+    writer.addFile(QStringLiteral("docProps/app.xml"), appXml.saveToXmlData());
+
 
 }
 
