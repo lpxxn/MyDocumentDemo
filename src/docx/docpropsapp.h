@@ -20,8 +20,8 @@ public:
     void modifyTemplate(const QString &value);
     void modifyTotalTime(const QString &value);
     void modifyPages(const QString &value);
-    void modifyWords(const QString &vlaue);
-    void modifyCharacters(const QString &vlaue);
+    void modifyWords(const QString &value);
+    void modifyCharacters(const QString &value);
 
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);

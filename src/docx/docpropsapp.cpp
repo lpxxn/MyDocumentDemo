@@ -68,12 +68,12 @@ void docPropsApp::modifyPages(const QString &value)
     modifyProperty(p_Pages, value);
 }
 
-void docPropsApp::modifyWords(const QString &vlaue)
+void docPropsApp::modifyWords(const QString &value)
 {
     modifyProperty(p_Words, value);
 }
 
-void docPropsApp::modifyCharacters(const QString &vlaue)
+void docPropsApp::modifyCharacters(const QString &value)
 {
     modifyProperty(p_Characters, value);
 }
@@ -107,7 +107,7 @@ bool docPropsApp::loadFromXmlFile(QIODevice *device)
          if (token == QXmlStreamReader::StartElement) {
              if (reader.name() == QLatin1String("Properties"))
                  continue;
-             m_properties.insert(reader.name(), reader.readElementText());
+             m_properties.insert(reader.name().toString(), reader.readElementText());
          }
     }
 
