@@ -1,4 +1,5 @@
 SOURCE_PATH = $$PWD
+LIBNAME = MyDocx
 
 CONFIG(debug, debug|release) {
     DEBUG_RELEASE = DEBUG

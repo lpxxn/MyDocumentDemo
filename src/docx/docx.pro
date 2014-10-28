@@ -1,8 +1,9 @@
-LIBNAME = MyDocx
+include(../../DocxValue.pri)
+include(WordXmlDemo.pri)
+
+
 TARGET = $$LIBNAME
 
-include(WordXmlDemo.pri)
-include(../../DocxValue.pri)
 
 TEMPLATE = lib
 DESTDIR = $$DOCX_LIB_PATH

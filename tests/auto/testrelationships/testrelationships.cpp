@@ -5,7 +5,6 @@
 #include <QFile>
 #include "relationships.h"
 #include "docxzipwriter.h"
-//#include "../../../src/docx/docxzipwriter.h"
 
 using namespace TDocx;
 
