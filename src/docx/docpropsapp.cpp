@@ -18,6 +18,8 @@ namespace TDocx
 docPropsApp::docPropsApp(CreateFlag flag)
     : AbstractOOXmlFile(flag)
 {
+    if (flag == CreateFlag::F_NewFromScratch)
+        initDefaultProperties();
 }
 
 void docPropsApp::initDefaultProperties()

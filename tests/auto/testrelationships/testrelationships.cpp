@@ -8,6 +8,7 @@
 #include "abstractooxmlfile.h"
 #include "contenttypes.h"
 #include "docpropsapp.h"
+#include "docpropscore.h"
 
 using namespace TDocx;
 
@@ -45,14 +46,15 @@ void TestRelationShips::testRelation()
 
     // [Content_Types].xml
     ContentTypes contenType(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
-    contenType.addOverrideDefault();
     writer.addFile(QStringLiteral("[Content_Types].xml"), contenType.saveToXmlData());
 
     // docProps/app.xml
     docPropsApp appXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
-    appXml.initDefaultProperties();
     writer.addFile(QStringLiteral("docProps/app.xml"), appXml.saveToXmlData());
 
+    // docProps/core.xml
+    docPropsCore corXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    writer.addFile(QStringLiteral("docProps/core.xml"), corXml.saveToXmlData());
 
 }
 

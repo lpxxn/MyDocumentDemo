@@ -12,9 +12,11 @@ ContentTypes::ContentTypes(CreateFlag flag)
     m_document_prefix = QStringLiteral("application/vnd.openxmlformats-officedocument");
     m_msword_prefix = QStringLiteral("application/vnd.ms-word");
 
-    m_defaults.insert(QStringLiteral("rels"), m_package_prefix + QStringLiteral(".relationships+xml"));
-    m_defaults.insert(QStringLiteral("xml"), QStringLiteral("application/xml"));
-
+    if (flag == CreateFlag::F_NewFromScratch) {
+        m_defaults.insert(QStringLiteral("rels"), m_package_prefix + QStringLiteral(".relationships+xml"));
+        m_defaults.insert(QStringLiteral("xml"), QStringLiteral("application/xml"));
+        addOverrideDefault();
+    }
 }
 
 void ContentTypes::addDefault(const QString &key, const QString &value)
