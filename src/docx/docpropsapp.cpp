@@ -86,9 +86,7 @@ void docPropsApp::saveToXmlFile(QIODevice *device) const
 
     writer.writeStartDocument(QStringLiteral("1.0"), true);
     writer.writeStartElement(QStringLiteral("Properties"));
-    //    writer.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"));
-    //    writer.writeAttribute(QStringLiteral("xmlns:vt"), QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"));
-    //    same as flow
+
     writer.writeDefaultNamespace(QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"));
     writer.writeNamespace(QStringLiteral("http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"), QStringLiteral("vt"));
     QMapIterator<QString, QString> propertyIt(m_properties);

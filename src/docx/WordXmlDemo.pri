@@ -11,7 +11,8 @@ HEADERS += \
     relationships.h \
     contenttypes.h \
     docpropsapp.h \
-    docpropscore.h
+    docpropscore.h \
+    docxtheme.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -21,4 +22,5 @@ SOURCES += \
     relationships.cpp \
     contenttypes.cpp \
     docpropsapp.cpp \
-    docpropscore.cpp
+    docpropscore.cpp \
+    docxtheme.cpp

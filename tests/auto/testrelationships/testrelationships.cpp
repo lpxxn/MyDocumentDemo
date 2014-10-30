@@ -9,6 +9,7 @@
 #include "contenttypes.h"
 #include "docpropsapp.h"
 #include "docpropscore.h"
+#include "docxtheme.h"
 
 using namespace TDocx;
 
@@ -55,6 +56,15 @@ void TestRelationShips::testRelation()
     // docProps/core.xml
     docPropsCore corXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("docProps/core.xml"), corXml.saveToXmlData());
+
+    // theme/theme1.xml
+    docxTheme theme(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    writer.addFile(QStringLiteral("word/theme/theme1.xml"), theme.saveToXmlData());
+
+    QByteArray byte("主题");
+    QByteArray hexBy = byte.toHex();
+    qDebug() << hexBy;
+
 
 }
 

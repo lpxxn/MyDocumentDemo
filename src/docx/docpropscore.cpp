@@ -29,19 +29,21 @@ void docPropsCore::saveToXmlFile(QIODevice *device) const
     writer.writeNamespace(dc, QStringLiteral("dc"));
     writer.writeNamespace(cp, QStringLiteral("cp"));
 
+    // dc:creator
     writer.writeTextElement(dc, QStringLiteral("creator"), QStringLiteral("Peng.li"));
+    // cp:lastModifiedBy
     writer.writeTextElement(cp, QStringLiteral("lastModifiedBy"), QStringLiteral("Peng.li"));
     writer.writeTextElement(cp, QStringLiteral("revision"), QStringLiteral("1"));
 
     writer.writeStartElement(dcterms, QStringLiteral("created"));
     writer.writeAttribute(xsi, QStringLiteral("type"), QStringLiteral("dcterms:W3CDTF"));
-    writer.writeCharacters(QDateTime::currentDateTime().toString());
+    writer.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
     writer.writeEndElement();
 
     writer.writeStartElement(dcterms, QStringLiteral("modified"));
     //writer.writeTextElement(dcterms, QStringLiteral("modified"), QStringLiteral("2014-10-27T14:18:00Z"));
     writer.writeAttribute(xsi, QStringLiteral("type"), QStringLiteral("dcterms:W3CDTF"));
-    writer.writeCharacters(QDateTime::currentDateTime().toString());
+    writer.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
     writer.writeEndElement();
 
     writer.writeEndElement();
