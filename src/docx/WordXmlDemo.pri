@@ -12,7 +12,8 @@ HEADERS += \
     contenttypes.h \
     docpropsapp.h \
     docpropscore.h \
-    docxtheme.h
+    docxtheme.h \
+    docxfonttable.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -23,4 +24,5 @@ SOURCES += \
     contenttypes.cpp \
     docpropsapp.cpp \
     docpropscore.cpp \
-    docxtheme.cpp
+    docxtheme.cpp \
+    docxfonttable.cpp
