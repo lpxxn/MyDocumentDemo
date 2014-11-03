@@ -25,7 +25,7 @@ public:
     virtual void addProperty(QString name, QString value);
     QString name() const { return m_tagName; }
 
-    virtual ~ITagElement(){}
+    virtual ~ITagElement();
 
     virtual void addChild(ITagElement *child);
     virtual void remoevChild(ITagElement *child);

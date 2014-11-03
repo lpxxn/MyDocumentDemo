@@ -1,6 +1,7 @@
 #include "docxsettings.h"
 #include "comdatafun.h"
 #include <QXmlStreamWriter>
+#include <QDebug>
 
 namespace TDocx
 {
@@ -17,8 +18,28 @@ const QString s1 = "http://schemas.openxmlformats.org/schemaLibrary/2006/main";
 DocxSettings::DocxSettings(CreateFlag flag)
     :AbstractOOXmlFile(flag)
 {
-    //if (flag ==  CreateFlag::F_NewFromScratch)
+    if (flag ==  CreateFlag::F_NewFromScratch)
         initTags();
+}
+
+DocxSettings::~DocxSettings()
+{
+    if (m_wTags.count() > 0) {
+        for (ITagElement* ele : m_wTags) {
+            delete ele;
+            //relaceElement(ele);
+        }
+    }
+    m_wTags.clear();
+}
+void DocxSettings::relaceElement(ITagElement *ele)
+{
+    qDebug() << "inin-----------";
+    if (ele->hasNext()) {
+        qDebug() << "has next";
+        relaceElement(ele->next());
+    }
+    delete ele;
 }
 
 void DocxSettings::initTags()
@@ -203,6 +224,8 @@ void DocxSettings::initTags()
     element->addProperty(QStringLiteral("w:val"), QStringLiteral(","));
     m_wTags.append(element);
 }
+
+
 
 
 void DocxSettings::saveToXmlFile(QIODevice *device) const

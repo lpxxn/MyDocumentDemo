@@ -12,10 +12,14 @@ class DOCX_EXPORT DocxSettings : public AbstractOOXmlFile
 {
 public:
     DocxSettings(CreateFlag flag);
+    virtual ~DocxSettings();
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);
     QString currentRsid() const { return m_currentRisids; }
     void initTags();
+
+private:
+    void relaceElement(ITagElement* ele);
 
 private:
     ITagElement* m_rsids;
