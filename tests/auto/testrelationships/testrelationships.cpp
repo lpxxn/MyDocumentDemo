@@ -13,6 +13,8 @@
 #include "docpropscore.h"
 #include "docxtheme.h"
 #include "docxfonttable.h"
+#include "docxsettings.h"
+
 
 using namespace TDocx;
 
@@ -76,6 +78,10 @@ void TestRelationShips::testRelation()
 
     docxfontTable fontTable(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/fontTable.xml"), fontTable.saveToXmlData());
+
+    // word/settings.xml
+    DocxSettings setting(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    writer.addFile(QStringLiteral("word/settings.xml"), setting.saveToXmlData());
 
 
     QByteArray byte("宋体");

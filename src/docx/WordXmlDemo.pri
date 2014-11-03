@@ -13,7 +13,10 @@ HEADERS += \
     docpropsapp.h \
     docpropscore.h \
     docxtheme.h \
-    docxfonttable.h
+    docxfonttable.h \
+    comdatafun.h \
+    itagelement.h \
+    docxsettings.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -25,4 +28,7 @@ SOURCES += \
     docpropsapp.cpp \
     docpropscore.cpp \
     docxtheme.cpp \
-    docxfonttable.cpp
+    docxfonttable.cpp \
+    comdatafun.cpp \
+    itagelement.cpp \
+    docxsettings.cpp

@@ -2,6 +2,7 @@
 #define DOCXFONTTABLE_H
 #include "docx_global.h"
 #include "abstractooxmlfile.h"
+//#include "itagelement.h"
 #include <QString>
 #include <QPair>
 #include <QVector>
@@ -10,7 +11,7 @@
 
 namespace TDocx
 {
-struct fontInfo
+struct ContentInfo
 {
     typedef QPair<QString, QString> pairValue;
     QString name;
@@ -31,7 +32,7 @@ public:
     void saveFonts(QXmlStreamWriter &writer) const;
     void initFonts();
 private:
-    QMap<QString, QVector<fontInfo> > m_fonts;
+    QMap<QString, QVector<ContentInfo> > m_fonts;
 
 };
 }

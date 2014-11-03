@@ -21,30 +21,30 @@ docxfontTable::docxfontTable(CreateFlag flag)
 
 void docxfontTable::initFonts()
 {
-    QVector<fontInfo> fonts = QVector<fontInfo>();
+    QVector<ContentInfo> fonts = QVector<ContentInfo>();
 
     // begin Calibri
-    fontInfo font;
+    ContentInfo font;
     font.name = QStringLiteral("panose1");
     font.addProperty(QStringLiteral("val"), QStringLiteral("020F0502020204030204"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("charset");
     font.addProperty(QStringLiteral("val"), QStringLiteral("00"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("family");
     font.addProperty(QStringLiteral("val"), QStringLiteral("swiss"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("pitch");
     font.addProperty(QStringLiteral("val"), QStringLiteral("variable"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("sig");
     font.addProperty(QStringLiteral("usb0"), QStringLiteral("E10002FF"));
     font.addProperty(QStringLiteral("usb1"), QStringLiteral("4000ACFF"));
@@ -58,32 +58,32 @@ void docxfontTable::initFonts()
 
     // begin 宋体
     fonts.clear();
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("altName");
     font.addProperty(QStringLiteral("val"), QStringLiteral("SimSun"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("panose1");
     font.addProperty(QStringLiteral("val"), QStringLiteral("02010600030101010101"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("charset");
     font.addProperty(QStringLiteral("val"), QStringLiteral("86"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("family");
     font.addProperty(QStringLiteral("val"), QStringLiteral("auto"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("pitch");
     font.addProperty(QStringLiteral("val"), QStringLiteral("variable"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("sig");
     font.addProperty(QStringLiteral("usb0"), QStringLiteral("00000003"));
     font.addProperty(QStringLiteral("usb1"), QStringLiteral("288F0000"));
@@ -98,27 +98,27 @@ void docxfontTable::initFonts()
     // begin Times New Roman
     fonts.clear();
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("panose1");
     font.addProperty(QStringLiteral("val"), QStringLiteral("02020603050405020304"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("charset");
     font.addProperty(QStringLiteral("val"), QStringLiteral("00"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("family");
     font.addProperty(QStringLiteral("val"), QStringLiteral("roman"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("pitch");
     font.addProperty(QStringLiteral("val"), QStringLiteral("variable"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("sig");
     font.addProperty(QStringLiteral("usb0"), QStringLiteral("E0002AFF"));
     font.addProperty(QStringLiteral("usb1"), QStringLiteral("C0007841"));
@@ -133,27 +133,27 @@ void docxfontTable::initFonts()
     // begin Cambria
     fonts.clear();
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("panose1");
     font.addProperty(QStringLiteral("val"), QStringLiteral("02040503050406030204"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("charset");
     font.addProperty(QStringLiteral("val"), QStringLiteral("00"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("family");
     font.addProperty(QStringLiteral("val"), QStringLiteral("roman"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("pitch");
     font.addProperty(QStringLiteral("val"), QStringLiteral("variable"));
     fonts.append(font);
 
-    font = fontInfo();
+    font = ContentInfo();
     font.name = QStringLiteral("sig");
     font.addProperty(QStringLiteral("usb0"), QStringLiteral("E0002AFF"));
     font.addProperty(QStringLiteral("usb1"), QStringLiteral("400004FF"));
@@ -171,12 +171,12 @@ void docxfontTable::initFonts()
 void docxfontTable::saveFonts(QXmlStreamWriter &writer) const
 {
     if (!m_fonts.isEmpty()) {
-        QMapIterator<QString, QVector<fontInfo> > iter(m_fonts);
+        QMapIterator<QString, QVector<ContentInfo> > iter(m_fonts);
         while (iter.hasNext()) {
             iter.next();
             writer.writeStartElement(wNamespace, QStringLiteral("font"));
             writer.writeAttribute(wNamespace, QStringLiteral("name"), iter.key());
-            for (const fontInfo &info : iter.value()) {
+            for (const ContentInfo &info : iter.value()) {
                 writer.writeEmptyElement(wNamespace, info.name);
                 for (const QPair<QString, QString> pair : info.values) {
                     writer.writeAttribute(wNamespace, pair.first, pair.second);
