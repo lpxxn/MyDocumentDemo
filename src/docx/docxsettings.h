@@ -19,9 +19,6 @@ public:
     void initTags();
 
 private:
-    void relaceElement(ITagElement* ele);
-
-private:
     ITagElement* m_rsids;
     QString m_currentRisids;
     QVector<ITagElement*> m_wTags;

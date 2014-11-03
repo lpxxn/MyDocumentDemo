@@ -11,14 +11,27 @@ namespace TDocx
 {
 class ITagElement;
 
+template<class T>
 class DOCX_EXPORT ITagIterator
 {
 public:
     virtual bool hasNext() const = 0;
-    virtual ITagElement* next() const = 0;
+    virtual T* next() const = 0;
 };
 
-class DOCX_EXPORT ITagElement : public ITagIterator
+class DOCX_EXPORT TagElementIterator : public ITagIterator<ITagElement>
+{
+public:
+    TagElementIterator(const ITagElement *element);
+    bool hasNext() const;
+    ITagElement *next() const;
+private:
+    const ITagElement *m_tagElement;
+    mutable int m_currentIndex;
+};
+
+
+class DOCX_EXPORT ITagElement
 {
 public:
     ITagElement(QString name);
@@ -29,17 +42,15 @@ public:
 
     virtual void addChild(ITagElement *child);
     virtual void remoevChild(ITagElement *child);
-    virtual bool hasNext() const;
-    virtual ITagElement *next() const;
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const;
+    TagElementIterator createIterator() const;
 
 private:
     QString m_tagName;
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
     QList<ITagElement*> m_childs;
-    mutable int m_currentIndex = 0;
-
+    friend class TagElementIterator;
 
 };
 }

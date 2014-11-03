@@ -1,7 +1,6 @@
 #include "docxsettings.h"
 #include "comdatafun.h"
 #include <QXmlStreamWriter>
-#include <QDebug>
 
 namespace TDocx
 {
@@ -27,19 +26,9 @@ DocxSettings::~DocxSettings()
     if (m_wTags.count() > 0) {
         for (ITagElement* ele : m_wTags) {
             delete ele;
-            //relaceElement(ele);
         }
     }
     m_wTags.clear();
-}
-void DocxSettings::relaceElement(ITagElement *ele)
-{
-    qDebug() << "inin-----------";
-    if (ele->hasNext()) {
-        qDebug() << "has next";
-        relaceElement(ele->next());
-    }
-    delete ele;
 }
 
 void DocxSettings::initTags()
