@@ -12,14 +12,14 @@ namespace TDocx
 class ITagElement;
 
 template<class T>
-class DOCX_EXPORT ITagIterator
+class ITagIterator
 {
 public:
     virtual bool hasNext() const = 0;
     virtual T* next() const = 0;
 };
 
-class DOCX_EXPORT TagElementIterator : public ITagIterator<ITagElement>
+class TagElementIterator : public ITagIterator<ITagElement>
 {
 public:
     TagElementIterator(const ITagElement *element);
@@ -31,7 +31,7 @@ private:
 };
 
 
-class DOCX_EXPORT ITagElement
+class ITagElement
 {
 public:
     ITagElement(QString name);

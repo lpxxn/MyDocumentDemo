@@ -16,7 +16,8 @@ HEADERS += \
     docxfonttable.h \
     comdatafun.h \
     itagelement.h \
-    docxsettings.h
+    docxsettings.h \
+    docxwebsetting.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -31,4 +32,5 @@ SOURCES += \
     docxfonttable.cpp \
     comdatafun.cpp \
     itagelement.cpp \
-    docxsettings.cpp
+    docxsettings.cpp \
+    docxwebsetting.cpp
