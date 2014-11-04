@@ -15,6 +15,7 @@
 #include "docxfonttable.h"
 #include "docxsettings.h"
 #include "docxwebsetting.h"
+#include "docxstyle.h"
 
 
 using namespace TDocx;
@@ -87,6 +88,10 @@ void TestRelationShips::testRelation()
     // word/webSettings.xml
     DocxWebSetting webSet(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/webSettings.xml"), webSet.saveToXmlData());
+
+    // word/styles.xml
+    DocxStyle style(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    writer.addFile(QStringLiteral("word/styles.xml"), style.saveToXmlData());
 
     QByteArray byte("宋体");
     QByteArray hexBy = byte.toHex();

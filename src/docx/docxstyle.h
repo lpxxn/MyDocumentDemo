@@ -63,11 +63,13 @@ private:
     void initTag();
 
 private:
+    TagElement *m_docDefaultsTag;
     StyleTagElement* m_defParagraph;
     StyleTagElement* m_defCharacter;
     StyleTagElement* m_defTable;
     StyleTagElement* m_defnumbering;
-    QVector<ITagElement*> m_childs;
+
+    QVector<ITagElement*> m_styleTagChilds;
 };
 }
 
