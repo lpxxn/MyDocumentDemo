@@ -7,7 +7,7 @@
 
 namespace TDocx
 {
-class ITagElement;
+class TagElement;
 
 class DOCX_EXPORT DocxWebSetting : public AbstractOOXmlFile
 {
@@ -21,7 +21,7 @@ public:
 
 private:
     void initTag();
-    QVector<ITagElement*> m_tags;
+    QVector<TagElement*> m_tags;
 };
 }
 

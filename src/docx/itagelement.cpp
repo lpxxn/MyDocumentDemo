@@ -4,7 +4,7 @@
 namespace TDocx
 {
 
-TagElementIterator::TagElementIterator(const ITagElement *element)
+TagElementIterator::TagElementIterator(const TagElement *element)
     :m_tagElement(element),m_currentIndex(0)
 {
 
@@ -20,17 +20,17 @@ ITagElement *TagElementIterator::next() const
     return m_tagElement->m_childs.at(m_currentIndex++);
 }
 
-ITagElement::ITagElement(QString name) : m_tagName(name)
+TagElement::TagElement(const QString &name) : m_tagName(name)
 {
 
 }
 
-void ITagElement::addProperty(QString name, QString value)
+void TagElement::addProperty(QString name, QString value)
 {
     m_properties.append(pairValue(name, value));
 }
 
-ITagElement::~ITagElement()
+TagElement::~TagElement()
 {
     TagElementIterator iter =  createIterator();
     while(iter.hasNext()) {
@@ -40,12 +40,12 @@ ITagElement::~ITagElement()
     m_childs.clear();
 }
 
-void ITagElement::addChild(ITagElement *child)
+void TagElement::addChild(ITagElement *child)
 {
     m_childs.append(child);
 }
 
-void ITagElement::remoevChild(ITagElement *child)
+void TagElement::remoevChild(ITagElement *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);
@@ -54,7 +54,7 @@ void ITagElement::remoevChild(ITagElement *child)
     }
 }
 
-void ITagElement::saveToXmlElement(QXmlStreamWriter *writer) const
+void TagElement::saveToXmlElement(QXmlStreamWriter *writer) const
 {
     writer->writeStartElement(m_tagName);
     if (m_properties.count() > 0)
@@ -69,7 +69,7 @@ void ITagElement::saveToXmlElement(QXmlStreamWriter *writer) const
     writer->writeEndElement();
 }
 
-TagElementIterator ITagElement::createIterator() const
+TagElementIterator TagElement::createIterator() const
 {
     return  TagElementIterator(this);
 }

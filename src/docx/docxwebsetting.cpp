@@ -25,10 +25,10 @@ DocxWebSetting::~DocxWebSetting()
 
 void DocxWebSetting::initTag()
 {
-    ITagElement* element = new ITagElement(QStringLiteral("w:optimizeForBrowser"));
+    TagElement* element = new TagElement(QStringLiteral("w:optimizeForBrowser"));
     m_tags.append(element);
 
-    element = new ITagElement(QStringLiteral("w:allowPNG"));
+    element = new TagElement(QStringLiteral("w:allowPNG"));
     m_tags.append(element);
 }
 
@@ -43,7 +43,7 @@ void DocxWebSetting::saveToXmlFile(QIODevice *device) const
     writer.writeNamespace(w14, QStringLiteral("w14"));
     writer.writeAttribute(mc, QStringLiteral("Ignorable"), QStringLiteral("w14"));
 
-    for (const ITagElement* element : m_tags) {
+    for (const TagElement* element : m_tags) {
         element->saveToXmlElement(&writer);
     }
     writer.writeEndElement(); // end webSettings

@@ -9,7 +9,7 @@
 #include <QXmlStreamWriter>
 namespace TDocx
 {
-class ITagElement;
+class TagElement;
 
 template<class T>
 class ITagIterator
@@ -19,30 +19,41 @@ public:
     virtual T* next() const = 0;
 };
 
-class TagElementIterator : public ITagIterator<ITagElement>
-{
-public:
-    TagElementIterator(const ITagElement *element);
-    bool hasNext() const;
-    ITagElement *next() const;
-private:
-    const ITagElement *m_tagElement;
-    mutable int m_currentIndex;
-};
-
-
 class ITagElement
 {
 public:
-    ITagElement(QString name);
-    virtual void addProperty(QString name, QString value);
+    virtual void addProperty(QString name, QString value) = 0;
+    virtual ~ITagElement() {}
+
+    virtual void addChild(ITagElement *child) = 0;
+    virtual void remoevChild(ITagElement *child) = 0;
+    virtual void saveToXmlElement(QXmlStreamWriter *writer) const = 0;
+};
+
+class TagElementIterator : public ITagIterator<ITagElement>
+{
+public:
+    TagElementIterator(const TagElement *element);
+    bool hasNext() const;
+    ITagElement *next() const;
+private:
+    const TagElement *m_tagElement;
+    mutable int m_currentIndex;
+};
+
+//
+class TagElement : public ITagElement
+{
+public:
+    TagElement(const QString &name);
+    void addProperty(QString name, QString value);
     QString name() const { return m_tagName; }
 
-    virtual ~ITagElement();
+    virtual ~TagElement();
 
-    virtual void addChild(ITagElement *child);
-    virtual void remoevChild(ITagElement *child);
-    virtual void saveToXmlElement(QXmlStreamWriter *writer) const;
+    void addChild(ITagElement *child);
+    void remoevChild(ITagElement *child);
+    void saveToXmlElement(QXmlStreamWriter *writer) const;
     TagElementIterator createIterator() const;
 
 private:

@@ -17,11 +17,14 @@ public:
     bool loadFromXmlFile(QIODevice *device);
     QString currentRsid() const { return m_currentRisids; }
     void initTags();
+    QString currentRisids() const { return m_currentRisids; }
+    QString defaultRsids() const { return m_defaultRsids; }
 
 private:
-    ITagElement* m_rsids;
+    TagElement* m_rsids;
+    QString m_defaultRsids;
     QString m_currentRisids;
-    QVector<ITagElement*> m_wTags;
+    QVector<TagElement*> m_wTags;
 
 };
 }
