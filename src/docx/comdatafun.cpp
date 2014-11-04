@@ -3,11 +3,12 @@
 #include <QTime>
 ComDataFun::ComDataFun()
 {
+    QTime time = QTime::currentTime();
+    qsrand((uint)time.msec());
 }
 
 QString ComDataFun::hexNumber(int count)
-{
-    qsrand(QTime::currentTime().msec());
+{    
     QString hexStr;
     while(count--) {
         int value = qrand() % 15;

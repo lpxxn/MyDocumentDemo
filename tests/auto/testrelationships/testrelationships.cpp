@@ -4,6 +4,7 @@
 #include <QByteArray>
 #include <QFile>
 #include <QFont>
+#include <QTime>
 
 #include "relationships.h"
 #include "docxzipwriter.h"
@@ -95,7 +96,7 @@ void TestRelationShips::testRelation()
 
     QByteArray byte("宋体");
     QByteArray hexBy = byte.toHex();
-    qDebug() << hexBy;
+    qDebug() << hexBy;  
 
 }
 
