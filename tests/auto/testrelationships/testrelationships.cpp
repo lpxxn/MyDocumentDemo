@@ -17,6 +17,8 @@
 #include "docxsettings.h"
 #include "docxwebsetting.h"
 #include "docxstyle.h"
+#include "docxstyleeffects.h"
+#include "docxdocument.h"
 
 
 using namespace TDocx;
@@ -47,7 +49,7 @@ void TestRelationShips::testRelation()
     ships.addPackageRelationship(QStringLiteral("/metadata/core-properties"), QStringLiteral("docProps/core.xml"));
     ships.addDocumentRelationship(QStringLiteral("/officeDocument"), QStringLiteral("word/document.xml"));
 
-    QFile file("testZip.zip");
+    QFile file("testZip.docx");
     file.open(QIODevice::WriteOnly);
 
     DocxZipWriter writer(&file);
@@ -94,6 +96,15 @@ void TestRelationShips::testRelation()
     DocxStyle style(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/styles.xml"), style.saveToXmlData());
 
+    // word/stylesWithEffects.xml
+    DocxStyleEffects styleEffect(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    writer.addFile(QStringLiteral("word/stylesWithEffects.xml"), styleEffect.saveToXmlData());
+
+    // word/document.xml
+    DocxDocument document(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    writer.addFile(QStringLiteral("word/document.xml"), document.saveToXmlData());
+
+    writer.close();
     QByteArray byte("宋体");
     QByteArray hexBy = byte.toHex();
     qDebug() << hexBy;  

@@ -18,7 +18,9 @@ HEADERS += \
     itagelement.h \
     docxsettings.h \
     docxwebsetting.h \
-    docxstyle.h
+    docxstyle.h \
+    $$PWD/docxstyleeffects.h \
+    $$PWD/docxdocument.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -35,4 +37,6 @@ SOURCES += \
     itagelement.cpp \
     docxsettings.cpp \
     docxwebsetting.cpp \
-    docxstyle.cpp
+    docxstyle.cpp \
+    $$PWD/docxstyleeffects.cpp \
+    $$PWD/docxdocument.cpp
