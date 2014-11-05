@@ -18,8 +18,7 @@ HEADERS += \
     itagelement.h \
     docxsettings.h \
     docxwebsetting.h \
-    docxstyle.h \
-    docxstyleeffects.h \
+    docxstyle.h \    
     docxdocument.h \
     docxdocumentbuilder.h
 
@@ -38,7 +37,6 @@ SOURCES += \
     itagelement.cpp \
     docxsettings.cpp \
     docxwebsetting.cpp \
-    docxstyle.cpp \
-    docxstyleeffects.cpp \
+    docxstyle.cpp \    
     docxdocument.cpp \
     docxdocumentbuilder.cpp

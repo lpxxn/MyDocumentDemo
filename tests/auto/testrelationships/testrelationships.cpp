@@ -17,7 +17,6 @@
 #include "docxsettings.h"
 #include "docxwebsetting.h"
 #include "docxstyle.h"
-#include "docxstyleeffects.h"
 #include "docxdocument.h"
 
 
@@ -78,8 +77,7 @@ void TestRelationShips::testRelation()
     wordShips.addDocumentRelationship(QStringLiteral("/styles"), QStringLiteral("styles.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme/theme1.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/fontTable"), QStringLiteral("fontTable.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
-    wordShips.addMsPackageRelationship(QStringLiteral("/stylesWithEffects"), QStringLiteral("stylesWithEffects.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));    
     writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), wordShips.saveToXmlData());
 
     docxfontTable fontTable(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
@@ -96,10 +94,6 @@ void TestRelationShips::testRelation()
     // word/styles.xml
     DocxStyle style(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/styles.xml"), style.saveToXmlData());
-
-    // word/stylesWithEffects.xml
-    DocxStyleEffects styleEffect(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
-    writer.addFile(QStringLiteral("word/stylesWithEffects.xml"), styleEffect.saveToXmlData());
 
     // word/document.xml
     Document document(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
