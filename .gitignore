@@ -87,3 +87,4 @@ lib/MyDocx.pdb
 *.exp
 *.ilk
 MyDocumentDemo.pro.user
+*.docx

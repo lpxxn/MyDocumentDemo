@@ -75,8 +75,7 @@ protected:
     const QString w = QStringLiteral("http://schemas.openxmlformats.org/wordprocessingml/2006/main");
     const QString w14 = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordml");
 
-    const QString mlatentStyle = R"~(
-            <w:latentStyles w:defLockedState="0" w:defUIPriority="99" w:defSemiHidden="1" w:defUnhideWhenUsed="1" w:defQFormat="0" w:count="267">
+    const QString mlatentStyle = R"~(<w:latentStyles w:defLockedState="0" w:defUIPriority="99" w:defSemiHidden="1" w:defUnhideWhenUsed="1" w:defQFormat="0" w:count="267">
             <w:lsdException w:name="Normal" w:semiHidden="0" w:uiPriority="0" w:unhideWhenUsed="0" w:qFormat="1"/>
             <w:lsdException w:name="heading 1" w:semiHidden="0" w:uiPriority="9" w:unhideWhenUsed="0" w:qFormat="1"/>
             <w:lsdException w:name="heading 2" w:uiPriority="9" w:qFormat="1"/>
@@ -214,8 +213,7 @@ protected:
             <w:lsdException w:name="Book Title" w:semiHidden="0" w:uiPriority="33" w:unhideWhenUsed="0" w:qFormat="1"/>
             <w:lsdException w:name="Bibliography" w:uiPriority="37"/>
             <w:lsdException w:name="TOC Heading" w:uiPriority="39" w:qFormat="1"/>
-            </w:latentStyles>
-            )~";
+            </w:latentStyles>)~";
 
 };
 }

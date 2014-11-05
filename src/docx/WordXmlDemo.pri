@@ -19,8 +19,8 @@ HEADERS += \
     docxsettings.h \
     docxwebsetting.h \
     docxstyle.h \
-    $$PWD/docxstyleeffects.h \
-    $$PWD/docxdocument.h
+    docxstyleeffects.h \
+    docxdocument.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -38,5 +38,5 @@ SOURCES += \
     docxsettings.cpp \
     docxwebsetting.cpp \
     docxstyle.cpp \
-    $$PWD/docxstyleeffects.cpp \
-    $$PWD/docxdocument.cpp
+    docxstyleeffects.cpp \
+    docxdocument.cpp

@@ -13,11 +13,11 @@ docPropsCore::docPropsCore(CreateFlag flag)
 
 void docPropsCore::saveToXmlFile(QIODevice *device) const
 {
-    QString xsi =QStringLiteral(R"~(http://www.w3.org/2001/XMLSchema-instance)~");
-    QString dcmitype = QStringLiteral(R"~(http://purl.org/dc/dcmitype/)~");
-    QString dcterms = QStringLiteral(R"~(http://purl.org/dc/terms/)~");
-    QString dc = QStringLiteral(R"~(http://purl.org/dc/elements/1.1/)~");
-    QString cp = QStringLiteral(R"~(http://schemas.openxmlformats.org/package/2006/metadata/core-properties)~");
+    QString xsi =QStringLiteral("http://www.w3.org/2001/XMLSchema-instance");
+    QString dcmitype = QStringLiteral("http://purl.org/dc/dcmitype/");
+    QString dcterms = QStringLiteral("http://purl.org/dc/terms/");
+    QString dc = QStringLiteral("http://purl.org/dc/elements/1.1/");
+    QString cp = QStringLiteral("http://schemas.openxmlformats.org/package/2006/metadata/core-properties");
 
     QXmlStreamWriter writer(device);
 

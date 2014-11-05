@@ -40,7 +40,7 @@ bool DocxZipWriter::error() const
 
 void DocxZipWriter::close()
 {
-
+    m_writer->close();
 }
 
 

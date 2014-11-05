@@ -45,9 +45,10 @@ void TestRelationShips::testRelation()
 {
     // _rels/.rels
     Relationships ships;
+    ships.addDocumentRelationship(QStringLiteral("/officeDocument"), QStringLiteral("word/document.xml"));
     ships.addDocumentRelationship(QStringLiteral("/extended-properties"), QStringLiteral("docProps/app.xml"));
     ships.addPackageRelationship(QStringLiteral("/metadata/core-properties"), QStringLiteral("docProps/core.xml"));
-    ships.addDocumentRelationship(QStringLiteral("/officeDocument"), QStringLiteral("word/document.xml"));
+
 
     QFile file("testZip.docx");
     file.open(QIODevice::WriteOnly);
@@ -75,7 +76,7 @@ void TestRelationShips::testRelation()
     Relationships wordShips;
     wordShips.addDocumentRelationship(QStringLiteral("/settings"), QStringLiteral("settings.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/styles"), QStringLiteral("styles.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme1.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme/theme1.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/fontTable"), QStringLiteral("fontTable.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
     wordShips.addMsPackageRelationship(QStringLiteral("/stylesWithEffects"), QStringLiteral("stylesWithEffects.xml"));
