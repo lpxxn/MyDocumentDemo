@@ -20,7 +20,8 @@ HEADERS += \
     docxwebsetting.h \
     docxstyle.h \
     docxstyleeffects.h \
-    docxdocument.h
+    docxdocument.h \
+    docxdocumentbuilder.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -39,4 +40,5 @@ SOURCES += \
     docxwebsetting.cpp \
     docxstyle.cpp \
     docxstyleeffects.cpp \
-    docxdocument.cpp
+    docxdocument.cpp \
+    docxdocumentbuilder.cpp

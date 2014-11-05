@@ -102,7 +102,7 @@ void TestRelationShips::testRelation()
     writer.addFile(QStringLiteral("word/stylesWithEffects.xml"), styleEffect.saveToXmlData());
 
     // word/document.xml
-    DocxDocument document(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    Document document(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/document.xml"), document.saveToXmlData());
 
     writer.close();
