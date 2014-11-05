@@ -34,7 +34,7 @@ DocxSettings::~DocxSettings()
 void DocxSettings::initTags()
 {
     TagElement *element = new TagElement(QStringLiteral("w:zoom"));
-    element->addProperty(QStringLiteral("w:percent"), QStringLiteral("90"));
+    element->addProperty(QStringLiteral("w:percent"), QStringLiteral("100"));
     m_wTags.append(element);
     element = new TagElement(QStringLiteral("w:bordersDoNotSurroundHeader"));
     m_wTags.append(element);
@@ -102,39 +102,6 @@ void DocxSettings::initTags()
     element->addChild(child);
 
     m_wTags.append(element);
-
-    // rsids
-    m_rsids = new TagElement(QStringLiteral("w:rsids"));
-    child = new TagElement(QStringLiteral("w:rsidRoot"));
-    //child->addProperty(QStringLiteral("w:rsidRoot"), ComDataFun::hexNumber());
-    //test
-    child->addProperty(QStringLiteral("w:rsidRoot"), QStringLiteral("00EF15E7"));
-    m_rsids->addChild(child);
-
-    child = new TagElement(QStringLiteral("w:rsid"));
-    m_currentRisids = ComDataFun::hexNumber();
-    //child->addProperty(QStringLiteral("w:val"), m_currentRisids);
-    //test
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("006148BB"));
-    m_rsids->addChild(child);
-
-    child = new TagElement(QStringLiteral("w:rsid"));
-    m_defaultRsids = ComDataFun::hexNumber();
-    //child->addProperty(QStringLiteral("w:val"), m_defaultRsids);
-    // test
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("00C85FEC"));
-    m_rsids->addChild(child);
-
-    // test
-    child = new TagElement(QStringLiteral("w:rsid"));
-    m_defaultRsids = ComDataFun::hexNumber();
-    //child->addProperty(QStringLiteral("w:val"), m_defaultRsids);
-    // test
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("00EF15E7"));
-    m_rsids->addChild(child);
-
-    m_wTags.append(m_rsids);
-
 
     // mathPr
     element = new TagElement(QStringLiteral("m:mathPr"));
