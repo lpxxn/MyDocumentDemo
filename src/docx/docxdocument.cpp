@@ -1,5 +1,10 @@
 #include "docxdocument.h"
+#include "docxzipwriter.h"
+
+
 #include <QXmlStreamWriter>
+#include <QFile>
+
 namespace TDocx
 {
 const QString wpc = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
@@ -27,10 +32,19 @@ const QString strEndpr = R"~(
     )~";
 
 
-Document::Document(CreateFlag flag)
-    : AbstractOOXmlFile(flag)
+Document::Document()
+    : Document(CreateFlag::F_NewFromScratch)
 {
-    addParagraph();
+
+}
+
+Document::Document(CreateFlag flag)
+    : AbstractOOXmlFile(flag), m_docName(QStringLiteral("word.docx")),
+      m_contentTypes(flag), m_docPropsApp(flag), m_docPropsCore(flag), m_docxTheme(flag),
+      m_docxfontTable(flag), m_docxSettings(flag), m_docxWebSetting(flag), m_docxStyle(flag)
+{
+    if (flag == CreateFlag::F_NewFromScratch)
+        addParagraph();
 }
 
 void Document::writeln(const QString &text)
@@ -88,6 +102,7 @@ bool Document::loadFromXmlFile(QIODevice *device)
 {
     return true;
 }
+
 DocxFont &Document::font()
 {
     return m_font;
@@ -96,6 +111,69 @@ DocxFont &Document::font()
 void Document::setFont(const DocxFont &font)
 {
     m_font = font;
+}
+
+bool Document::save() const
+{
+    return saveAs(m_docName);
+}
+
+bool Document::saveAs(const QString &name) const
+{
+    QFile file(name);
+    if (file.open(QIODevice::WriteOnly))
+       return saveAs(&file);
+    return false;
+}
+
+bool Document::saveAs(QIODevice *device) const
+{
+    DocxZipWriter writer(device);
+    // _rels/.rels
+    Relationships ships;
+    ships.addDocumentRelationship(QStringLiteral("/officeDocument"), QStringLiteral("word/document.xml"));
+    ships.addDocumentRelationship(QStringLiteral("/extended-properties"), QStringLiteral("docProps/app.xml"));
+    ships.addPackageRelationship(QStringLiteral("/metadata/core-properties"), QStringLiteral("docProps/core.xml"));
+    writer.addFile(QStringLiteral("_rels/.rels"), ships.saveToXmlData());
+
+    // [Content_Types].xml
+    writer.addFile(QStringLiteral("[Content_Types].xml"), m_contentTypes.saveToXmlData());
+
+    // docProps/app.xml
+    writer.addFile(QStringLiteral("docProps/app.xml"), m_docPropsApp.saveToXmlData());
+
+    // docProps/core.xml
+    writer.addFile(QStringLiteral("docProps/core.xml"), m_docPropsCore.saveToXmlData());
+
+    // word/theme/theme1.xml
+    writer.addFile(QStringLiteral("word/theme/theme1.xml"), m_docxTheme.saveToXmlData());
+
+    // word/_rels/document.xml.rels
+    Relationships wordShips;
+    wordShips.addDocumentRelationship(QStringLiteral("/settings"), QStringLiteral("settings.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/styles"), QStringLiteral("styles.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme/theme1.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/fontTable"), QStringLiteral("fontTable.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
+    writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), wordShips.saveToXmlData());
+
+    //word/fontTable.xml
+    writer.addFile(QStringLiteral("word/fontTable.xml"), m_docxfontTable.saveToXmlData());
+
+    // word/settings.xml
+    writer.addFile(QStringLiteral("word/settings.xml"), m_docxSettings.saveToXmlData());
+
+    // word/webSettings.xml
+    writer.addFile(QStringLiteral("word/webSettings.xml"), m_docxWebSetting.saveToXmlData());
+
+    // word/styles.xml
+    writer.addFile(QStringLiteral("word/styles.xml"), m_docxStyle.saveToXmlData());
+
+    // word/document.xml
+    writer.addFile(QStringLiteral("word/document.xml"), this->saveToXmlData());
+
+    writer.close();
+    return true;
 }
 
 DocxParagraph *Document::currentParagraph()

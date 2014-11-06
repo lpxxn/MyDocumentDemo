@@ -5,13 +5,13 @@
 namespace TDocx
 {
 
-docPropsCore::docPropsCore(CreateFlag flag)
+DocPropsCore::DocPropsCore(CreateFlag flag)
     : AbstractOOXmlFile(flag)
 {
 }
 
 
-void docPropsCore::saveToXmlFile(QIODevice *device) const
+void DocPropsCore::saveToXmlFile(QIODevice *device) const
 {
     QString xsi =QStringLiteral("http://www.w3.org/2001/XMLSchema-instance");
     QString dcmitype = QStringLiteral("http://purl.org/dc/dcmitype/");
@@ -50,7 +50,7 @@ void docPropsCore::saveToXmlFile(QIODevice *device) const
     writer.writeEndDocument();
 }
 
-bool docPropsCore::loadFromXmlFile(QIODevice *device)
+bool DocPropsCore::loadFromXmlFile(QIODevice *device)
 {
     return true;
 }

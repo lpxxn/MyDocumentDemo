@@ -179,14 +179,14 @@ const char* themeStr =
         "</a:theme>"
         ;
 
-docxTheme::docxTheme(CreateFlag flag)
+DocxTheme::DocxTheme(CreateFlag flag)
     :AbstractOOXmlFile(flag)
 {
 
 }
 
 
-void docxTheme::saveToXmlFile(QIODevice *device) const
+void DocxTheme::saveToXmlFile(QIODevice *device) const
 {
     if (m_data.isEmpty())
         device->write(themeStr);
@@ -194,7 +194,7 @@ void docxTheme::saveToXmlFile(QIODevice *device) const
         device->write(m_data);
 }
 
-bool docxTheme::loadFromXmlFile(QIODevice *device)
+bool DocxTheme::loadFromXmlFile(QIODevice *device)
 {
     m_data = device->readAll();
     return true;

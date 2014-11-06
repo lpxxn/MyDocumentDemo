@@ -6,10 +6,10 @@
 
 namespace TDocx
 {
-class DOCX_EXPORT docPropsCore : public AbstractOOXmlFile
+class DOCX_EXPORT DocPropsCore : public AbstractOOXmlFile
 {
 public:
-    docPropsCore(CreateFlag flag);
+    DocPropsCore(CreateFlag flag);
 
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);

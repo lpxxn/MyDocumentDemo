@@ -21,10 +21,10 @@ struct ContentInfo
     }
 };
 
-class DOCX_EXPORT docxfontTable : public AbstractOOXmlFile
+class DOCX_EXPORT DocxfontTable : public AbstractOOXmlFile
 {
 public:
-    docxfontTable(CreateFlag flag);
+    DocxfontTable(CreateFlag flag);
 
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);

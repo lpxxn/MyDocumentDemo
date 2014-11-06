@@ -8,10 +8,10 @@
 
 namespace TDocx
 {
-class DOCX_EXPORT docxTheme : public AbstractOOXmlFile
+class DOCX_EXPORT DocxTheme : public AbstractOOXmlFile
 {
 public:
-    docxTheme(CreateFlag flag);
+    DocxTheme(CreateFlag flag);
 
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);

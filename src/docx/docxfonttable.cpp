@@ -12,14 +12,14 @@ const QString rNamespace = "http://schemas.openxmlformats.org/officeDocument/200
 const QString w14Namespace = "http://schemas.microsoft.com/office/word/2010/wordml";
 
 
-docxfontTable::docxfontTable(CreateFlag flag)
+DocxfontTable::DocxfontTable(CreateFlag flag)
     :AbstractOOXmlFile(flag)
 {
     if (flag ==  CreateFlag::F_NewFromScratch)
         initFonts();
 }
 
-void docxfontTable::initFonts()
+void DocxfontTable::initFonts()
 {
     QVector<ContentInfo> fonts = QVector<ContentInfo>();
 
@@ -168,7 +168,7 @@ void docxfontTable::initFonts()
 
 
 
-void docxfontTable::saveFonts(QXmlStreamWriter &writer) const
+void DocxfontTable::saveFonts(QXmlStreamWriter &writer) const
 {
     if (!m_fonts.isEmpty()) {
         QMapIterator<QString, QVector<ContentInfo> > iter(m_fonts);
@@ -187,7 +187,7 @@ void docxfontTable::saveFonts(QXmlStreamWriter &writer) const
     }
 }
 
-void docxfontTable::saveToXmlFile(QIODevice *device) const
+void DocxfontTable::saveToXmlFile(QIODevice *device) const
 {
     QXmlStreamWriter writer(device);
     writer.writeStartDocument(QStringLiteral("1.0"), true);
@@ -202,7 +202,7 @@ void docxfontTable::saveToXmlFile(QIODevice *device) const
     writer.writeEndDocument();
 }
 
-bool docxfontTable::loadFromXmlFile(QIODevice *device)
+bool DocxfontTable::loadFromXmlFile(QIODevice *device)
 {
     return true;
 }

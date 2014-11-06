@@ -15,14 +15,14 @@ const QString p_Lines = QStringLiteral("Lines");
 
 namespace TDocx
 {
-docPropsApp::docPropsApp(CreateFlag flag)
+DocPropsApp::DocPropsApp(CreateFlag flag)
     : AbstractOOXmlFile(flag)
 {
     if (flag == CreateFlag::F_NewFromScratch)
         initDefaultProperties();
 }
 
-void docPropsApp::initDefaultProperties()
+void DocPropsApp::initDefaultProperties()
 {
     m_properties.insert(p_Template, QStringLiteral("Normal.dotm"));
     m_properties.insert(p_TotalTime, QStringLiteral("0"));
@@ -44,43 +44,43 @@ void docPropsApp::initDefaultProperties()
 
 }
 
-void docPropsApp::addProperty(const QString &name, const QString &value)
+void DocPropsApp::addProperty(const QString &name, const QString &value)
 {
     m_properties.insert(name, value);
 }
 
-void docPropsApp::modifyProperty(const QString &key, const QString &value)
+void DocPropsApp::modifyProperty(const QString &key, const QString &value)
 {
     if (m_properties.contains(key))
         m_properties[key] = value;
 }
 
-void docPropsApp::modifyTemplate(const QString &value)
+void DocPropsApp::modifyTemplate(const QString &value)
 {
     modifyProperty(p_Template, value);
 }
 
-void docPropsApp::modifyTotalTime(const QString &value)
+void DocPropsApp::modifyTotalTime(const QString &value)
 {
     modifyProperty(p_TotalTime, value);
 }
 
-void docPropsApp::modifyPages(const QString &value)
+void DocPropsApp::modifyPages(const QString &value)
 {
     modifyProperty(p_Pages, value);
 }
 
-void docPropsApp::modifyWords(const QString &value)
+void DocPropsApp::modifyWords(const QString &value)
 {
     modifyProperty(p_Words, value);
 }
 
-void docPropsApp::modifyCharacters(const QString &value)
+void DocPropsApp::modifyCharacters(const QString &value)
 {
     modifyProperty(p_Characters, value);
 }
 
-void docPropsApp::saveToXmlFile(QIODevice *device) const
+void DocPropsApp::saveToXmlFile(QIODevice *device) const
 {
     QXmlStreamWriter writer(device);
 
@@ -99,7 +99,7 @@ void docPropsApp::saveToXmlFile(QIODevice *device) const
     writer.writeEndDocument();
 }
 
-bool docPropsApp::loadFromXmlFile(QIODevice *device)
+bool DocPropsApp::loadFromXmlFile(QIODevice *device)
 {
     m_properties.clear();
 

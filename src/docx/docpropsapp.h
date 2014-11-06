@@ -7,10 +7,10 @@
 
 namespace TDocx
 {
-class DOCX_EXPORT docPropsApp : public AbstractOOXmlFile
+class DOCX_EXPORT DocPropsApp : public AbstractOOXmlFile
 {
 public:
-    docPropsApp(CreateFlag flag);
+    DocPropsApp(CreateFlag flag);
 
     void initDefaultProperties();
 

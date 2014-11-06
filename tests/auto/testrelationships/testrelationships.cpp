@@ -31,6 +31,7 @@ public:
     TestRelationShips();
 
 private Q_SLOTS:
+    void testDocument();
     void testRelation();
     void mytestFun();
 
@@ -39,6 +40,30 @@ private Q_SLOTS:
 
 TestRelationShips::TestRelationShips()
 {
+
+}
+
+void TestRelationShips::testDocument()
+{
+    Document document;
+    document.writeln("aaaabbbbbb");
+    DocxFont font("方正舒体");
+    font.setSpace(2);
+    font.setBold(true);
+    document.writeln(R"~(中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试)~",
+                     font);
+    font.setSize(0);
+    font.setSize(50);
+    font.setFamily("宋体");
+    font.setItalic(true);
+    font.setUnderline(DocxUnderline::Double);
+    font.setColor(Qt::green);
+    document.writeln("测试大小", font);
+
+    DocxFont font2;
+    document.writeln("测试大小", font2);
+
+    document.save();
 
 }
 
@@ -62,15 +87,15 @@ void TestRelationShips::testRelation()
     writer.addFile(QStringLiteral("[Content_Types].xml"), contenType.saveToXmlData());
 
     // docProps/app.xml
-    docPropsApp appXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    DocPropsApp appXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("docProps/app.xml"), appXml.saveToXmlData());
 
     // docProps/core.xml
-    docPropsCore corXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    DocPropsCore corXml(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("docProps/core.xml"), corXml.saveToXmlData());
 
     // word/theme/theme1.xml
-    docxTheme theme(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    DocxTheme theme(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/theme/theme1.xml"), theme.saveToXmlData());
 
     // word/_rels/document.xml.rels
@@ -82,7 +107,8 @@ void TestRelationShips::testRelation()
     wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
     writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), wordShips.saveToXmlData());
 
-    docxfontTable fontTable(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    //word/fontTable.xml
+    DocxfontTable fontTable(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     writer.addFile(QStringLiteral("word/fontTable.xml"), fontTable.saveToXmlData());
 
     // word/settings.xml
@@ -101,14 +127,20 @@ void TestRelationShips::testRelation()
     Document document(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
     document.writeln("aaaabbbbbb");
     DocxFont font("方正舒体");
+    font.setSpace(2);
     font.setBold(true);
     document.writeln("中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试",
                      font);
+    font.setSize(0);
     font.setSize(50);
+    font.setFamily("宋体");
     font.setItalic(true);
     font.setUnderline(DocxUnderline::Double);
     font.setColor(Qt::green);
     document.writeln("测试大小", font);
+
+    DocxFont font2;
+    document.writeln("测试大小", font2);
     writer.addFile(QStringLiteral("word/document.xml"), document.saveToXmlData());
 
     writer.close();
