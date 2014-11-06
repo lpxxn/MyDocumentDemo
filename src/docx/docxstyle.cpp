@@ -289,23 +289,23 @@ void DocxStyle::initTag()
     rFontsChild->addProperty(QStringLiteral("w:cstheme"), QStringLiteral("minorBidi"));
     rPrChild->addChild(rFontsChild);
 
-    TagElement *kernChild = new TagElement(QStringLiteral("w:kern"));
-    kernChild->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
-    rPrChild->addChild(kernChild);
+//    TagElement *kernChild = new TagElement(QStringLiteral("w:kern"));
+//    kernChild->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
+//    rPrChild->addChild(kernChild);
 
-    TagElement *szChild = new TagElement(QStringLiteral("w:sz"));
-    szChild->addProperty(QStringLiteral("w:val"), QStringLiteral("21"));
-    rPrChild->addChild(szChild);
+//    TagElement *szChild = new TagElement(QStringLiteral("w:sz"));
+//    szChild->addProperty(QStringLiteral("w:val"), QStringLiteral("21"));
+//    rPrChild->addChild(szChild);
 
-    TagElement *szCsChild = new TagElement(QStringLiteral("w:szCs"));
-    szCsChild->addProperty(QStringLiteral("w:val"), QStringLiteral("22"));
-    rPrChild->addChild(szCsChild);
+//    TagElement *szCsChild = new TagElement(QStringLiteral("w:szCs"));
+//    szCsChild->addProperty(QStringLiteral("w:val"), QStringLiteral("22"));
+//    rPrChild->addChild(szCsChild);
 
-    TagElement *langChild = new TagElement(QStringLiteral("w:lang"));
-    langChild->addProperty(QStringLiteral("w:val"), QStringLiteral("en-US"));
-    langChild->addProperty(QStringLiteral("w:eastAsia"), QStringLiteral("zh-CN"));
-    langChild->addProperty(QStringLiteral("w:bidi"), QStringLiteral("ar-SA"));
-    rPrChild->addChild(langChild);
+//    TagElement *langChild = new TagElement(QStringLiteral("w:lang"));
+//    langChild->addProperty(QStringLiteral("w:val"), QStringLiteral("en-US"));
+//    langChild->addProperty(QStringLiteral("w:eastAsia"), QStringLiteral("zh-CN"));
+//    langChild->addProperty(QStringLiteral("w:bidi"), QStringLiteral("ar-SA"));
+//    rPrChild->addChild(langChild);
 
     rprDefChild->addChild(rPrChild);
     m_docDefaultsTag->addChild(rprDefChild);
@@ -326,11 +326,11 @@ void DocxStyle::initTag()
 
     child  = new TagElement(QStringLiteral("w:pPr"));
 
-    TagElement *childw = new TagElement(QStringLiteral("w:widowControl"));
-    childw->addProperty(QStringLiteral("w:val"), QStringLiteral("0"));
+    TagElement *childw = new TagElement(QStringLiteral("w:sz"));
+    childw->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
     child->addChild(childw);
-    childw = new TagElement(QStringLiteral("w:jc"));
-    childw->addProperty(QStringLiteral("w:val"), QStringLiteral("both"));
+    childw = new TagElement(QStringLiteral("w:szCs"));
+    childw->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
     child->addChild(childw);
 
     m_defParagraph->addChild(child);

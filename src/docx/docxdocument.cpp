@@ -17,11 +17,35 @@ const QString wpg = QStringLiteral("http://schemas.microsoft.com/office/word/201
 const QString wpi = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingInk");
 const QString wne = QStringLiteral("http://schemas.microsoft.com/office/word/2006/wordml");
 const QString wps = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
+const QString strEndpr = R"~(
+        <w:sectPr>
+            <w:pgSz w:w="12240" w:h="15840"/>
+            <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="708" w:footer="708" w:gutter="0"/>
+            <w:cols w:space="708"/>
+            <w:docGrid w:linePitch="360"/>
+        </w:sectPr>
+    )~";
 
 
 Document::Document(CreateFlag flag)
     : AbstractOOXmlFile(flag)
 {
+    addParagraph();
+}
+
+void Document::writeln(const QString &text)
+{
+    DocxParagraph* current = currentParagraph();
+    current->setText(text);
+    addParagraph();
+}
+
+void Document::writeln(const QString &text, const DocxFont &font)
+{
+    DocxParagraph* current = currentParagraph();
+    current->setFont(font);
+    current->setText(text);
+    addParagraph();
 }
 
 void Document::saveToXmlFile(QIODevice *device) const
@@ -46,24 +70,14 @@ void Document::saveToXmlFile(QIODevice *device) const
     writer.writeNamespace(wps, QStringLiteral("wps"));
     writer.writeAttribute(mc, QStringLiteral("Ignorable"), QStringLiteral("w14 wp14"));
     writer.writeStartElement(QStringLiteral("w:body"));
-    writer.writeCDATA(QStringLiteral("peng.li create"));
-    const QString str = R"~(
-            <w:p w:rsidR="006148BB" w:rsidRDefault="00C85FEC">
-                <w:r>
-                    <w:t>aaalili</w:t>
-                </w:r>
-                <w:bookmarkStart w:id="0" w:name="_GoBack"/>
-                <w:bookmarkEnd w:id="0"/>
-            </w:p>
-            <w:sectPr w:rsidR="006148BB">
-                <w:pgSz w:w="11906" w:h="16838"/>
-                <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="851" w:footer="992" w:gutter="0"/>
-                <w:cols w:space="425"/>
-                <w:docGrid w:type="lines" w:linePitch="312"/>
-            </w:sectPr>
-        )~";
-    device->write(str.toUtf8());
+    writer.writeComment(QStringLiteral("body"));
 
+    for (const DocxParagraph *p : m_paragraphs) {
+        p->saveToXmlElement(&writer);
+    }
+
+    writer.writeComment(QStringLiteral("end"));
+    device->write(strEndpr.toUtf8());
     writer.writeEndElement();// end body
 
     writer.writeEndElement(); // end w:document
@@ -73,6 +87,25 @@ void Document::saveToXmlFile(QIODevice *device) const
 bool Document::loadFromXmlFile(QIODevice *device)
 {
     return true;
+}
+DocxFont &Document::font()
+{
+    return m_font;
+}
+
+void Document::setFont(const DocxFont &font)
+{
+    m_font = font;
+}
+
+DocxParagraph *Document::currentParagraph()
+{
+    return m_paragraphs.last();
+}
+
+void Document::addParagraph()
+{
+    m_paragraphs.append(new DocxParagraph());
 }
 
 }
