@@ -64,6 +64,8 @@ void TestRelationShips::testDocument()
     document.writeln("测试大小", font2);
 
     document.save();
+    document.saveAs(QString::fromUtf8("测试.docx"));
+    document.saveAs(QString::fromUtf8("测试.doc"));
 
 }
 
