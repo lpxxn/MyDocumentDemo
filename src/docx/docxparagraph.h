@@ -6,17 +6,17 @@
 
 namespace TDocx
 {
-class DocxParagraph;
-class ParagraphTagIterator : public ITagIterator<ITagElement>
-{
-public:
-    ParagraphTagIterator(const DocxParagraph *element);
-    bool hasNext() const;
-    ITagElement *next() const;
-private:
-    const DocxParagraph *m_tagElement;
-    mutable int m_currentIndex;
-};
+//class DocxParagraph;
+//class ParagraphTagIterator : public ITagIterator<ITagElement>
+//{
+//public:
+//    ParagraphTagIterator(const DocxParagraph *element);
+//    bool hasNext() const;
+//    ITagElement *next() const;
+//private:
+//    const DocxParagraph *m_tagElement;
+//    mutable int m_currentIndex;
+//};
 
 class DocxParagraph : public ITagElement
 {

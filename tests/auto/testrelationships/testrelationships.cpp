@@ -20,6 +20,8 @@
 #include "docxstyle.h"
 #include "docxdocument.h"
 
+#include <regex>
+
 
 using namespace TDocx;
 
@@ -156,6 +158,14 @@ void TestRelationShips::mytestFun()
     QByteArray hexBy = byte.toHex();
     qDebug() << hexBy;
 
+    std::regex r("^Heading[1-9]$");
+    int i =1;
+    while(i < 12) {
+        QString str = QString("Heading%1").arg(QString::number(i));
+        if (std::regex_match(str.toStdString(), r))
+            qDebug() << "math" << str;
+        i++;
+    }
 }
 
 QTEST_APPLESS_MAIN(TestRelationShips)

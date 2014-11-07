@@ -423,6 +423,15 @@ void DocxStyle::initTag()
     m_defnumbering->addChild(child);
 
 }
+QVector<StyleTagElement *> DocxStyle::headingTags() const
+{
+    return m_headingTags;
+}
+
+void DocxStyle::addHeadingStyle()
+{
+
+}
 
 
 
