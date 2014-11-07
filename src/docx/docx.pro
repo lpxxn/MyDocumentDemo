@@ -1,5 +1,5 @@
-include(../../DocxValue.pri)
-include(WordXmlDemo.pri)
+include(../../docxvalue.pri)
+include(wordxmldemo.pri)
 
 
 TARGET = $$LIBNAME
