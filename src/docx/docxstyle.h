@@ -34,15 +34,17 @@ private:
     mutable int m_currentIndex;
 };
 
+enum class StyleType {
+    paragraph,
+    table,
+    character,
+    numbering
+};
+
 class StyleTagElement : public ITagElement
 {
 public:
-    enum class StyleType {
-        paragraph,
-        table,
-        character,
-        numbering
-    };
+
 
     StyleTagElement(StyleType type, const QString &styleId);
     void addProperty(QString name, QString value);

@@ -289,23 +289,23 @@ void DocxStyle::initTag()
     rFontsChild->addProperty(QStringLiteral("w:cstheme"), QStringLiteral("minorBidi"));
     rPrChild->addChild(rFontsChild);
 
-//    TagElement *kernChild = new TagElement(QStringLiteral("w:kern"));
-//    kernChild->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
-//    rPrChild->addChild(kernChild);
+    //    TagElement *kernChild = new TagElement(QStringLiteral("w:kern"));
+    //    kernChild->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
+    //    rPrChild->addChild(kernChild);
 
-//    TagElement *szChild = new TagElement(QStringLiteral("w:sz"));
-//    szChild->addProperty(QStringLiteral("w:val"), QStringLiteral("21"));
-//    rPrChild->addChild(szChild);
+    //    TagElement *szChild = new TagElement(QStringLiteral("w:sz"));
+    //    szChild->addProperty(QStringLiteral("w:val"), QStringLiteral("21"));
+    //    rPrChild->addChild(szChild);
 
-//    TagElement *szCsChild = new TagElement(QStringLiteral("w:szCs"));
-//    szCsChild->addProperty(QStringLiteral("w:val"), QStringLiteral("22"));
-//    rPrChild->addChild(szCsChild);
+    //    TagElement *szCsChild = new TagElement(QStringLiteral("w:szCs"));
+    //    szCsChild->addProperty(QStringLiteral("w:val"), QStringLiteral("22"));
+    //    rPrChild->addChild(szCsChild);
 
-//    TagElement *langChild = new TagElement(QStringLiteral("w:lang"));
-//    langChild->addProperty(QStringLiteral("w:val"), QStringLiteral("en-US"));
-//    langChild->addProperty(QStringLiteral("w:eastAsia"), QStringLiteral("zh-CN"));
-//    langChild->addProperty(QStringLiteral("w:bidi"), QStringLiteral("ar-SA"));
-//    rPrChild->addChild(langChild);
+    //    TagElement *langChild = new TagElement(QStringLiteral("w:lang"));
+    //    langChild->addProperty(QStringLiteral("w:val"), QStringLiteral("en-US"));
+    //    langChild->addProperty(QStringLiteral("w:eastAsia"), QStringLiteral("zh-CN"));
+    //    langChild->addProperty(QStringLiteral("w:bidi"), QStringLiteral("ar-SA"));
+    //    rPrChild->addChild(langChild);
 
     rprDefChild->addChild(rPrChild);
     m_docDefaultsTag->addChild(rprDefChild);
@@ -314,7 +314,7 @@ void DocxStyle::initTag()
     // end docDefaults
 
     // m_defParagraph
-    m_defParagraph = new StyleTagElement(StyleTagElement::StyleType::paragraph, QStringLiteral("a"));
+    m_defParagraph = new StyleTagElement(StyleType::paragraph, QStringLiteral("a"));
     m_defParagraph->addProperty(QStringLiteral("w:default"), QStringLiteral("1"));
 
     TagElement *child  = new TagElement(QStringLiteral("w:name"));
@@ -337,7 +337,7 @@ void DocxStyle::initTag()
 
 
     // m_defCharacter
-    m_defCharacter = new StyleTagElement(StyleTagElement::StyleType::character, QStringLiteral("a0"));
+    m_defCharacter = new StyleTagElement(StyleType::character, QStringLiteral("a0"));
     m_defCharacter->addProperty(QStringLiteral("w:default"), QStringLiteral("1"));
 
     child  = new TagElement(QStringLiteral("w:name"));
@@ -355,7 +355,7 @@ void DocxStyle::initTag()
     m_defCharacter->addChild(child);
 
     // m_defTable
-    m_defTable = new StyleTagElement(StyleTagElement::StyleType::table, QStringLiteral("a1"));
+    m_defTable = new StyleTagElement(StyleType::table, QStringLiteral("a1"));
     m_defTable->addProperty(QStringLiteral("w:default"), QStringLiteral("1"));
     child  = new TagElement(QStringLiteral("w:name"));
     child->addProperty(QStringLiteral("w:val"), QStringLiteral("Normal Table"));
@@ -405,7 +405,7 @@ void DocxStyle::initTag()
 
 
     // m_defnumbering
-    m_defnumbering = new StyleTagElement(StyleTagElement::StyleType::numbering, QStringLiteral("a2"));
+    m_defnumbering = new StyleTagElement(StyleType::numbering, QStringLiteral("a2"));
     m_defnumbering->addProperty(QStringLiteral("w:default"), QStringLiteral("1"));
 
     child  = new TagElement(QStringLiteral("w:name"));
@@ -430,12 +430,383 @@ QVector<StyleTagElement *> DocxStyle::headingTags() const
 
 void DocxStyle::addHeadingStyle()
 {
+//    // heading 1
+//    StyleTagElement head = new StyleTagElement(StyleType::paragraph, QStringLiteral("Heading1"));
+//    TagElement child = new TagElement(QStringLiteral("w:name"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("heading 1"));
+//    head.addChild(child);
 
+//    child = new TagElement(QStringLiteral("w:basedOn"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:next"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:qFormat"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:rsid"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("00892A95"));
+//    head.addChild(child);
+
+//    //pPr
+//    child = new TagElement(QStringLiteral("w:pPr"));
+//    TagElement* pPrchild = new TagElement(QStringLiteral("w:keepNext"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:keepLines"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:spacing"));
+//    pPrchild.addProperty(QStringLiteral("w:before"), QStringLiteral("340"));
+//    pPrchild.addProperty(QStringLiteral("w:after"), QStringLiteral("330"));
+//    pPrchild.addProperty(QStringLiteral("w:line"), QStringLiteral("578"));
+//    pPrchild.addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+
+//    pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
+//    pPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("0"));
+
+//    child.addChild(pPrchild);
+
+//    child.addChild(pPrchild);
+
+//    //rPr
+//    child = new TagElement(QStringLiteral("w:rPr"));
+//    TagElement* rPrchild = new TagElement(QStringLiteral("w:b"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:bCs"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:sz"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:szCs"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    child.addChild(rPrchild);
+
+//    head.addChild(child);
+
+//    // heading 2
+//    head = new StyleTagElement(StyleType::paragraph, QStringLiteral("Heading2"));
+//    child = new TagElement(QStringLiteral("w:name"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("heading 2"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:basedOn"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:next"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:qFormat"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:rsid"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("00892A95"));
+//    head.addChild(child);
+
+//    //pPr
+//    child = new TagElement(QStringLiteral("w:pPr"));
+//    pPrchild = new TagElement(QStringLiteral("w:keepNext"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:keepLines"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:spacing"));
+//    pPrchild.addProperty(QStringLiteral("w:before"), QStringLiteral("260"));
+//    pPrchild.addProperty(QStringLiteral("w:after"), QStringLiteral("260"));
+//    pPrchild.addProperty(QStringLiteral("w:line"), QStringLiteral("416"));
+//    pPrchild.addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+
+//    pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
+//    pPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
+
+//    child.addChild(pPrchild);
+
+//    child.addChild(pPrchild);
+
+//    //rPr
+//    child = new TagElement(QStringLiteral("w:rPr"));
+//    rPrchild = new TagElement(QStringLiteral("w:b"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:bCs"));
+//    child.addChild(rPrchild);
+
+////    rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
+////    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:sz"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:szCs"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
+
+//    child.addChild(rPrchild);
+
+//    head.addChild(child);
+
+//    // heading 3
+//    head = new StyleTagElement(StyleType::paragraph, QStringLiteral("Heading3"));
+//    child = new TagElement(QStringLiteral("w:name"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("heading 3"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:basedOn"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:next"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:qFormat"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:rsid"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("00892A95"));
+//    head.addChild(child);
+
+//    //pPr
+//    child = new TagElement(QStringLiteral("w:pPr"));
+//    pPrchild = new TagElement(QStringLiteral("w:keepNext"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:keepLines"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:spacing"));
+//    pPrchild.addProperty(QStringLiteral("w:before"), QStringLiteral("260"));
+//    pPrchild.addProperty(QStringLiteral("w:after"), QStringLiteral("260"));
+//    pPrchild.addProperty(QStringLiteral("w:line"), QStringLiteral("416"));
+//    pPrchild.addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+
+//    pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
+//    pPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
+
+//    child.addChild(pPrchild);
+
+//    child.addChild(pPrchild);
+
+//    //rPr
+//    child = new TagElement(QStringLiteral("w:rPr"));
+//    rPrchild = new TagElement(QStringLiteral("w:b"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:bCs"));
+//    child.addChild(rPrchild);
+
+////    rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
+////    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:sz"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:szCs"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
+
+//    child.addChild(rPrchild);
+
+//    head.addChild(child);
+
+//    // heading 4
+//    head = new StyleTagElement(StyleType::paragraph, QStringLiteral("Heading4"));
+//    child = new TagElement(QStringLiteral("w:name"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("heading 4"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:basedOn"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:next"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:qFormat"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:rsid"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("00892A95"));
+//    head.addChild(child);
+
+//    //pPr
+//    child = new TagElement(QStringLiteral("w:pPr"));
+//    pPrchild = new TagElement(QStringLiteral("w:keepNext"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:keepLines"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:spacing"));
+//    pPrchild.addProperty(QStringLiteral("w:before"), QStringLiteral("280"));
+//    pPrchild.addProperty(QStringLiteral("w:after"), QStringLiteral("290"));
+//    pPrchild.addProperty(QStringLiteral("w:line"), QStringLiteral("376"));
+//    pPrchild.addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+
+//    pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
+//    pPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("3"));
+
+//    child.addChild(pPrchild);
+
+//    child.addChild(pPrchild);
+
+//    //rPr
+//    child = new TagElement(QStringLiteral("w:rPr"));
+//    rPrchild = new TagElement(QStringLiteral("w:b"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:bCs"));
+//    child.addChild(rPrchild);
+
+////    rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
+////    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:sz"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:szCs"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
+
+//    child.addChild(rPrchild);
+//    head.addChild(child);
+
+//    // heading 5
+//    head = new StyleTagElement(StyleType::paragraph, QStringLiteral("Heading5"));
+//    child = new TagElement(QStringLiteral("w:name"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("heading 5"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:basedOn"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:next"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:qFormat"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:rsid"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("00892A95"));
+//    head.addChild(child);
+
+//    //pPr
+//    child = new TagElement(QStringLiteral("w:pPr"));
+//    pPrchild = new TagElement(QStringLiteral("w:keepNext"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:keepLines"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:spacing"));
+//    pPrchild.addProperty(QStringLiteral("w:before"), QStringLiteral("280"));
+//    pPrchild.addProperty(QStringLiteral("w:after"), QStringLiteral("290"));
+//    pPrchild.addProperty(QStringLiteral("w:line"), QStringLiteral("376"));
+//    pPrchild.addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+
+//    pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
+//    pPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("4"));
+
+//    child.addChild(pPrchild);
+
+//    child.addChild(pPrchild);
+
+//    //rPr
+//    child = new TagElement(QStringLiteral("w:rPr"));
+//    rPrchild = new TagElement(QStringLiteral("w:b"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:bCs"));
+//    child.addChild(rPrchild);
+
+////    rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
+////    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:sz"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:szCs"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
+
+//    child.addChild(rPrchild);
+//    head.addChild(child);
+
+//    // heading 6
+//    head = new StyleTagElement(StyleType::paragraph, QStringLiteral("Heading6"));
+//    child = new TagElement(QStringLiteral("w:name"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("heading 6"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:basedOn"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:next"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("Normal"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:qFormat"));
+//    head.addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:rsid"));
+//    child.addProperty(QStringLiteral("w:val"), QStringLiteral("00892A95"));
+//    head.addChild(child);
+
+//    //pPr
+//    child = new TagElement(QStringLiteral("w:pPr"));
+//    pPrchild = new TagElement(QStringLiteral("w:keepNext"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:keepLines"));
+//    child.addChild(pPrchild);
+
+//    pPrchild = new TagElement(QStringLiteral("w:spacing"));
+//    pPrchild.addProperty(QStringLiteral("w:before"), QStringLiteral("240"));
+//    pPrchild.addProperty(QStringLiteral("w:after"), QStringLiteral("64"));
+//    pPrchild.addProperty(QStringLiteral("w:line"), QStringLiteral("320"));
+//    pPrchild.addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+
+//    pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
+//    pPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("5"));
+
+//    child.addChild(pPrchild);
+
+//    child.addChild(pPrchild);
+
+//    //rPr
+//    child = new TagElement(QStringLiteral("w:rPr"));
+//    rPrchild = new TagElement(QStringLiteral("w:b"));
+//    child.addChild(rPrchild);
+
+//    rPrchild = new TagElement(QStringLiteral("w:bCs"));
+//    child.addChild(rPrchild);
+
+////    rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
+////    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:sz"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
+
+//    rPrchild = new TagElement(QStringLiteral("w:szCs"));
+//    rPrchild.addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
+
+//    child.addChild(rPrchild);
+//    head.addChild(child);
+
+//    m_headingTags.append(head);
 }
-
-
-
-
 }
 
 
