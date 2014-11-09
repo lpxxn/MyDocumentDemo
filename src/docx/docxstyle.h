@@ -9,19 +9,6 @@
 namespace TDocx
 {
 
-enum class Headerings
-{
-    header1,
-    header2,
-    header3,
-    header4,
-    header5,
-    header6,
-    header7,
-    header8,
-    header9
-};
-
 class StyleTagElement;
 class StyleTagIterator : public ITagIterator<ITagElement>
 {
