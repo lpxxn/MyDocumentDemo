@@ -48,6 +48,7 @@ TestRelationShips::TestRelationShips()
 void TestRelationShips::testDocument()
 {
     Document document;
+    document.writeHeading("标题1", HeadingLevel::head1);
     document.writeln("aaaabbbbbb");
     DocxFont font("方正舒体");
     font.setSpace(2);
@@ -61,17 +62,28 @@ void TestRelationShips::testDocument()
     font.setUnderline(DocxUnderline::Double);
     font.setColor(Qt::green);
 
-    document.writeHeading("标题1", HeadingLevel::head1);
-    document.writeln("测试大小", font);
 
-    document.writeHeading("标题", HeadingLevel::head2);
+    document.writeln("测试文字内容", font);
+
+    document.writeln("测试文字内容");
+    font.setItalic(false);
+    font.setColor(Qt::red);
+    document.writeHeading("标题", HeadingLevel::head2, font);
+    document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head3);
+    document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head4);
+    document.writeln("测试文字内容测试文字内容");
     document.writeHeading("标题", HeadingLevel::head5);
+    document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head6);
+    document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head7);
+    document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head8);
+    document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head9);
+    document.writeln("测试文字内容");
 
 
     DocxFont font2;

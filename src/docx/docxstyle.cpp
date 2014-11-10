@@ -299,24 +299,6 @@ void DocxStyle::initTag()
     rFontsChild->addProperty(QStringLiteral("w:cstheme"), QStringLiteral("minorBidi"));
     rPrChild->addChild(rFontsChild);
 
-    //    TagElement *kernChild = new TagElement(QStringLiteral("w:kern"));
-    //    kernChild->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
-    //    rPrChild->addChild(kernChild);
-
-    //    TagElement *szChild = new TagElement(QStringLiteral("w:sz"));
-    //    szChild->addProperty(QStringLiteral("w:val"), QStringLiteral("21"));
-    //    rPrChild->addChild(szChild);
-
-    //    TagElement *szCsChild = new TagElement(QStringLiteral("w:szCs"));
-    //    szCsChild->addProperty(QStringLiteral("w:val"), QStringLiteral("22"));
-    //    rPrChild->addChild(szCsChild);
-
-    //    TagElement *langChild = new TagElement(QStringLiteral("w:lang"));
-    //    langChild->addProperty(QStringLiteral("w:val"), QStringLiteral("en-US"));
-    //    langChild->addProperty(QStringLiteral("w:eastAsia"), QStringLiteral("zh-CN"));
-    //    langChild->addProperty(QStringLiteral("w:bidi"), QStringLiteral("ar-SA"));
-    //    rPrChild->addChild(langChild);
-
     rprDefChild->addChild(rPrChild);
     m_docDefaultsTag->addChild(rprDefChild);
     rprDefChild = new TagElement(QStringLiteral("w:pPrDefault"));
@@ -324,7 +306,7 @@ void DocxStyle::initTag()
     // end docDefaults
 
     // m_defParagraph
-    m_defParagraph = new StyleTagElement(StyleType::paragraph, QStringLiteral("a"));
+    m_defParagraph = new StyleTagElement(StyleType::paragraph, QStringLiteral("Normal"));
     m_defParagraph->addProperty(QStringLiteral("w:default"), QStringLiteral("1"));
 
     TagElement *child  = new TagElement(QStringLiteral("w:name"));
@@ -334,7 +316,7 @@ void DocxStyle::initTag()
     child  = new TagElement(QStringLiteral("w:qFormat"));
     m_defParagraph->addChild(child);
 
-    child  = new TagElement(QStringLiteral("w:pPr"));
+    child  = new TagElement(QStringLiteral("w:rPr"));
 
     TagElement *childw = new TagElement(QStringLiteral("w:sz"));
     childw->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));

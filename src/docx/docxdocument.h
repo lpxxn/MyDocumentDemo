@@ -29,7 +29,7 @@ public:
 
     void writeln(const QString &text);
     void writeln(const QString &text, const DocxFont &font);
-    void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1);
+    void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont());
 
     DocxParagraph *currentParagraph();
     void addParagraph();

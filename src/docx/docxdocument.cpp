@@ -62,7 +62,7 @@ void Document::writeln(const QString &text, const DocxFont &font)
     addParagraph();
 }
 
-void Document::writeHeading(const QString &text, const HeadingLevel headLevel)
+void Document::writeHeading(const QString &text, const HeadingLevel headLevel, const DocxFont &font)
 {
     DocxParagraph* current = currentParagraph();
     AbsHeading *head;
@@ -75,6 +75,7 @@ void Document::writeHeading(const QString &text, const HeadingLevel headLevel)
     TagElement *styleElement = new TagElement(QStringLiteral("w:pStyle"));
     styleElement->addProperty(QStringLiteral("w:val"), head->headId());
     current->addStyleProperty(styleElement);
+    current->setFont(font);
     current->setText(text);
     addParagraph();
 }
