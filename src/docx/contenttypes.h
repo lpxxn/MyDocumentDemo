@@ -14,6 +14,8 @@ class DOCX_EXPORT ContentTypes : public AbstractOOXmlFile
 public:
     ContentTypes(CreateFlag flag);
 
+    virtual ~ContentTypes();
+
     void addDefault(const QString &key, const QString &value);
     void addOverride(const QString &key, const QString &value);
 

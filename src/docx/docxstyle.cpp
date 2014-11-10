@@ -1,4 +1,5 @@
 #include "docxstyle.h"
+
 #include <QXmlStreamWriter>
 
 namespace TDocx
@@ -251,6 +252,11 @@ DocxStyle::DocxStyle(CreateFlag flag)
         initTag();
 }
 
+DocxStyle::~DocxStyle()
+{
+
+}
+
 void DocxStyle::saveToXmlFile(QIODevice *device) const
 {
     QXmlStreamWriter writer(device);
@@ -264,6 +270,10 @@ void DocxStyle::saveToXmlFile(QIODevice *device) const
     m_docDefaultsTag->saveToXmlElement(&writer);
     device->write(mlatentStyle.toUtf8());
     m_defParagraph->saveToXmlElement(&writer);
+    if (m_headingTags.count() > 0)
+        for (const AbsHeading *head : m_headingTags) {
+            head->saveToXmlElement(&writer);
+        }
     m_defCharacter->saveToXmlElement(&writer);
     m_defTable->saveToXmlElement(&writer);
     m_defnumbering->saveToXmlElement(&writer);
@@ -423,14 +433,23 @@ void DocxStyle::initTag()
     m_defnumbering->addChild(child);
 
 }
-QVector<StyleTagElement *> DocxStyle::headingTags() const
+QVector<AbsHeading *> DocxStyle::headingTags() const
 {
     return m_headingTags;
 }
 
-void DocxStyle::addHeadingStyle()
+void DocxStyle::addHeadingStyle(AbsHeading *heading)
 {
+    m_headingTags.append(heading);
+}
 
+AbsHeading *DocxStyle::headbyLevel(HeadingLevel headLevel) const
+{
+    for (AbsHeading *head : m_headingTags) {
+        if (head->headLevel() == headLevel)
+            return head;
+    }
+    return nullptr;
 }
 }
 

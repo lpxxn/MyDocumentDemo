@@ -3,6 +3,7 @@
 #include "docx_global.h"
 #include "itagelement.h"
 #include "abstractooxmlfile.h"
+#include "docxstyleheading.h"
 
 #include <QVector>
 
@@ -59,12 +60,13 @@ class DOCX_EXPORT DocxStyle  : public AbstractOOXmlFile
 public:
     DocxStyle(CreateFlag flag);
 
+    virtual ~DocxStyle();
+
     virtual void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);
-
-
-    QVector<StyleTagElement *> headingTags() const;
-    void addHeadingStyle();
+    QVector<AbsHeading *> headingTags() const;
+    void addHeadingStyle(AbsHeading *heading);
+    AbsHeading *headbyLevel(HeadingLevel headLevel) const;
 
 protected:
     void initTag();
@@ -74,7 +76,7 @@ protected:
     StyleTagElement* m_defTable;
     StyleTagElement* m_defnumbering;
 
-    QVector<StyleTagElement*> m_headingTags;
+    QVector<AbsHeading *> m_headingTags;
 
 };
 }

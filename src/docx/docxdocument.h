@@ -14,6 +14,7 @@
 #include "docxsettings.h"
 #include "docxwebsetting.h"
 #include "docxstyle.h"
+#include "docxstyleheading.h"
 
 #include <QString>
 
@@ -28,6 +29,7 @@ public:
 
     void writeln(const QString &text);
     void writeln(const QString &text, const DocxFont &font);
+    void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1);
 
     DocxParagraph *currentParagraph();
     void addParagraph();

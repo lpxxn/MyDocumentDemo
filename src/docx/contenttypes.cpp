@@ -19,6 +19,11 @@ ContentTypes::ContentTypes(CreateFlag flag)
     }
 }
 
+ContentTypes::~ContentTypes()
+{
+
+}
+
 void ContentTypes::addDefault(const QString &key, const QString &value)
 {
     m_defaults.insert(key, value);

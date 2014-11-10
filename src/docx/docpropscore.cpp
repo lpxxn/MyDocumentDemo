@@ -55,7 +55,6 @@ bool DocPropsCore::loadFromXmlFile(QIODevice *device)
     return true;
 }
 
-
 }
 
 

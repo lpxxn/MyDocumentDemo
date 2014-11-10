@@ -24,12 +24,12 @@ const QString wne = QStringLiteral("http://schemas.microsoft.com/office/word/200
 const QString wps = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
 const QString strEndpr = R"~(
         <w:sectPr>
-            <w:pgSz w:w="12240" w:h="15840"/>
-            <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="708" w:footer="708" w:gutter="0"/>
-            <w:cols w:space="708"/>
-            <w:docGrid w:linePitch="360"/>
+        <w:pgSz w:w="12240" w:h="15840"/>
+        <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="708" w:footer="708" w:gutter="0"/>
+        <w:cols w:space="708"/>
+        <w:docGrid w:linePitch="360"/>
         </w:sectPr>
-    )~";
+        )~";
 
 
 Document::Document()
@@ -59,6 +59,20 @@ void Document::writeln(const QString &text, const DocxFont &font)
     DocxParagraph* current = currentParagraph();
     current->setFont(font);
     current->setText(text);
+    addParagraph();
+}
+
+void Document::writeHeading(const QString &text, const HeadingLevel headLevel)
+{
+    DocxParagraph* current = currentParagraph();
+    AbsHeading *head;
+    head = m_docxStyle.headbyLevel(headLevel);
+    if (!head) {
+        head = HeadingFactory::heading(headLevel);
+        m_docxStyle.addHeadingStyle(head);
+    }
+
+
     addParagraph();
 }
 
@@ -122,7 +136,7 @@ bool Document::saveAs(const QString &name) const
 {
     QFile file(name);
     if (file.open(QIODevice::WriteOnly))
-       return saveAs(&file);
+        return saveAs(&file);
     return false;
 }
 
