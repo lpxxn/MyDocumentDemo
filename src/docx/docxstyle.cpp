@@ -36,7 +36,7 @@ void StyleTagElement::saveToXmlElement(QXmlStreamWriter *writer) const
     writer->writeAttribute(QStringLiteral("w:type"), convertType(m_type));
     writer->writeAttribute(QStringLiteral("w:styleId"), m_styleId);
     if (m_properties.count() > 0)
-        for (pairValue att : m_properties) {
+        for (const pairValue &att : m_properties) {
             writer->writeAttribute(att.first, att.second);
         }
     StyleTagIterator iter =  createIterator();

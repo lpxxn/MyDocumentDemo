@@ -23,7 +23,8 @@ HEADERS += \
     docxdocumentbuilder.h \
     docxparagraph.h \
     docxfont.h \    
-    docxstyleheading.h
+    docxstyleheading.h \
+    docxparagraphproperty.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -45,4 +46,5 @@ SOURCES += \
     docxdocumentbuilder.cpp \
     docxparagraph.cpp \
     docxfont.cpp \    
-    docxstyleheading.cpp
+    docxstyleheading.cpp \
+    docxparagraphproperty.cpp

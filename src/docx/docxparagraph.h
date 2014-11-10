@@ -3,6 +3,7 @@
 #include "docx_global.h"
 #include "itagelement.h"
 #include "docxfont.h"
+#include "docxparagraphproperty.h"
 
 namespace TDocx
 {
@@ -22,24 +23,29 @@ class DocxParagraph : public ITagElement
 {
 public:
     DocxParagraph();
-    void addProperty(QString name, QString value);
-    void addChild(ITagElement *child);
-    void remoevChild(ITagElement *child);
+
     void saveToXmlElement(QXmlStreamWriter *writer) const;
 
     virtual ~DocxParagraph();
 
     QString text() const;
     void setText(const QString &text);
-
     DocxFont& font();
     void setFont(const DocxFont &font);
+    void addStyleProperty(TagElement *element);
+
+
+private:
+    void addProperty(QString name, QString value);
+    void addChild(ITagElement *child);
+    void remoevChild(ITagElement *child);
 
 private:
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
     QString m_text;
     DocxFont m_font;
+    DocxParagraphProperty m_property;
     friend class StyleTagIterator;
 
 };

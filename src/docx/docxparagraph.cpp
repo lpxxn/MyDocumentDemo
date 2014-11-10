@@ -32,6 +32,10 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
     writer->writeStartElement(QStringLiteral("w:p"));
     writer->writeAttribute(QStringLiteral("w:rsidR"), ComDataFun::hexNumber());
 
+    // style
+    m_property.saveToXmlElement(writer);
+
+    // r
     writer->writeStartElement(QStringLiteral("w:r"));
     if (!m_font.family().isEmpty()){
         writer->writeStartElement(QStringLiteral("w:rPr"));
@@ -71,6 +75,11 @@ DocxFont &DocxParagraph::font()
 void DocxParagraph::setFont(const DocxFont &font)
 {
     m_font = font;
+}
+
+void DocxParagraph::addStyleProperty(TagElement *element)
+{
+    m_property.addChild(element);
 }
 
 

@@ -32,12 +32,11 @@ void AbsHeading::iniHeading()
 
     //pPr
     ITagElement * pPrE = pPrElement();
-    child->addChild(pPrE);
+    m_head->addChild(pPrE);
 
+    // rPr
+    m_head->addChild(rPrElement());
 
-    child->addChild(rPrElement());
-
-    m_head->addChild(child);
 }
 
 void AbsHeading::saveToXmlElement(QXmlStreamWriter *writer) const
@@ -90,6 +89,7 @@ ITagElement *Heading1::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("330"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("578"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    pPr->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("0"));
@@ -111,14 +111,16 @@ ITagElement *Heading1::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:kern"));                // 字间距
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+    rPr->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
+    rPr->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("44"));
-
     rPr->addChild(rPrchild);
+
     return rPr;
 }
 
@@ -147,11 +149,12 @@ ITagElement *Heading2::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("260"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("416"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-
     child->addChild(pPrchild);
+
     return child;
 }
 
@@ -167,11 +170,12 @@ ITagElement *Heading2::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -201,11 +205,12 @@ ITagElement *Heading3::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("260"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("416"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
-
     child->addChild(pPrchild);
+
     return child;
 
 }
@@ -225,11 +230,12 @@ ITagElement *Heading3::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("32"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -259,11 +265,12 @@ ITagElement *Heading4::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("290"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("376"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("3"));
-
     child->addChild(pPrchild);
+
     return child;
 }
 
@@ -282,11 +289,12 @@ ITagElement *Heading4::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -315,11 +323,12 @@ ITagElement *Heading5::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("290"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("376"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("4"));
-
     child->addChild(pPrchild);
+
     return child;
 }
 
@@ -338,11 +347,12 @@ ITagElement *Heading5::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("28"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -372,10 +382,10 @@ ITagElement *Heading6::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("64"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("320"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("5"));
-
     child->addChild(pPrchild);
 
     return child;
@@ -396,11 +406,12 @@ ITagElement *Heading6::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -430,10 +441,10 @@ ITagElement *Heading7::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("64"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("320"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("6"));
-
     child->addChild(pPrchild);
 
     return child;
@@ -454,11 +465,12 @@ ITagElement *Heading7::rPrElement()
 
     rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -488,10 +500,10 @@ ITagElement *Heading8::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("64"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("320"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("7"));
-
     child->addChild(pPrchild);
 
     return child;
@@ -504,11 +516,12 @@ ITagElement *Heading8::rPrElement()
 
     TagElement *rPrchild = new TagElement(QStringLiteral("w:sz"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
+    child->addChild(rPrchild);
 
     rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("24"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 
@@ -538,10 +551,10 @@ ITagElement *Heading9::pPrElement()
     pPrchild->addProperty(QStringLiteral("w:after"), QStringLiteral("64"));
     pPrchild->addProperty(QStringLiteral("w:line"), QStringLiteral("320"));
     pPrchild->addProperty(QStringLiteral("w:lineRule"), QStringLiteral("auto"));
+    child->addChild(pPrchild);
 
     pPrchild = new TagElement(QStringLiteral("w:outlineLvl"));
     pPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("8"));
-
     child->addChild(pPrchild);
 
     return child;
@@ -554,8 +567,8 @@ ITagElement *Heading9::rPrElement()
 
     TagElement *rPrchild = new TagElement(QStringLiteral("w:szCs"));
     rPrchild->addProperty(QStringLiteral("w:val"), QStringLiteral("21"));
-
     child->addChild(rPrchild);
+
     return child;
 }
 

@@ -72,7 +72,10 @@ void Document::writeHeading(const QString &text, const HeadingLevel headLevel)
         m_docxStyle.addHeadingStyle(head);
     }
 
-
+    TagElement *styleElement = new TagElement(QStringLiteral("w:pStyle"));
+    styleElement->addProperty(QStringLiteral("w:val"), head->headId());
+    current->addStyleProperty(styleElement);
+    current->setText(text);
     addParagraph();
 }
 

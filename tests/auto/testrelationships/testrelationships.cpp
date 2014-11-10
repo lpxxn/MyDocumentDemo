@@ -60,14 +60,26 @@ void TestRelationShips::testDocument()
     font.setItalic(true);
     font.setUnderline(DocxUnderline::Double);
     font.setColor(Qt::green);
+
+    document.writeHeading("标题1", HeadingLevel::head1);
     document.writeln("测试大小", font);
+
+    document.writeHeading("标题", HeadingLevel::head2);
+    document.writeHeading("标题", HeadingLevel::head3);
+    document.writeHeading("标题", HeadingLevel::head4);
+    document.writeHeading("标题", HeadingLevel::head5);
+    document.writeHeading("标题", HeadingLevel::head6);
+    document.writeHeading("标题", HeadingLevel::head7);
+    document.writeHeading("标题", HeadingLevel::head8);
+    document.writeHeading("标题", HeadingLevel::head9);
+
 
     DocxFont font2;
     document.writeln("测试大小", font2);
 
     document.save();
     document.saveAs(QString::fromUtf8("测试.docx"));
-    document.saveAs(QString::fromUtf8("测试.doc"));
+    //document.saveAs(QString::fromUtf8("测试.doc"));
 
 }
 
