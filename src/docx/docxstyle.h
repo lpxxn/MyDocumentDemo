@@ -11,12 +11,12 @@ namespace TDocx
 {
 
 class StyleTagElement;
-class StyleTagIterator : public ITagIterator<ITagElement>
+class StyleTagIterator : public ITagIterator<ISaveToXml>
 {
 public:
     StyleTagIterator(const StyleTagElement *element);
     bool hasNext() const;
-    ITagElement *next() const;
+    ISaveToXml *next() const;
 private:
     const StyleTagElement *m_tagElement;
     mutable int m_currentIndex;
@@ -36,8 +36,8 @@ public:
 
     StyleTagElement(StyleType type, const QString &styleId);
     void addProperty(QString name, QString value);
-    void addChild(ITagElement *child);
-    void remoevChild(ITagElement *child);
+    void addChild(ISaveToXml *child);
+    void remoevChild(ISaveToXml *child);
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     StyleTagIterator createIterator() const;
 
@@ -51,7 +51,7 @@ private:
     QString m_styleId;
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
-    QList<ITagElement*> m_childs;
+    QList<ISaveToXml*> m_childs;
     friend class StyleTagIterator;
 };
 

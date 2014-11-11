@@ -49,12 +49,12 @@ void AbsHeading::addProperty(QString name, QString value)
     m_head->addProperty(name, value);
 }
 
-void AbsHeading::addChild(ITagElement *child)
+void AbsHeading::addChild(ISaveToXml *child)
 {
     m_head->addChild(child);
 }
 
-void AbsHeading::remoevChild(ITagElement *child)
+void AbsHeading::remoevChild(ISaveToXml *child)
 {
     m_head->remoevChild(child);
 }

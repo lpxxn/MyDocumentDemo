@@ -16,7 +16,7 @@ bool ParPropertyIterator::hasNext() const
     return m_paragraph->m_childs.count() > 0 && m_currentIndex < m_paragraph->m_childs.size();
 }
 
-ITagElement *ParPropertyIterator::next() const
+ISaveToXml *ParPropertyIterator::next() const
 {
     return m_paragraph->m_childs.at(m_currentIndex++);
 }
@@ -30,17 +30,27 @@ DocxParagraphProperty::DocxParagraphProperty()
 {
 }
 
+DocxParagraphProperty::~DocxParagraphProperty()
+{
+    ParPropertyIterator iter =  createIterator();
+    while(iter.hasNext()) {
+        ISaveToXml *ele = iter.next();
+        delete ele;
+    }
+    m_childs.clear();
+}
+
 void DocxParagraphProperty::addProperty(QString name, QString value)
 {
     m_properties.append(pairValue(name, value));
 }
 
-void DocxParagraphProperty::addChild(TDocx::ITagElement *child)
+void DocxParagraphProperty::addChild(ISaveToXml *child)
 {
     m_childs.append(child);
 }
 
-void DocxParagraphProperty::remoevChild(TDocx::ITagElement *child)
+void DocxParagraphProperty::remoevChild(TDocx::ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);
@@ -59,7 +69,7 @@ void DocxParagraphProperty::saveToXmlElement(QXmlStreamWriter *writer) const
     }
     ParPropertyIterator iter = createIterator();
     while(iter.hasNext()) {
-        ITagElement *e = iter.next();
+        ISaveToXml *e = iter.next();
         e->saveToXmlElement(writer);
     }
     writer->writeEndElement();

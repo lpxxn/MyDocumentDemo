@@ -18,12 +18,12 @@ void DocxParagraph::addProperty(QString name, QString value)
     m_properties.append(pairValue(name, value));
 }
 
-void DocxParagraph::addChild(TDocx::ITagElement *child)
+void DocxParagraph::addChild(TDocx::ISaveToXml *child)
 {
 
 }
 
-void DocxParagraph::remoevChild(TDocx::ITagElement *child)
+void DocxParagraph::remoevChild(ISaveToXml *child)
 {
 }
 
@@ -57,6 +57,7 @@ DocxParagraph::~DocxParagraph()
 {
 
 }
+
 QString DocxParagraph::text() const
 {
     return m_text;
@@ -81,7 +82,6 @@ void DocxParagraph::addStyleProperty(TagElement *element)
 {
     m_property.addChild(element);
 }
-
 
 
 }

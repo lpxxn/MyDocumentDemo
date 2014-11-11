@@ -15,8 +15,13 @@
 #include "docxwebsetting.h"
 #include "docxstyle.h"
 #include "docxstyleheading.h"
+#include "docxlistformat.h"
+#include "docxnumbering.h"
 
 #include <QString>
+#include <QMap>
+
+#include <initializer_list>
 
 namespace TDocx
 {
@@ -31,6 +36,10 @@ public:
     void writeln(const QString &text, const DocxFont &font);
     void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont());
 
+
+    void writeList(const ListFormatStyle &listStyle, std::initializer_list<QString> outValus);
+    void writeList(const ListFormatStyle &listStyle, const QString &outStr, std::initializer_list<QString> inValus);
+
     DocxParagraph *currentParagraph();
     void addParagraph();
     DocxFont& font();
@@ -41,6 +50,7 @@ public:
     bool saveAs(QIODevice *device) const;
 
 private:
+    void writeList(const ListFormatStyle &listStyle, const QString &outStr, bool isindent = false);
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);
 
@@ -57,6 +67,8 @@ private:
     DocxSettings m_docxSettings;
     DocxWebSetting m_docxWebSetting;
     DocxStyle m_docxStyle;
+    DocxNumbering m_numbering;
+    QMap<QString, QString> m_docrels;
 
     friend class DocumentBuilder;    
 

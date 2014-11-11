@@ -15,7 +15,7 @@ bool TagElementIterator::hasNext() const
     return m_tagElement->m_childs.count() > 0 && m_currentIndex < m_tagElement->m_childs.size();
 }
 
-ITagElement *TagElementIterator::next() const
+ISaveToXml *TagElementIterator::next() const
 {
     return m_tagElement->m_childs.at(m_currentIndex++);
 }
@@ -34,18 +34,18 @@ TagElement::~TagElement()
 {
     TagElementIterator iter =  createIterator();
     while(iter.hasNext()) {
-        ITagElement *ele = iter.next();
+        ISaveToXml *ele = iter.next();
         delete ele;
     }
     m_childs.clear();
 }
 
-void TagElement::addChild(ITagElement *child)
+void TagElement::addChild(ISaveToXml *child)
 {
     m_childs.append(child);
 }
 
-void TagElement::remoevChild(ITagElement *child)
+void TagElement::remoevChild(ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);
@@ -63,7 +63,7 @@ void TagElement::saveToXmlElement(QXmlStreamWriter *writer) const
         }
     TagElementIterator iter =  createIterator();
     while(iter.hasNext()) {
-        ITagElement *element = iter.next();
+        ISaveToXml *element = iter.next();
         element->saveToXmlElement(writer);
     }
     writer->writeEndElement();

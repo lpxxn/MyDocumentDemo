@@ -16,12 +16,12 @@ void StyleTagElement::addProperty(QString name, QString value)
     m_properties.append(pairValue(name, value));
 }
 
-void StyleTagElement::addChild(ITagElement *child)
+void StyleTagElement::addChild(ISaveToXml *child)
 {
     m_childs.append(child);
 }
 
-void StyleTagElement::remoevChild(ITagElement *child)
+void StyleTagElement::remoevChild(ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);
@@ -41,7 +41,7 @@ void StyleTagElement::saveToXmlElement(QXmlStreamWriter *writer) const
         }
     StyleTagIterator iter =  createIterator();
     while(iter.hasNext()) {
-        ITagElement *element = iter.next();
+        ISaveToXml *element = iter.next();
         element->saveToXmlElement(writer);
     }
     writer->writeEndElement();// end style
@@ -56,7 +56,7 @@ StyleTagElement::~StyleTagElement()
 {
     StyleTagIterator iter =  createIterator();
     while(iter.hasNext()) {
-        ITagElement *ele = iter.next();
+        ISaveToXml *ele = iter.next();
         delete ele;
     }
     m_childs.clear();
@@ -92,7 +92,7 @@ bool StyleTagIterator::hasNext() const
     return m_tagElement->m_childs.count() > 0 && m_currentIndex < m_tagElement->m_childs.size();
 }
 
-ITagElement *StyleTagIterator::next() const
+ISaveToXml *StyleTagIterator::next() const
 {
     return m_tagElement->m_childs.at(m_currentIndex++);
 }
@@ -404,15 +404,15 @@ void DocxStyle::initTag()
     child->addProperty(QStringLiteral("w:val"), QStringLiteral("No List"));
     m_defnumbering->addChild(child);
 
-    child  = new TagElement(QStringLiteral("w:uiPriority"));
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("99"));
-    m_defnumbering->addChild(child);
+//    child  = new TagElement(QStringLiteral("w:uiPriority"));
+//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("99"));
+//    m_defnumbering->addChild(child);
 
     child  = new TagElement(QStringLiteral("w:semiHidden"));
     m_defnumbering->addChild(child);
 
-    child  = new TagElement(QStringLiteral("w:unhideWhenUsed"));
-    m_defnumbering->addChild(child);
+//    child  = new TagElement(QStringLiteral("w:unhideWhenUsed"));
+//    m_defnumbering->addChild(child);
 
 }
 QVector<AbsHeading *> DocxStyle::headingTags() const

@@ -180,7 +180,7 @@ const char* themeStr =
         ;
 
 DocxTheme::DocxTheme(CreateFlag flag)
-    :AbstractOOXmlFile(flag)
+    : AbstractOOXmlFile(flag)
 {
 
 }

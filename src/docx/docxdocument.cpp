@@ -1,7 +1,6 @@
 #include "docxdocument.h"
 #include "docxzipwriter.h"
 
-
 #include <QXmlStreamWriter>
 #include <QFile>
 
@@ -39,7 +38,7 @@ Document::Document()
 }
 
 Document::Document(CreateFlag flag)
-    : AbstractOOXmlFile(flag), m_docName(QStringLiteral("word.docx")),
+    : AbstractOOXmlFile(flag), m_docName(QStringLiteral("word.docx")), m_numbering(flag),
       m_contentTypes(flag), m_docPropsApp(flag), m_docPropsCore(flag), m_docxTheme(flag),
       m_docxfontTable(flag), m_docxSettings(flag), m_docxWebSetting(flag), m_docxStyle(flag)
 {
@@ -78,6 +77,46 @@ void Document::writeHeading(const QString &text, const HeadingLevel headLevel, c
     current->setFont(font);
     current->setText(text);
     addParagraph();
+}
+
+
+/*!
+ * \brief 添加列表
+ * \param listStyle
+ * \param outValus
+ */
+void Document::writeList(const ListFormatStyle &listStyle, const QString &outStr, bool isindent)
+{
+    DocxParagraph* current = currentParagraph();
+    //DocxListFormat docx(listStyle);
+    TagElement *styleElement = new TagElement(QStringLiteral("w:numPr"));
+    TagElement *child = new TagElement(QStringLiteral("w:ilvl"));
+    child->addProperty(QStringLiteral("w:val"), isindent ? QStringLiteral("1") : QStringLiteral("0"));
+    styleElement->addChild(child);
+
+    child = new TagElement(QStringLiteral("w:numId"));
+    child->addProperty(QStringLiteral("w:val"), QString::number((int)listStyle));
+    styleElement->addChild(child);
+
+    current->addStyleProperty(styleElement);
+    current->setText(outStr);
+    addParagraph();
+}
+
+
+void Document::writeList(const ListFormatStyle &listStyle, std::initializer_list<QString> outValus)
+{
+    for (const QString &str : outValus) {
+        writeList(listStyle, str);
+    }
+}
+
+void Document::writeList(const ListFormatStyle &listStyle, const QString &outStr, std::initializer_list<QString> inValus)
+{
+    writeList(listStyle, outStr);
+    for (const QString &str : inValus) {
+        writeList(listStyle, str, true);
+    }
 }
 
 void Document::saveToXmlFile(QIODevice *device) const
@@ -173,6 +212,11 @@ bool Document::saveAs(QIODevice *device) const
     wordShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme/theme1.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/fontTable"), QStringLiteral("fontTable.xml"));
     wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
+    wordShips.addDocumentRelationship(QStringLiteral("/numbering"), QStringLiteral("numbering.xml"));
+    QMapIterator<QString, QString> iter(m_docrels);
+    while (iter.hasNext()) {
+        wordShips.addDocumentRelationship(iter.key(), iter.value());
+    }
     writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), wordShips.saveToXmlData());
 
     //word/fontTable.xml
@@ -187,8 +231,12 @@ bool Document::saveAs(QIODevice *device) const
     // word/styles.xml
     writer.addFile(QStringLiteral("word/styles.xml"), m_docxStyle.saveToXmlData());
 
+    // word/numbering.xml
+    writer.addFile(QStringLiteral("word/numbering.xml"), m_numbering.saveToXmlData());
+
     // word/document.xml
     writer.addFile(QStringLiteral("word/document.xml"), this->saveToXmlData());
+
 
     writer.close();
     return true;

@@ -37,6 +37,7 @@ void ContentTypes::addOverride(const QString &key, const QString &value)
 void ContentTypes::addOverrideDefault()
 {
     m_overrides.insert(QStringLiteral("/word/document.xml"), m_document_prefix + QStringLiteral(".wordprocessingml.document.main+xml"));
+    m_overrides.insert(QStringLiteral("/word/numbering.xml"), m_document_prefix + QStringLiteral(".wordprocessingml.numbering+xml"));
     m_overrides.insert(QStringLiteral("/word/styles.xml"), m_document_prefix + QStringLiteral(".wordprocessingml.styles+xml"));
     m_overrides.insert(QStringLiteral("/word/stylesWithEffects.xml"), m_msword_prefix + QStringLiteral(".stylesWithEffects+xml"));
     m_overrides.insert(QStringLiteral("/word/settings.xml"), m_document_prefix + QStringLiteral(".wordprocessingml.settings+xml"));

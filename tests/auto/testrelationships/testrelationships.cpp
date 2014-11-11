@@ -33,6 +33,7 @@ public:
     TestRelationShips();
 
 private Q_SLOTS:
+    void testListFormat();
     void testDocument();
     void testRelation();
     void mytestFun();
@@ -43,6 +44,19 @@ private Q_SLOTS:
 TestRelationShips::TestRelationShips()
 {
 
+}
+
+void TestRelationShips::testListFormat()
+{
+    Document document;
+
+    document.writeln("Bullet");
+    document.writeList(ListFormatStyle::Bullet, { QStringLiteral("aab"), QStringLiteral("bbb"), QStringLiteral("bbbb"), QStringLiteral("bbbb") });
+    document.writeln("Numer");
+    document.writeList(ListFormatStyle::Number, { QStringLiteral("aaa"), QStringLiteral("aaaa"), QStringLiteral("aaaa"), QStringLiteral("aaa") });
+
+
+    document.saveAs(QStringLiteral("listFormat.docx"));
 }
 
 void TestRelationShips::testDocument()

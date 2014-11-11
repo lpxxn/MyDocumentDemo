@@ -28,8 +28,8 @@ public:
 
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     void addProperty(QString name, QString value);
-    void addChild(ITagElement *child);
-    void remoevChild(ITagElement *child);
+    void addChild(ISaveToXml *child);
+    void remoevChild(ISaveToXml *child);
     QString headId() const;
 
     virtual ITagElement* pPrElement() = 0;
@@ -39,7 +39,7 @@ public:
 private:
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
-    QList<ITagElement *> m_childs;
+    QList<ISaveToXml *> m_childs;
     StyleTagElement *m_head;
 };
 

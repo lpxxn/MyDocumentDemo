@@ -8,12 +8,12 @@
 namespace TDocx
 {
 //class DocxParagraph;
-//class ParagraphTagIterator : public ITagIterator<ITagElement>
+//class ParagraphTagIterator : public ITagIterator<ISaveToXml>
 //{
 //public:
 //    ParagraphTagIterator(const DocxParagraph *element);
 //    bool hasNext() const;
-//    ITagElement *next() const;
+//    ISaveToXml *next() const;
 //private:
 //    const DocxParagraph *m_tagElement;
 //    mutable int m_currentIndex;
@@ -34,19 +34,18 @@ public:
     void setFont(const DocxFont &font);
     void addStyleProperty(TagElement *element);
 
-
 private:
     void addProperty(QString name, QString value);
-    void addChild(ITagElement *child);
-    void remoevChild(ITagElement *child);
+    void addChild(ISaveToXml *child);
+    void remoevChild(ISaveToXml *child);
 
 private:
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
     QString m_text;
-    DocxFont m_font;
+    DocxFont m_font;    
     DocxParagraphProperty m_property;
-    friend class StyleTagIterator;
+    //friend class StyleTagIterator;
 
 };
 }

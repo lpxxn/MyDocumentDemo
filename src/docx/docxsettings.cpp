@@ -36,70 +36,97 @@ void DocxSettings::initTags()
     TagElement *element = new TagElement(QStringLiteral("w:zoom"));
     element->addProperty(QStringLiteral("w:percent"), QStringLiteral("100"));
     m_wTags.append(element);
-    element = new TagElement(QStringLiteral("w:bordersDoNotSurroundHeader"));
+    element = new TagElement(QStringLiteral("w:embedSystemFonts"));
     m_wTags.append(element);
-    element = new TagElement(QStringLiteral("w:bordersDoNotSurroundFooter"));
+    element = new TagElement(QStringLiteral("w:proofState"));
+    element->addProperty(QStringLiteral("w:val"), QStringLiteral("clean"));
+    m_wTags.append(element);
+
+    element = new TagElement(QStringLiteral("w:stylePaneFormatFilter"));
+    element->addProperty(QStringLiteral("w:val"), QStringLiteral("3F01"));
+    m_wTags.append(element);
+
+    element = new TagElement(QStringLiteral("w:doNotTrackMoves"));
     m_wTags.append(element);
 
     element = new TagElement(QStringLiteral("w:defaultTabStop"));
-    element->addProperty(QStringLiteral("w:val"), QStringLiteral("420"));
+    element->addProperty(QStringLiteral("w:val"), QStringLiteral("720"));
     m_wTags.append(element);
 
-    element = new TagElement(QStringLiteral("w:drawingGridVerticalSpacing"));
-    element->addProperty(QStringLiteral("w:val"), QStringLiteral("156"));
+    element = new TagElement(QStringLiteral("w:noPunctuationKerning"));
     m_wTags.append(element);
 
-    element = new TagElement(QStringLiteral("w:displayHorizontalDrawingGridEvery"));
-    element->addProperty(QStringLiteral("w:val"), QStringLiteral("0"));
-    m_wTags.append(element);
+//    element = new TagElement(QStringLiteral("w:displayHorizontalDrawingGridEvery"));
+//    element->addProperty(QStringLiteral("w:val"), QStringLiteral("0"));
+//    m_wTags.append(element);
 
-    element = new TagElement(QStringLiteral("w:displayVerticalDrawingGridEvery"));
-    element->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
-    m_wTags.append(element);
+//    element = new TagElement(QStringLiteral("w:displayVerticalDrawingGridEvery"));
+//    element->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
+//    m_wTags.append(element);
 
     element = new TagElement(QStringLiteral("w:characterSpacingControl"));
-    element->addProperty(QStringLiteral("w:val"), QStringLiteral("compressPunctuation"));
+    element->addProperty(QStringLiteral("w:val"), QStringLiteral("doNotCompress"));
     m_wTags.append(element);
 
     element = new TagElement(QStringLiteral("w:compat"));
-    TagElement *child = new TagElement(QStringLiteral("w:spaceForUL"));
+    TagElement *child = new TagElement(QStringLiteral("w:useWord2002TableStyleRules"));
     element->addChild(child);
-    child = new TagElement(QStringLiteral("w:balanceSingleByteDoubleByteWidth"));
+    child = new TagElement(QStringLiteral("w:growAutofit"));
     element->addChild(child);
-    child = new TagElement(QStringLiteral("w:doNotLeaveBackslashAlone"));
+    child = new TagElement(QStringLiteral("w:useNormalStyleForList"));
     element->addChild(child);
-    child = new TagElement(QStringLiteral("w:ulTrailSpace"));
+    child = new TagElement(QStringLiteral("w:doNotUseIndentAsNumberingTabStop"));
     element->addChild(child);
-    child = new TagElement(QStringLiteral("w:doNotExpandShiftReturn"));
+    child = new TagElement(QStringLiteral("w:useAltKinsokuLineBreakRules"));
     element->addChild(child);
-    child = new TagElement(QStringLiteral("w:adjustLineHeightInTable"));
-    element->addChild(child);
-    child = new TagElement(QStringLiteral("w:useFELayout"));
+    child = new TagElement(QStringLiteral("w:allowSpaceOfSameStyleInTable"));
     element->addChild(child);
 
-    child = new TagElement(QStringLiteral("w:compatSetting"));
-    child->addProperty(QStringLiteral("w:name"), QStringLiteral("compatibilityMode"));
-    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("14"));
+    child = new TagElement(QStringLiteral("w:doNotSuppressIndentation"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:doNotAutofitConstrainedTables"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:autofitToFirstFixedWidthCell"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:displayHangulFixedWidth"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:splitPgBreakAndParaMark"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:doNotVertAlignCellWithSp"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:doNotBreakConstrainedForcedTable"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:doNotVertAlignInTxbx"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:useAnsiKerningPairs"));
+    element->addChild(child);
+    child = new TagElement(QStringLiteral("w:cachedColBalance"));
     element->addChild(child);
 
-    child = new TagElement(QStringLiteral("w:compatSetting"));
-    child->addProperty(QStringLiteral("w:name"), QStringLiteral("overrideTableStyleFontSizeAndJustification"));
-    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-    element->addChild(child);
 
-    child = new TagElement(QStringLiteral("w:compatSetting"));
-    child->addProperty(QStringLiteral("w:name"), QStringLiteral("enableOpenTypeFeatures"));
-    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-    element->addChild(child);
+//    child = new TagElement(QStringLiteral("w:compatSetting"));
+//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("compatibilityMode"));
+//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
+//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("14"));
+//    element->addChild(child);
 
-    child = new TagElement(QStringLiteral("w:compatSetting"));
-    child->addProperty(QStringLiteral("w:name"), QStringLiteral("doNotFlipMirrorIndents"));
-    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-    element->addChild(child);
+//    child = new TagElement(QStringLiteral("w:compatSetting"));
+//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("overrideTableStyleFontSizeAndJustification"));
+//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
+//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
+//    element->addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:compatSetting"));
+//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("enableOpenTypeFeatures"));
+//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
+//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
+//    element->addChild(child);
+
+//    child = new TagElement(QStringLiteral("w:compatSetting"));
+//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("doNotFlipMirrorIndents"));
+//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
+//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
+//    element->addChild(child);
 
     m_wTags.append(element);
 

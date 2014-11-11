@@ -19,23 +19,29 @@ public:
     virtual T* next() const = 0;
 };
 
-class ITagElement
+class ISaveToXml
+{
+public:
+    virtual void saveToXmlElement(QXmlStreamWriter *writer) const = 0;
+};
+
+class ITagElement : public ISaveToXml
 {
 public:
     virtual void addProperty(QString name, QString value) = 0;
     virtual ~ITagElement() {}
 
-    virtual void addChild(ITagElement *child) = 0;
-    virtual void remoevChild(ITagElement *child) = 0;
+    virtual void addChild(ISaveToXml *child) = 0;
+    virtual void remoevChild(ISaveToXml *child) = 0;
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const = 0;
 };
 
-class TagElementIterator : public ITagIterator<ITagElement>
+class TagElementIterator : public ITagIterator<ISaveToXml>
 {
 public:
     TagElementIterator(const TagElement *element);
     bool hasNext() const;
-    ITagElement *next() const;
+    ISaveToXml *next() const;
 private:
     const TagElement *m_tagElement;
     mutable int m_currentIndex;
@@ -51,8 +57,8 @@ public:
 
     virtual ~TagElement();
 
-    void addChild(ITagElement *child);
-    void remoevChild(ITagElement *child);
+    void addChild(ISaveToXml *child);
+    void remoevChild(ISaveToXml *child);
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     TagElementIterator createIterator() const;
 
@@ -60,7 +66,7 @@ private:
     QString m_tagName;
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
-    QList<ITagElement*> m_childs;
+    QList<ISaveToXml *> m_childs;
     friend class TagElementIterator;
 
 };
