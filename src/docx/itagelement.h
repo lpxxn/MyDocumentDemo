@@ -54,6 +54,7 @@ public:
     TagElement(const QString &name);
     void addProperty(QString name, QString value);
     QString name() const { return m_tagName; }
+    void addCharaters(const QString &test);
 
     virtual ~TagElement();
 
@@ -64,6 +65,7 @@ public:
 
 private:
     QString m_tagName;
+    QString m_charaters;
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
     QList<ISaveToXml *> m_childs;

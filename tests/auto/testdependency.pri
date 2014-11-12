@@ -1,4 +1,4 @@
-QT      += testlib
+QT      += testlib core
 
 CONFIG  += testcase
 CONFIG  += console

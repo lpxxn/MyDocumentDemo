@@ -17,6 +17,7 @@
 #include "docxstyleheading.h"
 #include "docxlistformat.h"
 #include "docxnumbering.h"
+#include "docxmediafile.h"
 
 #include <QString>
 #include <QMap>
@@ -40,7 +41,10 @@ public:
     void writeList(const DocxListFormat &listStyle, std::initializer_list<QString> outValus);
     void writeList(const DocxListFormat &listStyle, const QString &outStr, std::initializer_list<QString> inValus);
 
-    DocxParagraph *currentParagraph();
+    void insertImage(const QString &imgName);
+    void insertImage(const QString &imgName, const QSize &size);
+
+    DocxParagraph *lastParagraph();
     void addParagraph();
     DocxFont& font();
     void setFont(const DocxFont &font);
@@ -69,6 +73,8 @@ private:
     DocxStyle m_docxStyle;
     DocxNumbering m_numbering;
     QMap<QString, QString> m_docrels;
+
+    QVector<DocxMediaFile> m_imgs;
 
     friend class DocumentBuilder;    
 

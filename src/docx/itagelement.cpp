@@ -30,6 +30,11 @@ void TagElement::addProperty(QString name, QString value)
     m_properties.append(pairValue(name, value));
 }
 
+void TagElement::addCharaters(const QString &test)
+{
+    m_charaters = test;
+}
+
 TagElement::~TagElement()
 {
     TagElementIterator iter =  createIterator();
@@ -66,6 +71,8 @@ void TagElement::saveToXmlElement(QXmlStreamWriter *writer) const
         ISaveToXml *element = iter.next();
         element->saveToXmlElement(writer);
     }
+    if (!m_charaters.isEmpty())
+        writer->writeCharacters(QString::fromUtf8(m_charaters.toUtf8()));
     writer->writeEndElement();
 }
 

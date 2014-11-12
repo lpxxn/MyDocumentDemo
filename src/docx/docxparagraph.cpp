@@ -44,10 +44,8 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
     }
 
     // text
-    if (!m_text.isEmpty()) {
-        writer->writeStartElement(QStringLiteral("w:t"));
-        writer->writeCharacters(QString::fromUtf8(m_text.toUtf8()));
-        writer->writeEndElement(); // end w:r
+    for (const TagElement *eles : m_contentElement) {
+        eles->saveToXmlElement(writer);
     }
         writer->writeEndElement(); // end w:t
     writer->writeEndElement(); // end w:p
@@ -58,14 +56,12 @@ DocxParagraph::~DocxParagraph()
 
 }
 
-QString DocxParagraph::text() const
-{
-    return m_text;
-}
 
 void DocxParagraph::setText(const QString &text)
 {
-    m_text = text;
+    TagElement *textElement = new TagElement("w:t");
+    textElement->addCharaters(text);
+    addContentElement(textElement);
 }
 
 DocxFont &DocxParagraph::font()
@@ -81,6 +77,11 @@ void DocxParagraph::setFont(const DocxFont &font)
 void DocxParagraph::addStyleProperty(TagElement *element)
 {
     m_property.addChild(element);
+}
+
+void DocxParagraph::addContentElement(TagElement *element)
+{
+    m_contentElement.append(element);
 }
 
 

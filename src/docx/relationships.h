@@ -1,6 +1,7 @@
 #ifndef RELATIONSHIPS_H
 #define RELATIONSHIPS_H
 #include "docx_global.h"
+#include "comdatafun.h"
 
 #include <QString>
 #include <QList>

@@ -102,7 +102,7 @@ QList<DocxRelationship> Relationships::relationships(const QString &type) const
 void Relationships::addRelationship(const QString &type, const QString &target)
 {
     DocxRelationship relactionship;
-    relactionship.id = QStringLiteral("rId%1").arg(m_relationShips.size() + 1);
+    relactionship.id = ridStr + QString::number(m_relationShips.size() + 1);
     relactionship.type = type;
     relactionship.target = target;
     m_relationShips.append(relactionship);

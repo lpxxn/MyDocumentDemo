@@ -1,4 +1,4 @@
-QT += core gui gui-private
+QT += core gui gui-private core
 
 DEFINES += DOCX_LIBRARY
 
@@ -26,7 +26,8 @@ HEADERS += \
     docxstyleheading.h \
     docxparagraphproperty.h \
     docxlistformat.h \
-    docxnumbering.h
+    docxnumbering.h \
+    docxmediafile.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -51,4 +52,5 @@ SOURCES += \
     docxstyleheading.cpp \
     docxparagraphproperty.cpp \
     docxlistformat.cpp \
-    docxnumbering.cpp
+    docxnumbering.cpp \
+    docxmediafile.cpp

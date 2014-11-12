@@ -28,11 +28,11 @@ public:
 
     virtual ~DocxParagraph();
 
-    QString text() const;
     void setText(const QString &text);
     DocxFont& font();
     void setFont(const DocxFont &font);
     void addStyleProperty(TagElement *element);
+    void addContentElement(TagElement *element);
 
 private:
     void addProperty(QString name, QString value);
@@ -41,10 +41,10 @@ private:
 
 private:
     typedef QPair<QString, QString> pairValue;
-    QVector<pairValue> m_properties;
-    QString m_text;
+    QVector<pairValue> m_properties;    
     DocxFont m_font;    
     DocxParagraphProperty m_property;
+    QVector<TagElement *> m_contentElement;
     //friend class StyleTagIterator;
 
 };

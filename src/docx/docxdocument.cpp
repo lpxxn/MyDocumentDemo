@@ -48,14 +48,14 @@ Document::Document(CreateFlag flag)
 
 void Document::writeln(const QString &text)
 {
-    DocxParagraph* current = currentParagraph();
+    DocxParagraph* current = lastParagraph();
     current->setText(text);
     addParagraph();
 }
 
 void Document::writeln(const QString &text, const DocxFont &font)
 {
-    DocxParagraph* current = currentParagraph();
+    DocxParagraph* current = lastParagraph();
     current->setFont(font);
     current->setText(text);
     addParagraph();
@@ -63,7 +63,7 @@ void Document::writeln(const QString &text, const DocxFont &font)
 
 void Document::writeHeading(const QString &text, const HeadingLevel headLevel, const DocxFont &font)
 {
-    DocxParagraph* current = currentParagraph();
+    DocxParagraph* current = lastParagraph();
     AbsHeading *head;
     head = m_docxStyle.headbyLevel(headLevel);
     if (!head) {
@@ -87,7 +87,7 @@ void Document::writeHeading(const QString &text, const HeadingLevel headLevel, c
  */
 void Document::writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent)
 {
-    DocxParagraph* current = currentParagraph();
+    DocxParagraph* current = lastParagraph();
     //DocxListFormat docx(listStyle);
     TagElement *styleElement = new TagElement(QStringLiteral("w:numPr"));
     TagElement *child = new TagElement(QStringLiteral("w:ilvl"));
@@ -118,6 +118,22 @@ void Document::writeList(const DocxListFormat &listStyle, const QString &outStr,
     for (const QString &str : inValus) {
         writeList(listStyle, str, true);
     }
+}
+
+void Document::insertImage(const QString &imgName)
+{
+    DocxParagraph* current = lastParagraph();
+
+    DocxMediaFile mediaFile(imgName);
+    m_imgs.append(mediaFile);
+
+    addParagraph();
+}
+
+void Document::insertImage(const QString &imgName, const QSize &size)
+{
+    DocxParagraph* current = lastParagraph();
+    addParagraph();
 }
 
 void Document::saveToXmlFile(QIODevice *device) const
@@ -243,7 +259,7 @@ bool Document::saveAs(QIODevice *device) const
     return true;
 }
 
-DocxParagraph *Document::currentParagraph()
+DocxParagraph *Document::lastParagraph()
 {
     return m_paragraphs.last();
 }
