@@ -51,9 +51,16 @@ void TestRelationShips::testListFormat()
     Document document;
 
     document.writeln("Bullet");
-    document.writeList(ListFormatStyle::Bullet, { QStringLiteral("aab"), QStringLiteral("bbb"), QStringLiteral("bbbb"), QStringLiteral("bbbb") });
+    DocxListFormat listF(ListFormatStyle::Bullet);
+    document.writeList(listF, { QStringLiteral("aab"), QStringLiteral("bbb"), QStringLiteral("bbbb"), QStringLiteral("bbbb") });
     document.writeln("Numer");
-    document.writeList(ListFormatStyle::Number, { QStringLiteral("aaa"), QStringLiteral("aaaa"), QStringLiteral("aaaa"), QStringLiteral("aaa") });
+    listF.setFlag(ListFormatStyle::Number);
+    DocxFont font("方正舒体");
+    font.setSpace(2);
+    font.setBold(true);
+    font.setItalic(true);
+    listF.setFont(font);
+    document.writeList(listF, { QStringLiteral("aaa"), QStringLiteral("aaaa"), QStringLiteral("aaaa"), QStringLiteral("aaa") });
 
 
     document.saveAs(QStringLiteral("listFormat.docx"));

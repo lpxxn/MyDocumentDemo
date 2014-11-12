@@ -126,15 +126,13 @@ const QString str = R"~(<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <w:lvl w:ilvl="0" w:tplc="04090001">
                     <w:start w:val="1"/>
                     <w:numFmt w:val="bullet"/>
+                    <w:lvlText w:val="&#8226;"/>
                     <w:lvlJc w:val="left"/>
                     <w:pPr>
-                        <w:tabs>
-                            <w:tab w:val="num" w:pos="720"/>
-                        </w:tabs>
                         <w:ind w:left="720" w:hanging="360"/>
                     </w:pPr>
                     <w:rPr>
-                        <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings" w:hint="default"/>
+                        <w:rFonts w:ascii="Wingdings" w:h-ansi="Wingdings" w:hint="default" />
                     </w:rPr>
                 </w:lvl>
                 <w:lvl w:ilvl="1" w:tplc="F3F82C8C">
@@ -155,7 +153,7 @@ const QString str = R"~(<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <w:lvl w:ilvl="2" w:tplc="79120E82">
                     <w:start w:val="1"/>
                     <w:numFmt w:val="bullet"/>
-                    <w:lvlText w:val=" "/>
+                    <w:lvlText w:val="&#8226;"/>
                     <w:lvlJc w:val="left"/>
                     <w:pPr>
                         <w:tabs>
@@ -170,7 +168,7 @@ const QString str = R"~(<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <w:lvl w:ilvl="3" w:tplc="D0501E12">
                     <w:start w:val="1"/>
                     <w:numFmt w:val="bullet"/>
-                    <w:lvlText w:val=" "/>
+                    <w:lvlText w:val="&#8226;"/>
                     <w:lvlJc w:val="left"/>
                     <w:pPr>
                         <w:tabs>
@@ -200,7 +198,7 @@ const QString str = R"~(<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <w:lvl w:ilvl="5" w:tplc="48160AFC">
                     <w:start w:val="1"/>
                     <w:numFmt w:val="bullet"/>
-                    <w:lvlText w:val=" "/>
+                    <w:lvlText w:val="&#8226;"/>
                     <w:lvlJc w:val="left"/>
                     <w:pPr>
                         <w:tabs>
@@ -215,7 +213,7 @@ const QString str = R"~(<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <w:lvl w:ilvl="6" w:tplc="B9687AA0">
                     <w:start w:val="1"/>
                     <w:numFmt w:val="bullet"/>
-                    <w:lvlText w:val=" "/>
+                    <w:lvlText w:val="&#8226;"/>
                     <w:lvlJc w:val="left"/>
                     <w:pPr>
                         <w:tabs>
@@ -245,7 +243,7 @@ const QString str = R"~(<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
                 <w:lvl w:ilvl="8" w:tplc="D17AD084">
                     <w:start w:val="1"/>
                     <w:numFmt w:val="bullet"/>
-                    <w:lvlText w:val=" "/>
+                    <w:lvlText w:val="&#8226;"/>
                     <w:lvlJc w:val="left"/>
                     <w:pPr>
                         <w:tabs>

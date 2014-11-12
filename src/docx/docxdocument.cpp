@@ -85,7 +85,7 @@ void Document::writeHeading(const QString &text, const HeadingLevel headLevel, c
  * \param listStyle
  * \param outValus
  */
-void Document::writeList(const ListFormatStyle &listStyle, const QString &outStr, bool isindent)
+void Document::writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent)
 {
     DocxParagraph* current = currentParagraph();
     //DocxListFormat docx(listStyle);
@@ -95,23 +95,24 @@ void Document::writeList(const ListFormatStyle &listStyle, const QString &outStr
     styleElement->addChild(child);
 
     child = new TagElement(QStringLiteral("w:numId"));
-    child->addProperty(QStringLiteral("w:val"), QString::number((int)listStyle));
+    child->addProperty(QStringLiteral("w:val"), QString::number((int)listStyle.flag()));
     styleElement->addChild(child);
 
     current->addStyleProperty(styleElement);
+    current->setFont(listStyle.font());
     current->setText(outStr);
     addParagraph();
 }
 
 
-void Document::writeList(const ListFormatStyle &listStyle, std::initializer_list<QString> outValus)
+void Document::writeList(const DocxListFormat &listStyle, std::initializer_list<QString> outValus)
 {
     for (const QString &str : outValus) {
         writeList(listStyle, str);
     }
 }
 
-void Document::writeList(const ListFormatStyle &listStyle, const QString &outStr, std::initializer_list<QString> inValus)
+void Document::writeList(const DocxListFormat &listStyle, const QString &outStr, std::initializer_list<QString> inValus)
 {
     writeList(listStyle, outStr);
     for (const QString &str : inValus) {

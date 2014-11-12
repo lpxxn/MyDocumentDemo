@@ -40,7 +40,7 @@ void DocPropsApp::initDefaultProperties()
     m_properties.insert(QStringLiteral("CharactersWithSpaces"), QStringLiteral("1"));
     m_properties.insert(QStringLiteral("SharedDoc"), QStringLiteral("false"));
     m_properties.insert(QStringLiteral("HyperlinksChanged"), QStringLiteral("false"));
-    m_properties.insert(QStringLiteral("AppVersion"), QStringLiteral("12.0000"));
+    m_properties.insert(QStringLiteral("AppVersion"), QStringLiteral("14.0000"));
 
 }
 

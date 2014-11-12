@@ -37,8 +37,8 @@ public:
     void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont());
 
 
-    void writeList(const ListFormatStyle &listStyle, std::initializer_list<QString> outValus);
-    void writeList(const ListFormatStyle &listStyle, const QString &outStr, std::initializer_list<QString> inValus);
+    void writeList(const DocxListFormat &listStyle, std::initializer_list<QString> outValus);
+    void writeList(const DocxListFormat &listStyle, const QString &outStr, std::initializer_list<QString> inValus);
 
     DocxParagraph *currentParagraph();
     void addParagraph();
@@ -50,7 +50,7 @@ public:
     bool saveAs(QIODevice *device) const;
 
 private:
-    void writeList(const ListFormatStyle &listStyle, const QString &outStr, bool isindent = false);
+    void writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent = false);
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);
 
