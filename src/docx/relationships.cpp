@@ -33,19 +33,19 @@ QList<DocxRelationship> Relationships::msPackageRelationship(const QString &rela
     return relationships(schema_msPackage + relativeType);
 }
 
-void Relationships::addDocumentRelationship(const QString &relativeType, const QString &target)
+void Relationships::addDocumentRelationship(const QString &relativeType, const QString &target, QString &returnsaveId)
 {
-    addRelationship(schema_doc + relativeType, target);
+    addRelationship(schema_doc + relativeType, target, returnsaveId);
 }
 
-void Relationships::addPackageRelationship(const QString &relativeType, const QString &target)
+void Relationships::addPackageRelationship(const QString &relativeType, const QString &target, QString &returnsaveId)
 {
-    addRelationship(schema_package + relativeType, target);
+    addRelationship(schema_package + relativeType, target, returnsaveId);
 }
 
-void Relationships::addMsPackageRelationship(const QString &relativeType, const QString &target)
+void Relationships::addMsPackageRelationship(const QString &relativeType, const QString &target, QString &returnsaveId)
 {
-    addRelationship(schema_msPackage + relativeType, target);
+    addRelationship(schema_msPackage + relativeType, target, returnsaveId);
 }
 
 QByteArray Relationships::saveToXmlData() const
@@ -99,10 +99,11 @@ QList<DocxRelationship> Relationships::relationships(const QString &type) const
     return res;
 }
 
-void Relationships::addRelationship(const QString &type, const QString &target)
+void Relationships::addRelationship(const QString &type, const QString &target, QString &returnsaveId)
 {
     DocxRelationship relactionship;
     relactionship.id = ridStr + QString::number(m_relationShips.size() + 1);
+    returnsaveId = relactionship.id;
     relactionship.type = type;
     relactionship.target = target;
     m_relationShips.append(relactionship);

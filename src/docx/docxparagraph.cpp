@@ -27,6 +27,7 @@ void DocxParagraph::remoevChild(ISaveToXml *child)
 {
 }
 
+
 void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
 {
     writer->writeStartElement(QStringLiteral("w:p"));

@@ -34,6 +34,14 @@ void ContentTypes::addOverride(const QString &key, const QString &value)
     m_overrides.insert(key, value);
 }
 
+bool ContentTypes::isContentKey(const QString &key)
+{
+    QList<QString> keys = m_overrides.keys();
+    for (const QString str : keys) {
+        return str == key;
+    }
+}
+
 void ContentTypes::addOverrideDefault()
 {
     m_overrides.insert(QStringLiteral("/word/document.xml"), m_document_prefix + QStringLiteral(".wordprocessingml.document.main+xml"));

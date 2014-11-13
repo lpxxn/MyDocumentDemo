@@ -32,12 +32,12 @@ public:
     DocxFont& font();
     void setFont(const DocxFont &font);
     void addStyleProperty(TagElement *element);
-    void addContentElement(TagElement *element);
+    void addContentElement(TagElement *element);    
 
 private:
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
-    void remoevChild(ISaveToXml *child);
+    void remoevChild(ISaveToXml *child);    
 
 private:
     typedef QPair<QString, QString> pairValue;

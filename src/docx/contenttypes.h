@@ -18,7 +18,7 @@ public:
 
     void addDefault(const QString &key, const QString &value);
     void addOverride(const QString &key, const QString &value);
-
+    bool isContentKey(const QString &key);
     void addOverrideDefault();
 
     void saveToXmlFile(QIODevice *device) const;

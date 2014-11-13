@@ -12,6 +12,8 @@
 
 //#include "../../../src/docx/docxzipreader.h"
 #include "docxzipreader.h"
+#include "docxdocument.h"
+
 using namespace TDocx;
 
 class TestZipDemo : public QObject
@@ -26,20 +28,24 @@ private Q_SLOTS:
     void read();
 };
 
-
+const QString chrysanImgName = QStringLiteral(":/images/Chrysanthemum.jpg");
+const QString desert = QStringLiteral(":/images/Desert.jpg");
 
 TestZipDemo::TestZipDemo()
 {
+    Document doc;
+    doc.insertImage(chrysanImgName);
+    doc.insertImage(desert, QSize(50, 80));
 
+    doc.insertImage(chrysanImgName, QSize(300, 500));
+    doc.insertImage(desert, QSize(500, 800));
+    doc.saveAs("img.docx");
 }
 
 void TestZipDemo::testImageHash()
 {
-    QString chrysanImgName = QStringLiteral(":/images/Chrysanthemum.jpg");
+
     QImage img(chrysanImgName);
-
-
-
     QByteArray ba;
     QBuffer buffer(&ba);
     buffer.open(QIODevice::WriteOnly);

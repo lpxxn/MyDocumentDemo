@@ -42,8 +42,14 @@ Document::Document(CreateFlag flag)
       m_contentTypes(flag), m_docPropsApp(flag), m_docPropsCore(flag), m_docxTheme(flag),
       m_docxfontTable(flag), m_docxSettings(flag), m_docxWebSetting(flag), m_docxStyle(flag)
 {
+    m_inserImagePrivate = new DocxInsertImagePrivate(this);
     if (flag == CreateFlag::F_NewFromScratch)
         addParagraph();
+}
+
+void Document::writeln()
+{
+    addParagraph();
 }
 
 void Document::writeln(const QString &text)
@@ -120,21 +126,17 @@ void Document::writeList(const DocxListFormat &listStyle, const QString &outStr,
     }
 }
 
-void Document::insertImage(const QString &imgName)
-{
-    DocxParagraph* current = lastParagraph();
 
-    DocxMediaFile mediaFile(imgName);
-    m_imgs.append(mediaFile);
 
-    addParagraph();
-}
 
 void Document::insertImage(const QString &imgName, const QSize &size)
 {
     DocxParagraph* current = lastParagraph();
+    TagElement *shap = m_inserImagePrivate->imageTagElement(imgName, size);
+    current->addContentElement(shap);
     addParagraph();
 }
+
 
 void Document::saveToXmlFile(QIODevice *device) const
 {
@@ -187,12 +189,12 @@ void Document::setFont(const DocxFont &font)
     m_font = font;
 }
 
-bool Document::save() const
+bool Document::save()
 {
     return saveAs(m_docName);
 }
 
-bool Document::saveAs(const QString &name) const
+bool Document::saveAs(const QString &name)
 {
     QFile file(name);
     if (file.open(QIODevice::WriteOnly))
@@ -200,15 +202,15 @@ bool Document::saveAs(const QString &name) const
     return false;
 }
 
-bool Document::saveAs(QIODevice *device) const
+bool Document::saveAs(QIODevice *device)
 {
     DocxZipWriter writer(device);
     // _rels/.rels
-    Relationships ships;
-    ships.addDocumentRelationship(QStringLiteral("/officeDocument"), QStringLiteral("word/document.xml"));
-    ships.addDocumentRelationship(QStringLiteral("/extended-properties"), QStringLiteral("docProps/app.xml"));
-    ships.addPackageRelationship(QStringLiteral("/metadata/core-properties"), QStringLiteral("docProps/core.xml"));
-    writer.addFile(QStringLiteral("_rels/.rels"), ships.saveToXmlData());
+
+    m_wordShips.addDocumentRelationship(QStringLiteral("/officeDocument"), QStringLiteral("word/document.xml"));
+    m_wordShips.addDocumentRelationship(QStringLiteral("/extended-properties"), QStringLiteral("docProps/app.xml"));
+    m_wordShips.addPackageRelationship(QStringLiteral("/metadata/core-properties"), QStringLiteral("docProps/core.xml"));
+    writer.addFile(QStringLiteral("_rels/.rels"), m_wordShips.saveToXmlData());
 
     // [Content_Types].xml
     writer.addFile(QStringLiteral("[Content_Types].xml"), m_contentTypes.saveToXmlData());
@@ -223,18 +225,17 @@ bool Document::saveAs(QIODevice *device) const
     writer.addFile(QStringLiteral("word/theme/theme1.xml"), m_docxTheme.saveToXmlData());
 
     // word/_rels/document.xml.rels
-    Relationships wordShips;
-    wordShips.addDocumentRelationship(QStringLiteral("/settings"), QStringLiteral("settings.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/styles"), QStringLiteral("styles.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme/theme1.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/fontTable"), QStringLiteral("fontTable.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
-    wordShips.addDocumentRelationship(QStringLiteral("/numbering"), QStringLiteral("numbering.xml"));
+    m_documentShips.addDocumentRelationship(QStringLiteral("/settings"), QStringLiteral("settings.xml"));
+    m_documentShips.addDocumentRelationship(QStringLiteral("/styles"), QStringLiteral("styles.xml"));
+    m_documentShips.addDocumentRelationship(QStringLiteral("/theme"), QStringLiteral("theme/theme1.xml"));
+    m_documentShips.addDocumentRelationship(QStringLiteral("/fontTable"), QStringLiteral("fontTable.xml"));
+    m_documentShips.addDocumentRelationship(QStringLiteral("/webSettings"), QStringLiteral("webSettings.xml"));
+    m_documentShips.addDocumentRelationship(QStringLiteral("/numbering"), QStringLiteral("numbering.xml"));
     QMapIterator<QString, QString> iter(m_docrels);
     while (iter.hasNext()) {
-        wordShips.addDocumentRelationship(iter.key(), iter.value());
+        m_documentShips.addDocumentRelationship(iter.key(), iter.value());
     }
-    writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), wordShips.saveToXmlData());
+    writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), m_documentShips.saveToXmlData());
 
     //word/fontTable.xml
     writer.addFile(QStringLiteral("word/fontTable.xml"), m_docxfontTable.saveToXmlData());
@@ -254,9 +255,18 @@ bool Document::saveAs(QIODevice *device) const
     // word/document.xml
     writer.addFile(QStringLiteral("word/document.xml"), this->saveToXmlData());
 
+    // media/image
+    for (const DocxMediaFile *img : m_inserImagePrivate->imgs()) {
+        writer.addFile(QString("word/media/%1").arg(img->name()), img->content());
+    }
 
     writer.close();
     return true;
+}
+
+Document::~Document()
+{
+    delete m_inserImagePrivate;
 }
 
 DocxParagraph *Document::lastParagraph()

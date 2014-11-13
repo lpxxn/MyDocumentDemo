@@ -26,9 +26,9 @@ public:
     QList<DocxRelationship> packageRelationship(const QString &relativeType) const;
     QList<DocxRelationship> msPackageRelationship(const QString &relativeType) const;
 
-    void addDocumentRelationship(const QString &relativeType, const QString &target);
-    void addPackageRelationship(const QString &relativeType, const QString &target);
-    void addMsPackageRelationship(const QString &relativeType, const QString &target);
+    void addDocumentRelationship(const QString &relativeType, const QString &target, QString &returnsaveId = QString());
+    void addPackageRelationship(const QString &relativeType, const QString &target, QString &returnsaveId = QString());
+    void addMsPackageRelationship(const QString &relativeType, const QString &target, QString &returnsaveId = QString());
 
     QByteArray saveToXmlData() const;
     void saveToXmlFile(QIODevice *device) const;
@@ -37,7 +37,7 @@ public:
 
 private:
     QList<DocxRelationship> relationships(const QString &type) const;
-    void addRelationship(const QString &type, const QString &target);
+    void addRelationship(const QString &type, const QString &target, QString &returnsaveId = QString());
 
 private:
     QList<DocxRelationship> m_relationShips;
