@@ -5,3 +5,6 @@ TARGET   = test_relationship
 
 SOURCES += \
         testrelationships.cpp \
+
+RESOURCES += \
+    resources.qrc

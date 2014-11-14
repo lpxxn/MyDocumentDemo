@@ -68,8 +68,10 @@ void TestRelationShips::testListFormat()
 
 void TestRelationShips::testDocument()
 {
+    const QString chrysanImgName = QStringLiteral(":/images/Chrysanthemum.jpg");
+    const QString desert = QStringLiteral(":/images/Desert.jpg");
     Document document;
-    document.writeHeading("标题1", HeadingLevel::head1);
+    document.writeHeading("标题", HeadingLevel::head1);
     document.writeln("aaaabbbbbb");
     DocxFont font("方正舒体");
     font.setSpace(2);
@@ -91,6 +93,12 @@ void TestRelationShips::testDocument()
     font.setColor(Qt::red);
     document.writeHeading("标题", HeadingLevel::head2, font);
     document.writeln("测试文字内容");
+
+    document.insertImage(desert, QSize(50, 80));
+
+    document.insertImage(chrysanImgName, QSize(300, 500));
+    document.insertImage(desert, QSize(500, 800));
+
     document.writeHeading("标题", HeadingLevel::head3);
     document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head4);
@@ -101,6 +109,20 @@ void TestRelationShips::testDocument()
     document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head7);
     document.writeln("测试文字内容");
+
+    document.writeln("Bullet");
+    DocxListFormat listF(ListFormatStyle::Bullet);
+    document.writeList(listF, { QStringLiteral("aab"), QStringLiteral("bbb"), QStringLiteral("bbbb"), QStringLiteral("bbbb") });
+    document.writeln("Numer");
+    listF.setFlag(ListFormatStyle::Number);
+
+    font.setSpace(2);
+    font.setBold(true);
+    font.setItalic(true);
+    listF.setFont(font);
+    document.writeList(listF, { QStringLiteral("aaa"), QStringLiteral("aaaa"), QStringLiteral("aaaa"), QStringLiteral("aaa") });
+
+
     document.writeHeading("标题", HeadingLevel::head8);
     document.writeln("测试文字内容");
     document.writeHeading("标题", HeadingLevel::head9);
@@ -111,8 +133,6 @@ void TestRelationShips::testDocument()
     document.writeln("测试大小", font2);
 
     document.save();
-    document.saveAs(QString::fromUtf8("测试.docx"));
-    //document.saveAs(QString::fromUtf8("测试.doc"));
 
 }
 
