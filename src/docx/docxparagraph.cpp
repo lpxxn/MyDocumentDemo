@@ -7,11 +7,28 @@
 
 namespace TDocx
 {
+
+ParagraphTagIterator::ParagraphTagIterator(const DocxParagraph *element)
+    : m_currentIndex(0), m_paragraph(element)
+{
+
+}
+
+bool ParagraphTagIterator::hasNext() const
+{
+    return m_paragraph->m_childs.count() > 0 && m_currentIndex < m_paragraph->m_childs.size();
+}
+
+ISaveToXml *ParagraphTagIterator::next() const
+{
+    return m_paragraph->m_childs.at(m_currentIndex++);
+}
+
+// begin DocxParagraph
 DocxParagraph::DocxParagraph()
 {       
 
 }
-
 
 void DocxParagraph::addProperty(QString name, QString value)
 {
@@ -20,11 +37,16 @@ void DocxParagraph::addProperty(QString name, QString value)
 
 void DocxParagraph::addChild(TDocx::ISaveToXml *child)
 {
-
+    m_childs.append(child);
 }
 
 void DocxParagraph::remoevChild(ISaveToXml *child)
 {
+    if (m_childs.contains(child)) {
+        m_childs.removeOne(child);
+        delete child;
+        child = nullptr;
+    }
 }
 
 
@@ -45,7 +67,7 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
     }
 
     // text
-    for (const TagElement *eles : m_contentElement) {
+    for (const ISaveToXml *eles : m_childs) {
         eles->saveToXmlElement(writer);
     }
         writer->writeEndElement(); // end w:t
@@ -82,7 +104,12 @@ void DocxParagraph::addStyleProperty(TagElement *element)
 
 void DocxParagraph::addContentElement(TagElement *element)
 {
-    m_contentElement.append(element);
+    addChild(element);
+}
+
+ParagraphTagIterator DocxParagraph::createIterator() const
+{
+    return (this);
 }
 
 

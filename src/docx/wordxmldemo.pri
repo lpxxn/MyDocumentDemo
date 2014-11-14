@@ -27,7 +27,8 @@ HEADERS += \
     docxparagraphproperty.h \
     docxlistformat.h \
     docxnumbering.h \
-    docxmediafile.h
+    docxmediafile.h \
+    docxtable.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -53,4 +54,5 @@ SOURCES += \
     docxparagraphproperty.cpp \
     docxlistformat.cpp \
     docxnumbering.cpp \
-    docxmediafile.cpp
+    docxmediafile.cpp \
+    docxtable.cpp

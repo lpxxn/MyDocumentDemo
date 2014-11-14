@@ -17,6 +17,9 @@ private:
     mutable int m_currentIndex;
 };
 
+/*!
+ * \brief paragraph property
+ */
 class DocxParagraphProperty : public ITagElement
 {
 public:
