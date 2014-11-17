@@ -19,6 +19,7 @@
 #include "docxwebsetting.h"
 #include "docxstyle.h"
 #include "docxdocument.h"
+#include "docxtable.h"
 
 #include <regex>
 
@@ -33,6 +34,7 @@ public:
     TestRelationShips();
 
 private Q_SLOTS:
+    void testTable();
     void testListFormat();
     void testDocument();
     void testRelation();
@@ -40,9 +42,38 @@ private Q_SLOTS:
 
 };
 
+const QString chrysanImgName = QStringLiteral(":/images/Chrysanthemum.jpg");
+const QString desert = QStringLiteral(":/images/Desert.jpg");
 
 TestRelationShips::TestRelationShips()
 {
+
+}
+
+void TestRelationShips::testTable()
+{
+    Document document;
+    //document.writeln("TableTest");
+    DocxTable *tab = new DocxTable(&document);
+    tab->inertCell();
+    tab->writeln("1111");
+    tab->inertCell();
+    tab->writeln("222");
+    tab->inertCell();
+    tab->writeln("333");
+    tab->endRow();
+
+    tab->inertCell();
+    tab->writeln(QStringLiteral("bbbb"));
+    tab->writeln(QString::fromUtf8("测试"));
+    tab->inertCell();
+    tab->writeln(QStringLiteral("abde"));
+    tab->inertCell();
+    tab->insertImage(chrysanImgName, QSize(300, 500));
+    tab->endRow();
+    document.insertTable(tab);
+
+    document.saveAs("TableTest.docx");
 
 }
 
@@ -67,9 +98,7 @@ void TestRelationShips::testListFormat()
 }
 
 void TestRelationShips::testDocument()
-{
-    const QString chrysanImgName = QStringLiteral(":/images/Chrysanthemum.jpg");
-    const QString desert = QStringLiteral(":/images/Desert.jpg");
+{    
     Document document;
     document.writeHeading("标题", HeadingLevel::head1);
     document.writeln("aaaabbbbbb");
@@ -133,7 +162,6 @@ void TestRelationShips::testDocument()
     document.writeln("测试大小", font2);
 
     document.save();
-
 }
 
 void TestRelationShips::testRelation()

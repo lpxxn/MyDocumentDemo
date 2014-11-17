@@ -66,17 +66,25 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
         writer->writeEndElement(); // end w:rPr
     }
 
+    ParagraphTagIterator iter = createIterator();
     // text
-    for (const ISaveToXml *eles : m_childs) {
-        eles->saveToXmlElement(writer);
+    while(iter.hasNext()) {
+        ISaveToXml *ele = iter.next();
+        ele->saveToXmlElement(writer);
     }
-        writer->writeEndElement(); // end w:t
+
+    writer->writeEndElement(); // end w:t
     writer->writeEndElement(); // end w:p
 }
 
 DocxParagraph::~DocxParagraph()
 {
-
+    ParagraphTagIterator iter =  createIterator();
+    while(iter.hasNext()) {
+        ISaveToXml *ele = iter.next();
+        delete ele;
+    }
+    m_childs.clear();
 }
 
 
@@ -109,7 +117,7 @@ void DocxParagraph::addContentElement(TagElement *element)
 
 ParagraphTagIterator DocxParagraph::createIterator() const
 {
-    return (this);
+    return ParagraphTagIterator(this);
 }
 
 

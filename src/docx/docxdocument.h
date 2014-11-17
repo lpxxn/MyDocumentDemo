@@ -26,6 +26,7 @@
 
 namespace TDocx
 {
+class DocxTable;
 
 class DOCX_EXPORT Document : public AbstractOOXmlFile
 {
@@ -43,6 +44,8 @@ public:
     void writeList(const DocxListFormat &listStyle, const QString &outStr, std::initializer_list<QString> inValus);
 
     void insertImage(const QString &imgName, const QSize &size = QSize());
+
+    void insertTable(DocxTable *table);
 
     DocxParagraph *lastParagraph();
     void addParagraph();
@@ -81,7 +84,7 @@ private:
 
     DocxInsertImagePrivate *m_inserImagePrivate;
     friend class DocxInsertImagePrivate;
-
+    friend class DocxTable;
     friend class DocumentBuilder;    
 
 };

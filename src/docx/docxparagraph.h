@@ -19,12 +19,12 @@ private:
     mutable int m_currentIndex;
 };
 
-class DocxParagraph : public ITagElement
+class DOCX_EXPORT DocxParagraph : public ITagElement
 {
 public:
     DocxParagraph();
 
-    void saveToXmlElement(QXmlStreamWriter *writer) const;
+    virtual void saveToXmlElement(QXmlStreamWriter *writer) const;
 
     virtual ~DocxParagraph();
 
@@ -40,7 +40,7 @@ protected:
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);    
 
-private:
+protected:
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;    
     DocxFont m_font;    

@@ -1,5 +1,6 @@
 #include "docxdocument.h"
 #include "docxzipwriter.h"
+#include "docxtable.h"
 
 #include <QXmlStreamWriter>
 #include <QFile>
@@ -137,6 +138,10 @@ void Document::insertImage(const QString &imgName, const QSize &size)
     addParagraph();
 }
 
+void Document::insertTable(DocxTable *table)
+{
+    m_paragraphs.append(table);
+}
 
 void Document::saveToXmlFile(QIODevice *device) const
 {
