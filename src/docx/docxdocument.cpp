@@ -141,6 +141,7 @@ void Document::insertImage(const QString &imgName, const QSize &size)
 void Document::insertTable(DocxTable *table)
 {
     m_paragraphs.append(table);
+    addParagraph();
 }
 
 void Document::saveToXmlFile(QIODevice *device) const

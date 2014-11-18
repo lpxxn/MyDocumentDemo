@@ -74,6 +74,11 @@ void DocxFont::setUnderline(const DocxUnderline &underline)
     m_underline = underline;
 }
 
+bool DocxFont::isValid() const
+{
+    return !m_family.isEmpty();
+}
+
 void DocxFont::saveToXmlElement(QXmlStreamWriter *writer) const
 {
     if(m_family.isEmpty())

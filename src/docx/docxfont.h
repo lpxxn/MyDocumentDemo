@@ -1,6 +1,7 @@
 #ifndef DOCXFONT_H
 #define DOCXFONT_H
 #include "docx_global.h"
+#include "itagelement.h"
 #include <QString>
 #include <QColor>
 
@@ -14,7 +15,7 @@ enum class DocxUnderline
     Double
 };
 
-class DOCX_EXPORT DocxFont
+class DOCX_EXPORT DocxFont : public ISaveToXml
 {
 public:
     DocxFont();
@@ -41,7 +42,9 @@ public:
     DocxUnderline underline() const;
     void setUnderline(const DocxUnderline &underline);
 
+    bool isValid() const;
     void saveToXmlElement(QXmlStreamWriter *writer) const;
+
 private:
     QString enumToString(DocxUnderline under) const;
 

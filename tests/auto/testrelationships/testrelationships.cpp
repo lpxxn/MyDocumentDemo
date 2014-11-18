@@ -53,23 +53,32 @@ TestRelationShips::TestRelationShips()
 void TestRelationShips::testTable()
 {
     Document document;
-    //document.writeln("TableTest");
+
+    DocxFont font("方正舒体");
+    font.setSpace(2);
+    font.setBold(true);
+    font.setItalic(true);
+
+    document.writeln("TableTest");
     DocxTable *tab = new DocxTable(&document);
+    tab->setCellFormat(CellFormat::Right);
     tab->inertCell();
     tab->writeln("1111");
     tab->inertCell();
+    tab->setCellFormat(CellFormat::Left);
     tab->writeln("222");
     tab->inertCell();
     tab->writeln("333");
     tab->endRow();
 
+    tab->setCellFormat(CellFormat::Center);
     tab->inertCell();
     tab->writeln(QStringLiteral("bbbb"));
-    tab->writeln(QString::fromUtf8("测试"));
+    tab->writeln(QString::fromUtf8("测试测试"), font);
     tab->inertCell();
     tab->writeln(QStringLiteral("abde"));
     tab->inertCell();
-    tab->insertImage(chrysanImgName, QSize(300, 500));
+    tab->insertImage(chrysanImgName, QSize(200, 200));
     tab->endRow();
     document.insertTable(tab);
 
@@ -117,6 +126,25 @@ void TestRelationShips::testDocument()
 
     document.writeln("测试文字内容", font);
 
+    DocxTable *tab = new DocxTable(&document);
+    tab->inertCell();
+    tab->writeln("1111");
+    tab->inertCell();
+    tab->writeln("222");
+    tab->inertCell();
+    tab->writeln("333");
+    tab->endRow();
+
+    tab->inertCell();
+    tab->writeln(QStringLiteral("bbbb"));
+    tab->writeln(QString::fromUtf8("测试测试"), font);
+    tab->inertCell();
+    tab->writeln(QStringLiteral("abde"));
+    tab->inertCell();
+    tab->insertImage(chrysanImgName, QSize(200, 200));
+    tab->endRow();
+    document.insertTable(tab);
+    document.writeln();
     document.writeln("测试文字内容");
     font.setItalic(false);
     font.setColor(Qt::red);

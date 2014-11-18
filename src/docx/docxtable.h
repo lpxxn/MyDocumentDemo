@@ -10,6 +10,17 @@
 
 namespace TDocx
 {
+
+enum class CellFormat
+{
+    None = 0,
+    Left,
+    Center,
+    Right
+};
+
+QString cellFormatToString(const CellFormat &format);
+
 class Document;
 
 class DOCX_EXPORT DocxTableCell : ISaveToXml
@@ -55,12 +66,16 @@ public:
     void inertCell();
     void endRow();
     DocxTableRow *lastRow();
-    void writeln(const QString &text);
+    void writeln(const QString &text, const DocxFont &font = DocxFont());
     void insertImage(const QString &imgPath, const QSize &size = QSize());
     void insertElement(const TagElement* ele);
 
     virtual ~DocxTable();
 
+    CellFormat cellFormat() const;
+    void setCellFormat(const CellFormat &cellFormat);
+
+    void paragraphStyle(DocxParagraph *p);
 private:
     void calculateCellCount(DocxTableRow *row);
 
@@ -70,6 +85,8 @@ private:
     DocxTableRow *m_currentRow;
     QVector<DocxTableRow*> m_rows;
     Document *m_doc;
+    CellFormat m_cellFormat = CellFormat::None;
+
 };
 }
 
