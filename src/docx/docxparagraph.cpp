@@ -55,6 +55,10 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
     writer->writeStartElement(QStringLiteral("w:p"));
     writer->writeAttribute(QStringLiteral("w:rsidR"), ComDataFun::hexNumber());
 
+    for (const pairValue &att : m_properties) {
+        writer->writeAttribute(att.first, att.second);
+    }
+
     // style
     m_property.saveToXmlElement(writer);
 
