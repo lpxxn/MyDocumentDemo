@@ -59,19 +59,19 @@ void TestRelationShips::testTable()
     font.setBold(true);
     font.setItalic(true);
 
-    document.writeln("TableTest");
+    document.writeln("TableTest", RunAligment::Center);
     DocxTable *tab = new DocxTable(&document);
-    tab->setCellFormat(CellFormat::Right);
+    tab->setCellFormat(RunAligment::Right);
     tab->inertCell();
     tab->writeln("1111");
     tab->inertCell();
-    tab->setCellFormat(CellFormat::Left);
+    tab->setCellFormat(RunAligment::Left);
     tab->writeln("222");
     tab->inertCell();
     tab->writeln("333");
     tab->endRow();
 
-    tab->setCellFormat(CellFormat::Center);
+    tab->setCellFormat(RunAligment::Center);
     tab->inertCell();
     tab->writeln(QStringLiteral("bbbb"));
     tab->writeln(QString::fromUtf8("测试测试"), font);

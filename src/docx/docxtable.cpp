@@ -6,15 +6,7 @@
 
 namespace TDocx
 {
-QString cellFormatToString(const CellFormat &format)
-{
-    switch (format) {
-    case CellFormat::Left : return "left"; break;
-    case CellFormat::Center : return "center"; break;
-    case CellFormat::Right : return "right"; break;
-    default : return "left"; break;
-    }
-}
+
 
 
 // Cell
@@ -234,12 +226,7 @@ DocxTableRow *DocxTable::lastRow()
 
 void DocxTable::paragraphStyle(DocxParagraph *p)
 {
-    if (!(int)m_cellFormat)
-        return;
-    TagElement *styleEle =  new TagElement(QStringLiteral("w:jc"));
-    styleEle->addProperty(QStringLiteral("w:val"), cellFormatToString(m_cellFormat));
-
-    p->addStyleProperty(styleEle);
+    p->paragraphAligment(m_runFormat);
 }
 
 void DocxTable::writeln(const QString &text, const DocxFont &font)
@@ -278,14 +265,14 @@ void DocxTable::calculateCellCount(DocxTableRow *row)
     if (m_cellCount < row->count())
         m_cellCount = row->count();
 }
-CellFormat DocxTable::cellFormat() const
+RunAligment DocxTable::cellFormat() const
 {
-    return m_cellFormat;
+    return m_runFormat;
 }
 
-void DocxTable::setCellFormat(const CellFormat &cellFormat)
+void DocxTable::setCellFormat(const RunAligment &cellFormat)
 {
-    m_cellFormat = cellFormat;
+    m_runFormat = cellFormat;
 }
 
 }

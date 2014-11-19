@@ -53,18 +53,20 @@ void Document::writeln()
     addParagraph();
 }
 
-void Document::writeln(const QString &text)
+void Document::writeln(const QString &text, const RunAligment aligment)
 {
     DocxParagraph* current = lastParagraph();
     current->setText(text);
+    current->paragraphAligment(aligment);
     addParagraph();
 }
 
-void Document::writeln(const QString &text, const DocxFont &font)
+void Document::writeln(const QString &text, const DocxFont &font, const RunAligment aligment)
 {
     DocxParagraph* current = lastParagraph();
     current->setFont(font);
     current->setText(text);
+    current->paragraphAligment(aligment);
     addParagraph();
 }
 

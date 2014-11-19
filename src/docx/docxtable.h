@@ -10,17 +10,6 @@
 
 namespace TDocx
 {
-
-enum class CellFormat
-{
-    None = 0,
-    Left,
-    Center,
-    Right
-};
-
-QString cellFormatToString(const CellFormat &format);
-
 class Document;
 
 class DOCX_EXPORT DocxTableCell : ISaveToXml
@@ -72,8 +61,8 @@ public:
 
     virtual ~DocxTable();
 
-    CellFormat cellFormat() const;
-    void setCellFormat(const CellFormat &cellFormat);
+    RunAligment cellFormat() const;
+    void setCellFormat(const RunAligment &cellFormat);
 
     void paragraphStyle(DocxParagraph *p);
 private:
@@ -85,7 +74,7 @@ private:
     DocxTableRow *m_currentRow;
     QVector<DocxTableRow*> m_rows;
     Document *m_doc;
-    CellFormat m_cellFormat = CellFormat::None;
+    RunAligment m_runFormat = RunAligment::None;
 
 };
 }

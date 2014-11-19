@@ -5,7 +5,6 @@
 namespace TDocx
 {
 
-
 const QString wNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const QString mcNamespace = "http://schemas.openxmlformats.org/markup-compatibility/2006";
 const QString rNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";

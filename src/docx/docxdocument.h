@@ -35,8 +35,8 @@ public:
     Document(CreateFlag flag);
 
     void writeln();
-    void writeln(const QString &text);
-    void writeln(const QString &text, const DocxFont &font);
+    void writeln(const QString &text, const RunAligment aligment = RunAligment::None);
+    void writeln(const QString &text, const DocxFont &font, const RunAligment aligment = RunAligment::None);
     void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont());
 
 

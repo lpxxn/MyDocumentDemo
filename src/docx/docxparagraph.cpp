@@ -8,6 +8,16 @@
 namespace TDocx
 {
 
+QString RunAligmentToString(const RunAligment &format)
+{
+    switch (format) {
+    case RunAligment::Left : return "left"; break;
+    case RunAligment::Center : return "center"; break;
+    case RunAligment::Right : return "right"; break;
+    default : return "left"; break;
+    }
+}
+
 ParagraphTagIterator::ParagraphTagIterator(const DocxParagraph *element)
     : m_currentIndex(0), m_paragraph(element)
 {
@@ -64,6 +74,7 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
 
     // r
     writer->writeStartElement(QStringLiteral("w:r"));
+
     if (!m_font.family().isEmpty()){
         writer->writeStartElement(QStringLiteral("w:rPr"));
         m_font.saveToXmlElement(writer);
@@ -122,6 +133,16 @@ void DocxParagraph::addContentElement(TagElement *element)
 ParagraphTagIterator DocxParagraph::createIterator() const
 {
     return ParagraphTagIterator(this);
+}
+
+void DocxParagraph::paragraphAligment(const RunAligment &format)
+{
+    if (!(int)format)
+        return;
+    TagElement *aligment =  new TagElement(QStringLiteral("w:jc"));
+    aligment->addProperty(QStringLiteral("w:val"), RunAligmentToString(format));
+    m_property.addChild(aligment);
+
 }
 
 
