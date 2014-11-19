@@ -29,7 +29,7 @@ HEADERS += \
     docxnumbering.h \
     docxmediafile.h \
     docxtable.h \
-    absfootandheader.h
+    footandheader.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -57,4 +57,4 @@ SOURCES += \
     docxnumbering.cpp \
     docxmediafile.cpp \
     docxtable.cpp \
-    absfootandheader.cpp
+    footandheader.cpp

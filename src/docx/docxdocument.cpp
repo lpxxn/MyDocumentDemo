@@ -4,6 +4,7 @@
 
 #include <QXmlStreamWriter>
 #include <QFile>
+#include <QDebug>
 
 namespace TDocx
 {
@@ -32,9 +33,37 @@ const QString strEndpr = R"~(
         )~";
 
 
+void Document::initDocumentEndElement()
+{
+    m_DocEndElement = new TagElement(QStringLiteral("w:sectPr"));
+    TagElement *child = new TagElement(QStringLiteral("w:pgSz"));
+    child->addProperty(QStringLiteral("w:w"), QStringLiteral("12240"));
+    child->addProperty(QStringLiteral("w:h"), QStringLiteral("15840"));
+    m_DocEndElement->addChild(child);
+
+    child = new TagElement(QStringLiteral("w:pgMar"));
+    child->addProperty(QStringLiteral("w:top"), QStringLiteral("1440"));
+    child->addProperty(QStringLiteral("w:right"), QStringLiteral("1800"));
+    child->addProperty(QStringLiteral("w:bottom"), QStringLiteral("1440"));
+    child->addProperty(QStringLiteral("w:left"), QStringLiteral("1800"));
+    child->addProperty(QStringLiteral("w:header"), QStringLiteral("708"));
+    child->addProperty(QStringLiteral("w:footer"), QStringLiteral("708"));
+    child->addProperty(QStringLiteral("w:gutter"), QStringLiteral("0"));
+    m_DocEndElement->addChild(child);
+
+    child = new TagElement(QStringLiteral("w:cols"));
+    child->addProperty(QStringLiteral("w:space"), QStringLiteral("708"));
+    m_DocEndElement->addChild(child);
+
+    child = new TagElement(QStringLiteral("w:docGrid"));
+    child->addProperty(QStringLiteral("w:linePitch"), QStringLiteral("360"));
+    m_DocEndElement->addChild(child);
+}
+
 Document::Document()
     : Document(CreateFlag::F_NewFromScratch)
 {
+
 
 }
 
@@ -44,8 +73,10 @@ Document::Document(CreateFlag flag)
       m_docxfontTable(flag), m_docxSettings(flag), m_docxWebSetting(flag), m_docxStyle(flag)
 {
     m_inserImagePrivate = new DocxInsertImagePrivate(this);
-    if (flag == CreateFlag::F_NewFromScratch)
+    if (flag == CreateFlag::F_NewFromScratch) {
         addParagraph();
+        initDocumentEndElement();
+    }
 }
 
 void Document::writeln()
@@ -53,20 +84,20 @@ void Document::writeln()
     addParagraph();
 }
 
-void Document::writeln(const QString &text, const RunAligment aligment)
+void Document::writeln(const QString &text, const RunAlignment alignment)
 {
     DocxParagraph* current = lastParagraph();
     current->setText(text);
-    current->paragraphAligment(aligment);
+    current->setAlignment(alignment);
     addParagraph();
 }
 
-void Document::writeln(const QString &text, const DocxFont &font, const RunAligment aligment)
+void Document::writeln(const QString &text, const DocxFont &font, const RunAlignment alignment)
 {
     DocxParagraph* current = lastParagraph();
     current->setFont(font);
     current->setText(text);
-    current->paragraphAligment(aligment);
+    current->setAlignment(alignment);
     addParagraph();
 }
 
@@ -175,7 +206,8 @@ void Document::saveToXmlFile(QIODevice *device) const
     }
 
     writer.writeComment(QStringLiteral("end"));
-    device->write(strEndpr.toUtf8());
+    //device->write(strEndpr.toUtf8());
+    m_DocEndElement->saveToXmlElement(&writer);
     writer.writeEndElement();// end body
 
     writer.writeEndElement(); // end w:document
@@ -260,6 +292,12 @@ bool Document::saveAs(QIODevice *device)
     // word/numbering.xml
     writer.addFile(QStringLiteral("word/numbering.xml"), m_numbering.saveToXmlData());
 
+    // word/header and footer
+    for (const DocxHeader *h : m_headers) {
+         qDebug() << "aaaa-----------" << h->name();
+        writer.addFile(QStringLiteral("word/") + h->name(), h->saveToXmlData());
+    }
+
     // word/document.xml
     writer.addFile(QStringLiteral("word/document.xml"), this->saveToXmlData());
 
@@ -270,6 +308,26 @@ bool Document::saveAs(QIODevice *device)
 
     writer.close();
     return true;
+}
+
+void Document::addDefaultHeader(DocxHeader *header)
+{
+    QString name = QStringLiteral("header") + QString::number(m_headers.count() + 1) + QStringLiteral(".xml");
+    header->setName(name);
+    // contentTypes
+    m_contentTypes.addDocumentOverride(QStringLiteral("/word/") + header->name(), QStringLiteral(".wordprocessingml.header+xml"));
+    QString headerId;
+
+    // word/_rels/document.xml.rels
+    m_documentShips.addDocumentRelationship(QStringLiteral("/header"), header->name(), headerId);
+    header->setId(headerId);
+
+    TagElement * child = new TagElement("w:headerReference");
+    child->addProperty(QStringLiteral("w:type"), QStringLiteral("default"));
+    child->addProperty(QStringLiteral("r:id"), header->id());
+    m_DocEndElement->addChild(child);
+
+    m_headers.append(header);
 }
 
 Document::~Document()

@@ -30,7 +30,7 @@ void TagElement::addProperty(QString name, QString value)
     m_properties.append(pairValue(name, value));
 }
 
-void TagElement::addCharaters(const QString &test)
+void TagElement::setCharaters(const QString &test)
 {
     m_charaters = test;
 }

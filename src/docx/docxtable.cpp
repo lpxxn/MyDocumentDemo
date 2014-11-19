@@ -226,7 +226,7 @@ DocxTableRow *DocxTable::lastRow()
 
 void DocxTable::paragraphStyle(DocxParagraph *p)
 {
-    p->paragraphAligment(m_runFormat);
+    p->setAlignment(m_runFormat);
 }
 
 void DocxTable::writeln(const QString &text, const DocxFont &font)
@@ -265,12 +265,12 @@ void DocxTable::calculateCellCount(DocxTableRow *row)
     if (m_cellCount < row->count())
         m_cellCount = row->count();
 }
-RunAligment DocxTable::cellFormat() const
+RunAlignment DocxTable::cellFormat() const
 {
     return m_runFormat;
 }
 
-void DocxTable::setCellFormat(const RunAligment &cellFormat)
+void DocxTable::setCellFormat(const RunAlignment &cellFormat)
 {
     m_runFormat = cellFormat;
 }

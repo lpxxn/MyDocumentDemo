@@ -54,7 +54,7 @@ public:
     TagElement(const QString &name);
     void addProperty(QString name, QString value);
     QString name() const { return m_tagName; }
-    void addCharaters(const QString &test);
+    void setCharaters(const QString &test);
 
     virtual ~TagElement();
 

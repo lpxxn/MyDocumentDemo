@@ -8,7 +8,7 @@
 namespace TDocx
 {
 
-enum class RunAligment
+enum class RunAlignment
 {
     None = 0,
     Left,
@@ -16,7 +16,7 @@ enum class RunAligment
     Right
 };
 
-QString RunAligmentToString(const RunAligment &format);
+QString runAlignmentToString(const RunAlignment &format);
 
 class DocxParagraph;
 class ParagraphTagIterator : public ITagIterator<ISaveToXml>
@@ -40,12 +40,12 @@ public:
     virtual ~DocxParagraph();
 
     void setText(const QString &text);
-    DocxFont& font();
+    DocxFont font() const;
     void setFont(const DocxFont &font);
     void addStyleProperty(TagElement *element);
     void addContentElement(TagElement *element);    
     ParagraphTagIterator createIterator() const;
-    void paragraphAligment(const RunAligment &format);
+    void setAlignment(const RunAlignment &format);
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);    

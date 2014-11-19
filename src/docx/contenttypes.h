@@ -17,7 +17,7 @@ public:
     virtual ~ContentTypes();
 
     void addDefault(const QString &key, const QString &value);
-    void addOverride(const QString &key, const QString &value);
+    void addDocumentOverride(const QString &key, const QString &value);
     bool isContentKey(const QString &key);
     void addOverrideDefault();
 
@@ -26,6 +26,7 @@ public:
 
 
 private:
+    void addOverride(const QString &key, const QString &value);
     QMap<QString, QString> m_defaults;
     QMap<QString, QString> m_overrides;
     QString m_package_prefix;

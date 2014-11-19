@@ -8,12 +8,12 @@
 namespace TDocx
 {
 
-QString RunAligmentToString(const RunAligment &format)
+QString runAlignmentToString(const RunAlignment &format)
 {
     switch (format) {
-    case RunAligment::Left : return "left"; break;
-    case RunAligment::Center : return "center"; break;
-    case RunAligment::Right : return "right"; break;
+    case RunAlignment::Left : return "left"; break;
+    case RunAlignment::Center : return "center"; break;
+    case RunAlignment::Right : return "right"; break;
     default : return "left"; break;
     }
 }
@@ -72,23 +72,25 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
     // style
     m_property.saveToXmlElement(writer);
 
-    // r
-    writer->writeStartElement(QStringLiteral("w:r"));
-
-    if (!m_font.family().isEmpty()){
-        writer->writeStartElement(QStringLiteral("w:rPr"));
-        m_font.saveToXmlElement(writer);
-        writer->writeEndElement(); // end w:rPr
-    }
-
-    ParagraphTagIterator iter = createIterator();
     // text
+    ParagraphTagIterator iter = createIterator();
+
     while(iter.hasNext()) {
+        // r
+        writer->writeStartElement(QStringLiteral("w:r"));
+
+        if (!m_font.family().isEmpty()){
+            writer->writeStartElement(QStringLiteral("w:rPr"));
+            m_font.saveToXmlElement(writer);
+            writer->writeEndElement(); // end w:rPr
+        }
+
         ISaveToXml *ele = iter.next();
         ele->saveToXmlElement(writer);
+
+        writer->writeEndElement(); // end w:r
     }
 
-    writer->writeEndElement(); // end w:t
     writer->writeEndElement(); // end w:p
 }
 
@@ -106,11 +108,11 @@ DocxParagraph::~DocxParagraph()
 void DocxParagraph::setText(const QString &text)
 {
     TagElement *textElement = new TagElement("w:t");
-    textElement->addCharaters(text);
+    textElement->setCharaters(text);
     addContentElement(textElement);
 }
 
-DocxFont &DocxParagraph::font()
+DocxFont DocxParagraph::font() const
 {
     return m_font;
 }
@@ -135,13 +137,13 @@ ParagraphTagIterator DocxParagraph::createIterator() const
     return ParagraphTagIterator(this);
 }
 
-void DocxParagraph::paragraphAligment(const RunAligment &format)
+void DocxParagraph::setAlignment(const RunAlignment &format)
 {
     if (!(int)format)
         return;
-    TagElement *aligment =  new TagElement(QStringLiteral("w:jc"));
-    aligment->addProperty(QStringLiteral("w:val"), RunAligmentToString(format));
-    m_property.addChild(aligment);
+    TagElement *alignment =  new TagElement(QStringLiteral("w:jc"));
+    alignment->addProperty(QStringLiteral("w:val"), runAlignmentToString(format));
+    m_property.addChild(alignment);
 
 }
 

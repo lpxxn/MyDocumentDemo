@@ -61,8 +61,8 @@ public:
 
     virtual ~DocxTable();
 
-    RunAligment cellFormat() const;
-    void setCellFormat(const RunAligment &cellFormat);
+    RunAlignment cellFormat() const;
+    void setCellFormat(const RunAlignment &cellFormat);
 
     void paragraphStyle(DocxParagraph *p);
 private:
@@ -74,7 +74,7 @@ private:
     DocxTableRow *m_currentRow;
     QVector<DocxTableRow*> m_rows;
     Document *m_doc;
-    RunAligment m_runFormat = RunAligment::None;
+    RunAlignment m_runFormat = RunAlignment::None;
 
 };
 }

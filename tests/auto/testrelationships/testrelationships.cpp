@@ -20,6 +20,7 @@
 #include "docxstyle.h"
 #include "docxdocument.h"
 #include "docxtable.h"
+#include "footandheader.h"
 
 #include <regex>
 
@@ -34,6 +35,7 @@ public:
     TestRelationShips();
 
 private Q_SLOTS:
+    void testHeaderAndFooter();
     void testTable();
     void testListFormat();
     void testDocument();
@@ -50,6 +52,21 @@ TestRelationShips::TestRelationShips()
 
 }
 
+void TestRelationShips::testHeaderAndFooter()
+{
+
+    Document document;
+//    QFile file("header.zip");
+//    file.open(QIODevice::WriteOnly);
+//    DocxZipWriter writer(&file);
+    DocxHeader header;
+    header.write("aa", RunAlignment::Center);
+//  writer.addFile(QStringLiteral("header.xml"), header.saveToXmlData());
+//    writer.close();
+    document.addDefaultHeader(&header);
+    document.saveAs("headerfooter.docx");
+}
+
 void TestRelationShips::testTable()
 {
     Document document;
@@ -59,19 +76,19 @@ void TestRelationShips::testTable()
     font.setBold(true);
     font.setItalic(true);
 
-    document.writeln("TableTest", RunAligment::Center);
+    document.writeln("TableTest", RunAlignment::Center);
     DocxTable *tab = new DocxTable(&document);
-    tab->setCellFormat(RunAligment::Right);
+    tab->setCellFormat(RunAlignment::Right);
     tab->inertCell();
     tab->writeln("1111");
     tab->inertCell();
-    tab->setCellFormat(RunAligment::Left);
+    tab->setCellFormat(RunAlignment::Left);
     tab->writeln("222");
     tab->inertCell();
     tab->writeln("333");
     tab->endRow();
 
-    tab->setCellFormat(RunAligment::Center);
+    tab->setCellFormat(RunAlignment::Center);
     tab->inertCell();
     tab->writeln(QStringLiteral("bbbb"));
     tab->writeln(QString::fromUtf8("测试测试"), font);

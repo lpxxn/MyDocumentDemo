@@ -29,6 +29,11 @@ void ContentTypes::addDefault(const QString &key, const QString &value)
     m_defaults.insert(key, value);
 }
 
+void ContentTypes::addDocumentOverride(const QString &key, const QString &value)
+{
+    addOverride(key, m_document_prefix + value);
+}
+
 void ContentTypes::addOverride(const QString &key, const QString &value)
 {
     m_overrides.insert(key, value);

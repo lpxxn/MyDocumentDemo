@@ -18,6 +18,7 @@
 #include "docxlistformat.h"
 #include "docxnumbering.h"
 #include "docxmediafile.h"
+#include "footandheader.h"
 
 #include <QString>
 #include <QMap>
@@ -35,8 +36,8 @@ public:
     Document(CreateFlag flag);
 
     void writeln();
-    void writeln(const QString &text, const RunAligment aligment = RunAligment::None);
-    void writeln(const QString &text, const DocxFont &font, const RunAligment aligment = RunAligment::None);
+    void writeln(const QString &text, const RunAlignment alignment = RunAlignment::None);
+    void writeln(const QString &text, const DocxFont &font, const RunAlignment alignment = RunAlignment::None);
     void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont());
 
 
@@ -56,8 +57,11 @@ public:
     bool saveAs(const QString &name);
     bool saveAs(QIODevice *device);
 
+    void addDefaultHeader(DocxHeader *header);
+
     virtual ~Document();
 
+    void initDocumentEndElement();
 private:
     void writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent = false);
     void saveToXmlFile(QIODevice *device) const;
@@ -81,6 +85,8 @@ private:
     Relationships m_documentShips;
     Relationships m_wordShips;
     QMap<QString, QString> m_docrels;
+    QVector<DocxHeader*> m_headers;
+    TagElement *m_DocEndElement;
 
     DocxInsertImagePrivate *m_inserImagePrivate;
     friend class DocxInsertImagePrivate;
