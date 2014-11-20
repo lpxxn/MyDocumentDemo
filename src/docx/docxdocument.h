@@ -22,6 +22,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QQueue>
 
 #include <initializer_list>
 
@@ -48,6 +49,8 @@ public:
 
     void insertTable(DocxTable *table);
 
+    void insertSectionFooterAndHeader(FootAndHeader *header, FootAndHeader *footer, bool restarNum = false);
+
     DocxParagraph *lastParagraph();
     void addParagraph();
     DocxFont& font();
@@ -57,16 +60,17 @@ public:
     bool saveAs(const QString &name);
     bool saveAs(QIODevice *device);
 
-    void addDefaultHeader(DocxHeader *header);
+    void setDefaultHeaderOrFooter(FootAndHeader *hf);
 
     virtual ~Document();
 
-    void initDocumentEndElement();
+    TagElement *initDocumentEndElement();
+
 private:
     void writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent = false);
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);
-
+    TagElement *HeaderOrFooterElement(FootAndHeader *hf);
 
 private:
     QVector<DocxParagraph*> m_paragraphs;
@@ -85,8 +89,9 @@ private:
     Relationships m_documentShips;
     Relationships m_wordShips;
     QMap<QString, QString> m_docrels;
-    QVector<DocxHeader*> m_headers;
+    QVector<FootAndHeader*> m_headers;
     TagElement *m_DocEndElement;
+    QQueue<TagElement *> m_endElements;
 
     DocxInsertImagePrivate *m_inserImagePrivate;
     friend class DocxInsertImagePrivate;

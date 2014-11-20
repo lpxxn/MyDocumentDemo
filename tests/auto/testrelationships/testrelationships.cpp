@@ -46,24 +46,56 @@ private Q_SLOTS:
 
 const QString chrysanImgName = QStringLiteral(":/images/Chrysanthemum.jpg");
 const QString desert = QStringLiteral(":/images/Desert.jpg");
+const QString content = R"~(Artist Carrie Paterson has long dreamed of beaming messages far out to the emptiness of space. Except her messages would have an extra dimension – smell.
 
-TestRelationShips::TestRelationShips()
+        By broadcasting formulae of aromatic chemicals, she says, aliens could reconstruct all sorts of whiffs that help to define life on Earth: animal blood and faeces, sweet floral and citrus scents or benzene to show our global dependence on the car. This way intelligent life forms on distant planets who may not see or hear as we do, says Paterson, could explore us through smell, one of the most primitive and ubiquitous senses of all.
+                                                                                                                                                  Her idea is only the latest in a list of attempts to hail intelligent life outside of the Solar System. Forty years ago this month, the Arecibo radio telescope in Puerto Rico sent an iconic picture message into space – and we’ve arguably been broadcasting to aliens ever since we invented TV and radio.
+
+                                                                                                                                                  However in recent years, astronomers, artists, linguists and
+                                                                                                                                                  )~";
+  TestRelationShips::TestRelationShips()
 {
 
 }
 
 void TestRelationShips::testHeaderAndFooter()
 {
-
     Document document;
-//    QFile file("header.zip");
-//    file.open(QIODevice::WriteOnly);
-//    DocxZipWriter writer(&file);
-    DocxHeader header;
-    header.write("aa", RunAlignment::Center);
-//  writer.addFile(QStringLiteral("header.xml"), header.saveToXmlData());
-//    writer.close();
-    document.addDefaultHeader(&header);
+    //    QFile file("header.zip");
+    //    file.open(QIODevice::WriteOnly);
+    //    DocxZipWriter writer(&file);
+    FootAndHeader *header = new FootAndHeader(HeaderFooterType::HeaderPrimary);
+    header->write("aa", RunAlignment::Center);
+    //  writer.addFile(QStringLiteral("header.xml"), header.saveToXmlData());
+    //    writer.close();
+    document.setDefaultHeaderOrFooter(header);
+
+
+    FootAndHeader *footer = new FootAndHeader(HeaderFooterType::FooterPrimary);
+    footer->write("bb");
+    footer->showNumber();
+    footer->write("ddddddd");
+    footer->write("cc", RunAlignment::Right);
+    //document.insertSectionFooterAndHeader(header, footer);
+    document.setDefaultHeaderOrFooter(footer);
+    document.writeln("caaaaaaaaaaaaaaaaaaaaaaa");
+    document.writeln(content);
+    document.writeln(content);
+    document.writeln(content);
+    document.writeln(content);
+
+
+    FootAndHeader *header2 = new FootAndHeader(HeaderFooterType::HeaderPrimary);
+    header2->write("TestTitle", RunAlignment::Center);
+    FootAndHeader *footer2 = new FootAndHeader(HeaderFooterType::FooterPrimary);
+    footer2->write("Number");
+    footer2->showNumber();
+    document.insertSectionFooterAndHeader(header2, footer2, true);
+    document.writeln(content);
+    document.writeln(content);
+    document.writeln(content);
+    document.writeln(content);
+
     document.saveAs("headerfooter.docx");
 }
 

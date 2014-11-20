@@ -26,6 +26,26 @@ FootAndHeader::FootAndHeader(const CreateFlag &flag)
 {
 }
 
+QString FootAndHeader::type() const
+{
+    return m_type;
+}
+
+void FootAndHeader::setType(const QString &type)
+{
+    m_type = type;
+}
+
+
+FootAndHeader::FootAndHeader(const HeaderFooterType &flag)
+    : FootAndHeader(CreateFlag::F_NewFromScratch)
+{
+    m_flag = flag;
+    setType(typeByHeaderFooterType(m_flag));
+    setReference(referenceByHeaderFooterType(m_flag));
+    setPrefix(prefixByHeaderFooterType(m_flag));
+}
+
 void FootAndHeader::addProperty(QString name, QString value)
 {
     m_Paragraph.addProperty(name, value);
@@ -41,10 +61,73 @@ void FootAndHeader::remoevChild(TDocx::ISaveToXml *child)
     m_Paragraph.remoevChild(child);
 }
 
+QString FootAndHeader::startElement() const
+{
+    switch (m_flag) {
+    case HeaderFooterType::FooterPrimary: return QStringLiteral("w:ftr"); break;
+    case HeaderFooterType::HeaderPrimary: return QStringLiteral("w:hdr"); break;
+    }
+}
+
+QString FootAndHeader::typeByHeaderFooterType(const HeaderFooterType &flag) const
+{
+    switch (flag) {
+    case HeaderFooterType::FooterPrimary:
+    case HeaderFooterType::HeaderPrimary: return QStringLiteral("default"); break;
+    }
+}
+
+QString FootAndHeader::referenceByHeaderFooterType(const HeaderFooterType &flag) const
+{
+    switch (flag) {
+    case HeaderFooterType::FooterPrimary: return QStringLiteral("w:footerReference"); break;
+    case HeaderFooterType::HeaderPrimary: return QStringLiteral("w:headerReference"); break;
+    }
+}
+
+QString FootAndHeader::prefixByHeaderFooterType(const HeaderFooterType &flag) const
+{
+    switch (flag) {
+    case HeaderFooterType::FooterPrimary: return QStringLiteral("footer"); break;
+    case HeaderFooterType::HeaderPrimary: return QStringLiteral("header"); break;
+    }
+}
+QString FootAndHeader::prefix() const
+{
+    return m_prefix;
+}
+
+void FootAndHeader::setPrefix(const QString &prefix)
+{
+    m_prefix = prefix;
+}
+
+HeaderFooterType FootAndHeader::flag() const
+{
+    return m_flag;
+}
+
+void FootAndHeader::setFlag(const HeaderFooterType &flag)
+{
+    m_flag = flag;
+}
+
+QString FootAndHeader::reference() const
+{
+    return m_reference;
+}
+
+void FootAndHeader::setReference(const QString &reference)
+{
+    m_reference = reference;
+}
+
+
 FootAndHeader::~FootAndHeader()
 {
 
 }
+
 DocxFont FootAndHeader::font() const
 {
     return m_Paragraph.font();
@@ -54,7 +137,6 @@ void FootAndHeader::setFont(const DocxFont &font)
 {
     m_Paragraph.setFont(font);
 }
-
 
 void FootAndHeader::saveToXmlFile(QIODevice *device) const
 {
@@ -98,6 +180,7 @@ void FootAndHeader::checkAlignment(const RunAlignment &alignment)
         m_Paragraph.addChild(ali);
     }
 }
+
 QString FootAndHeader::name() const
 {
     return m_name;
@@ -107,6 +190,7 @@ void FootAndHeader::setName(const QString &name)
 {
     m_name = name;
 }
+
 QString FootAndHeader::id() const
 {
     return m_id;
@@ -116,8 +200,6 @@ void FootAndHeader::setId(const QString &id)
 {
     m_id = id;
 }
-
-
 
 void FootAndHeader::write(const QString &text, const RunAlignment &alignment)
 {
@@ -130,33 +212,53 @@ void FootAndHeader::write(const QString &text, const RunAlignment &alignment)
     ele->setCharaters(text);
     m_Paragraph.addChild(ele);
 }
+
+void FootAndHeader::showNumber()
+{
+    TagElement *ele = new TagElement(QStringLiteral("w:fldChar"));
+    ele->addProperty(QStringLiteral("w:fldCharType"), QStringLiteral("begin"));
+    m_Paragraph.addChild(ele);
+
+    ele = new TagElement(QStringLiteral("w:instrText"));
+    ele->setCharaters(QStringLiteral("PAGE"));
+    m_Paragraph.addChild(ele);
+
+    ele = new TagElement(QStringLiteral("w:fldChar"));
+    ele->addProperty(QStringLiteral("w:fldCharType"), QStringLiteral("separate"));
+    m_Paragraph.addChild(ele);
+
+    ele = new TagElement(QStringLiteral("w:fldChar"));
+    ele->addProperty(QStringLiteral("w:fldCharType"), QStringLiteral("end"));
+    m_Paragraph.addChild(ele);
+
+}
 // end AbsFootAndHeader
 
 
 // begin DocxFooter
-DocxFooter::DocxFooter()
-    : FootAndHeader(CreateFlag::F_NewFromScratch)
-{
+//DocxFooter::DocxFooter()
+//    : FootAndHeader(CreateFlag::F_NewFromScratch)
+//{
 
-}
+//}
 
-QString DocxFooter::startElement() const
-{
-    return QStringLiteral("w:ftr");
-}
-// end DocxFooter
+//QString DocxFooter::startElement() const
+//{
+//    return QStringLiteral("w:ftr");
+//}
+//// end DocxFooter
 
-// begin DocxHeader
-DocxHeader::DocxHeader()
-    : FootAndHeader(CreateFlag::F_NewFromScratch)
-{
+//// begin DocxHeader
+//DocxHeader::DocxHeader()
+//    : FootAndHeader(CreateFlag::F_NewFromScratch)
+//{
 
-}
+//}
 
-QString DocxHeader::startElement() const
-{
-    return QStringLiteral("w:hdr");
-}
+//QString DocxHeader::startElement() const
+//{
+//    return QStringLiteral("w:hdr");
+//}
 // end DocxHeader
 
 }

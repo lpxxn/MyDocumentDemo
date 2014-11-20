@@ -23,23 +23,15 @@ const QString wpg = QStringLiteral("http://schemas.microsoft.com/office/word/201
 const QString wpi = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingInk");
 const QString wne = QStringLiteral("http://schemas.microsoft.com/office/word/2006/wordml");
 const QString wps = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
-const QString strEndpr = R"~(
-        <w:sectPr>
-        <w:pgSz w:w="12240" w:h="15840"/>
-        <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="708" w:footer="708" w:gutter="0"/>
-        <w:cols w:space="708"/>
-        <w:docGrid w:linePitch="360"/>
-        </w:sectPr>
-        )~";
 
 
-void Document::initDocumentEndElement()
+TagElement *Document::initDocumentEndElement()
 {
-    m_DocEndElement = new TagElement(QStringLiteral("w:sectPr"));
+    TagElement *docEndElement = new TagElement(QStringLiteral("w:sectPr"));
     TagElement *child = new TagElement(QStringLiteral("w:pgSz"));
     child->addProperty(QStringLiteral("w:w"), QStringLiteral("12240"));
     child->addProperty(QStringLiteral("w:h"), QStringLiteral("15840"));
-    m_DocEndElement->addChild(child);
+    docEndElement->addChild(child);
 
     child = new TagElement(QStringLiteral("w:pgMar"));
     child->addProperty(QStringLiteral("w:top"), QStringLiteral("1440"));
@@ -49,15 +41,16 @@ void Document::initDocumentEndElement()
     child->addProperty(QStringLiteral("w:header"), QStringLiteral("708"));
     child->addProperty(QStringLiteral("w:footer"), QStringLiteral("708"));
     child->addProperty(QStringLiteral("w:gutter"), QStringLiteral("0"));
-    m_DocEndElement->addChild(child);
+    docEndElement->addChild(child);
 
     child = new TagElement(QStringLiteral("w:cols"));
     child->addProperty(QStringLiteral("w:space"), QStringLiteral("708"));
-    m_DocEndElement->addChild(child);
+    docEndElement->addChild(child);
 
     child = new TagElement(QStringLiteral("w:docGrid"));
     child->addProperty(QStringLiteral("w:linePitch"), QStringLiteral("360"));
-    m_DocEndElement->addChild(child);
+    docEndElement->addChild(child);
+    return docEndElement;
 }
 
 Document::Document()
@@ -75,7 +68,8 @@ Document::Document(CreateFlag flag)
     m_inserImagePrivate = new DocxInsertImagePrivate(this);
     if (flag == CreateFlag::F_NewFromScratch) {
         addParagraph();
-        initDocumentEndElement();
+        //m_DocEndElement = ;
+        m_endElements.push_back(initDocumentEndElement());
     }
 }
 
@@ -177,6 +171,29 @@ void Document::insertTable(DocxTable *table)
     addParagraph();
 }
 
+void Document::insertSectionFooterAndHeader(FootAndHeader *header, FootAndHeader *footer, bool restarNum)
+{
+    TagElement *h = HeaderOrFooterElement(header);
+    TagElement *f = HeaderOrFooterElement(footer);
+    TagElement *endElement = initDocumentEndElement();
+    endElement->addChild(h);
+    endElement->addChild(f);
+
+    if (restarNum) {
+        TagElement *num = new TagElement("w:pgNumType");
+        num->addProperty(QStringLiteral("w:start"), QStringLiteral("1"));
+        endElement->addChild(num);
+    }
+    m_endElements.append(endElement);
+    if (m_endElements.size() > 1) {
+        addParagraph();
+        DocxParagraph* current = lastParagraph();
+        current->addStyleProperty(m_endElements.dequeue());
+        addParagraph();
+    }
+
+}
+
 void Document::saveToXmlFile(QIODevice *device) const
 {
     QXmlStreamWriter writer(device);
@@ -207,7 +224,11 @@ void Document::saveToXmlFile(QIODevice *device) const
 
     writer.writeComment(QStringLiteral("end"));
     //device->write(strEndpr.toUtf8());
-    m_DocEndElement->saveToXmlElement(&writer);
+    //m_DocEndElement->saveToXmlElement(&writer);
+    if (!m_endElements.isEmpty()) {
+        TagElement *ele = m_endElements.back();
+        ele->saveToXmlElement(&writer);
+    }
     writer.writeEndElement();// end body
 
     writer.writeEndElement(); // end w:document
@@ -293,8 +314,7 @@ bool Document::saveAs(QIODevice *device)
     writer.addFile(QStringLiteral("word/numbering.xml"), m_numbering.saveToXmlData());
 
     // word/header and footer
-    for (const DocxHeader *h : m_headers) {
-         qDebug() << "aaaa-----------" << h->name();
+    for (const FootAndHeader *h : m_headers) {
         writer.addFile(QStringLiteral("word/") + h->name(), h->saveToXmlData());
     }
 
@@ -310,29 +330,37 @@ bool Document::saveAs(QIODevice *device)
     return true;
 }
 
-void Document::addDefaultHeader(DocxHeader *header)
+TagElement * Document::HeaderOrFooterElement(FootAndHeader *hf)
 {
-    QString name = QStringLiteral("header") + QString::number(m_headers.count() + 1) + QStringLiteral(".xml");
-    header->setName(name);
+    QString name = hf->prefix() + QString::number(m_headers.count() + 1) + QStringLiteral(".xml");
+    hf->setName(name);
     // contentTypes
-    m_contentTypes.addDocumentOverride(QStringLiteral("/word/") + header->name(), QStringLiteral(".wordprocessingml.header+xml"));
+    m_contentTypes.addDocumentOverride(QStringLiteral("/word/") + hf->name(), QStringLiteral(".wordprocessingml.") + hf->prefix()+ QStringLiteral("+xml"));
     QString headerId;
 
     // word/_rels/document.xml.rels
-    m_documentShips.addDocumentRelationship(QStringLiteral("/header"), header->name(), headerId);
-    header->setId(headerId);
+    m_documentShips.addDocumentRelationship(QStringLiteral("/") + hf->prefix(), hf->name(), headerId);
+    hf->setId(headerId);
 
-    TagElement * child = new TagElement("w:headerReference");
-    child->addProperty(QStringLiteral("w:type"), QStringLiteral("default"));
-    child->addProperty(QStringLiteral("r:id"), header->id());
-    m_DocEndElement->addChild(child);
+    TagElement *child = new TagElement(hf->reference());
+    child->addProperty(QStringLiteral("w:type"), hf->type());
+    child->addProperty(QStringLiteral("r:id"), hf->id());
+    m_headers.append(hf);
 
-    m_headers.append(header);
+    return child;
+}
+
+void Document::setDefaultHeaderOrFooter(FootAndHeader *hf)
+{
+    TagElement *child = HeaderOrFooterElement(hf);
+    m_endElements.back()->addChild(child);
+    //m_DocEndElement->addChild(child);
 }
 
 Document::~Document()
 {
     delete m_inserImagePrivate;
+    qDeleteAll(m_headers);
 }
 
 DocxParagraph *Document::lastParagraph()
