@@ -242,7 +242,7 @@ void DocxTable::writeln(const QString &text, const DocxFont &font)
 
 void DocxTable::insertImage(const QString &imgPath, const QSize &size)
 {
-    TagElement *ele = m_doc->m_inserImagePrivate->imageTagElement(imgPath, size);
+    TagElement *ele = m_doc->m_inserImagePrivate->imageTagElement(imgPath, size, m_doc->m_haveImg);
     DocxTableCell *cell = m_currentRow->last();
     DocxParagraph *p = new DocxParagraph();
     p->addContentElement(ele);

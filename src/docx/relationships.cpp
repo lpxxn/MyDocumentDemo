@@ -84,6 +84,11 @@ void Relationships::saveToXmlFile(QIODevice *device) const
     writer.writeEndDocument();// end xml Document
 }
 
+bool Relationships::isEmpty() const
+{
+    return m_relationShips.isEmpty();
+}
+
 Relationships::~Relationships()
 {
 

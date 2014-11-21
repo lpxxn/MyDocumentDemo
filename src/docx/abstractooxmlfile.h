@@ -36,8 +36,6 @@ public:
 protected:
     AbstractOOXmlFile(CreateFlag flag);
     AbstractOOXmlFile(AbstractOOXmlFilePrivate *absprivate);
-
-private:
     AbstractOOXmlFilePrivate* m_dprivate;
 
 };

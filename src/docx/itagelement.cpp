@@ -47,7 +47,7 @@ TagElement::~TagElement()
 
 void TagElement::addChild(ISaveToXml *child)
 {
-    m_childs.append(child);
+    m_childs.append(child);    
 }
 
 void TagElement::remoevChild(ISaveToXml *child)

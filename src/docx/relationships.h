@@ -32,6 +32,7 @@ public:
 
     QByteArray saveToXmlData() const;
     void saveToXmlFile(QIODevice *device) const;
+    bool isEmpty() const;
 
     virtual ~Relationships();
 

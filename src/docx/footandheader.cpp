@@ -1,4 +1,6 @@
 #include "footandheader.h"
+#include "docxdocument.h"
+#include "abstractooxmlfileprivate.h"
 
 #include <QXmlStreamWriter>
 
@@ -37,9 +39,10 @@ void FootAndHeader::setType(const QString &type)
 }
 
 
-FootAndHeader::FootAndHeader(const HeaderFooterType &flag)
+FootAndHeader::FootAndHeader(const Document *doc, const HeaderFooterType &flag)
     : FootAndHeader(CreateFlag::F_NewFromScratch)
 {
+    m_doc = doc;
     m_flag = flag;
     setType(typeByHeaderFooterType(m_flag));
     setReference(referenceByHeaderFooterType(m_flag));
@@ -169,6 +172,8 @@ bool FootAndHeader::loadFromXmlFile(QIODevice *device)
     return true;
 }
 
+
+
 void FootAndHeader::checkAlignment(const RunAlignment &alignment)
 {
     if (alignment != m_alignment) {
@@ -201,15 +206,40 @@ void FootAndHeader::setId(const QString &id)
     m_id = id;
 }
 
-void FootAndHeader::write(const QString &text, const RunAlignment &alignment)
+void FootAndHeader::setAlignment(const RunAlignment &alignment)
 {
     if (!(int)alignment)
         checkAlignment(RunAlignment::Left);
     else
         checkAlignment(alignment);
+}
 
+void FootAndHeader::write(const QString &text)
+{
+    if (text.isEmpty()) return;
     TagElement *ele = new TagElement(QStringLiteral("w:t"));
     ele->setCharaters(text);
+    m_Paragraph.addChild(ele);
+}
+
+void FootAndHeader::write(const QString &text, const RunAlignment &alignment)
+{
+    setAlignment(alignment);
+
+    write(text);
+}
+
+void FootAndHeader::insertImg(const QString &imgName, const QSize &size)
+{
+    DocxMediaFile *imgInfo = m_doc->m_inserImagePrivate->mediafileInfo(imgName);
+    // get save Id
+    QString strId;
+    m_dprivate->relationships->addDocumentRelationship(QStringLiteral("/image"), QString("media/%1")
+                                                        .arg(imgInfo->name()), strId);
+    imgInfo->setId(strId);
+    TagElement *ele = m_doc->m_inserImagePrivate->imageTagElement(imgInfo, size, !m_haveImg);
+    m_dprivate->relationships->addDocumentRelationship(QStringLiteral("/image"), QString("media/%1").arg(imgInfo->Id()));
+    m_haveImg = true;
     m_Paragraph.addChild(ele);
 }
 
