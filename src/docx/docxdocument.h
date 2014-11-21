@@ -49,7 +49,7 @@ public:
 
     void insertTable(DocxTable *table);
 
-    void insertSectionFooterAndHeader(FootAndHeader *header, FootAndHeader *footer, bool restarNum = false);
+    void insertSectionFooterAndHeader(std::initializer_list<FootAndHeader *> hfs, bool restarNum = false);
 
     DocxParagraph *lastParagraph();
     void addParagraph();
@@ -58,13 +58,11 @@ public:
 
     bool save();
     bool saveAs(const QString &name);
-    bool saveAs(QIODevice *device);
-
-    void setDefaultHeaderOrFooter(FootAndHeader *hf);
+    bool saveAs(QIODevice *device);   
 
     virtual ~Document();
 
-    TagElement *initDocumentEndElement();
+    TagElement *initDocumentEndElement() const;
 
 private:
     void writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent = false);
@@ -90,13 +88,15 @@ private:
     Relationships m_wordShips;
     QMap<QString, QString> m_docrels;
     QVector<FootAndHeader*> m_headers;
-    TagElement *m_DocEndElement;
+
     QQueue<TagElement *> m_endElements;
 
     DocxInsertImagePrivate *m_inserImagePrivate;
+    bool m_haveImg = false;
     friend class DocxInsertImagePrivate;
     friend class DocxTable;
     friend class DocumentBuilder;    
+    friend class FootAndHeader;
 
 };
 }

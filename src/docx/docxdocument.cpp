@@ -25,7 +25,7 @@ const QString wne = QStringLiteral("http://schemas.microsoft.com/office/word/200
 const QString wps = QStringLiteral("http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
 
 
-TagElement *Document::initDocumentEndElement()
+TagElement *Document::initDocumentEndElement() const
 {
     TagElement *docEndElement = new TagElement(QStringLiteral("w:sectPr"));
     TagElement *child = new TagElement(QStringLiteral("w:pgSz"));
@@ -68,8 +68,8 @@ Document::Document(CreateFlag flag)
     m_inserImagePrivate = new DocxInsertImagePrivate(this);
     if (flag == CreateFlag::F_NewFromScratch) {
         addParagraph();
-        //m_DocEndElement = ;
-        m_endElements.push_back(initDocumentEndElement());
+
+        //m_endElements.push_back(initDocumentEndElement());
     }
 }
 
@@ -160,7 +160,8 @@ void Document::writeList(const DocxListFormat &listStyle, const QString &outStr,
 void Document::insertImage(const QString &imgName, const QSize &size)
 {
     DocxParagraph* current = lastParagraph();
-    TagElement *shap = m_inserImagePrivate->imageTagElement(imgName, size);
+    TagElement *shap = m_inserImagePrivate->imageTagElement(imgName, size, !m_haveImg);
+    m_haveImg = true;
     current->addContentElement(shap);
     addParagraph();
 }
@@ -171,13 +172,13 @@ void Document::insertTable(DocxTable *table)
     addParagraph();
 }
 
-void Document::insertSectionFooterAndHeader(FootAndHeader *header, FootAndHeader *footer, bool restarNum)
+void Document::insertSectionFooterAndHeader(std::initializer_list<FootAndHeader *> hfs, bool restarNum)
 {
-    TagElement *h = HeaderOrFooterElement(header);
-    TagElement *f = HeaderOrFooterElement(footer);
     TagElement *endElement = initDocumentEndElement();
-    endElement->addChild(h);
-    endElement->addChild(f);
+    for (FootAndHeader * hf : hfs) {
+        TagElement *ele = HeaderOrFooterElement(hf);
+        endElement->addChild(ele);
+    }
 
     if (restarNum) {
         TagElement *num = new TagElement("w:pgNumType");
@@ -227,6 +228,9 @@ void Document::saveToXmlFile(QIODevice *device) const
     //m_DocEndElement->saveToXmlElement(&writer);
     if (!m_endElements.isEmpty()) {
         TagElement *ele = m_endElements.back();
+        ele->saveToXmlElement(&writer);
+    } else {
+        TagElement *ele = initDocumentEndElement();
         ele->saveToXmlElement(&writer);
     }
     writer.writeEndElement();// end body
@@ -316,6 +320,8 @@ bool Document::saveAs(QIODevice *device)
     // word/header and footer
     for (const FootAndHeader *h : m_headers) {
         writer.addFile(QStringLiteral("word/") + h->name(), h->saveToXmlData());
+        if (!h->relationships()->isEmpty())
+            writer.addFile(QString("word/_rels/%1.rels").arg(h->name()) ,h->relationships()->saveToXmlData());
     }
 
     // word/document.xml
@@ -348,13 +354,6 @@ TagElement * Document::HeaderOrFooterElement(FootAndHeader *hf)
     m_headers.append(hf);
 
     return child;
-}
-
-void Document::setDefaultHeaderOrFooter(FootAndHeader *hf)
-{
-    TagElement *child = HeaderOrFooterElement(hf);
-    m_endElements.back()->addChild(child);
-    //m_DocEndElement->addChild(child);
 }
 
 Document::~Document()

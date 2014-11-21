@@ -47,12 +47,14 @@ class DocxInsertImagePrivate
 {
 public:
     DocxInsertImagePrivate(Document *doc);
-    TagElement * imageTagElement(const QString &imgName, const QSize &size);
+    TagElement * imageTagElement(const QString &imgName, const QSize &size, bool firstImg = false);
     DocxMediaFile *findImg(const DocxMediaFile *media) const;
     QVector<DocxMediaFile *> imgs() const;
 
     virtual ~DocxInsertImagePrivate();
 
+    DocxMediaFile *mediafileInfo(const QString &imgName);
+    TagElement * imageTagElement(DocxMediaFile *mediaFile, const QSize &size, bool firstImg);
 private:
     TagElement *shapetypeStyle();
     const DocxMediaFile* media(const QByteArray hashkey);

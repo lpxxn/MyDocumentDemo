@@ -78,7 +78,49 @@ DocxInsertImagePrivate::DocxInsertImagePrivate(Document *doc)
 {
 }
 
-TagElement *DocxInsertImagePrivate::imageTagElement(const QString &imgName, const QSize &size)
+/*!
+ * \brief return image tag
+ *
+ * return same image tag in different xml files.
+ * the first image tag content detail style in each xml file
+ * \param imgName
+ * \param size
+ * \return
+ */
+TagElement *DocxInsertImagePrivate::imageTagElement(const QString &imgName, const QSize &size, bool firstImg)
+{
+    DocxMediaFile *mediaFile =  mediafileInfo(imgName);
+
+    TagElement *pict = imageTagElement(mediaFile, size, firstImg);
+
+    return pict;
+}
+
+TagElement * DocxInsertImagePrivate::imageTagElement(DocxMediaFile *mediaFile, const QSize &size, bool firstImg)
+{
+    TagElement *pict = new TagElement(QStringLiteral("w:pict"));
+
+    if (firstImg)
+        pict->addChild(shapetypeStyle());
+
+    TagElement *shap = new TagElement(QStringLiteral("v:shape"));
+    shap->addProperty(QStringLiteral("id"), QString("_x0000_i") + QString::number(1000 + m_imgs.count()));
+    shap->addProperty(QStringLiteral("type"), QStringLiteral("#_x0000_t75"));
+    if (size.isValid())
+        shap->addProperty(QStringLiteral("style"), QString("height:%1pt;width:%2pt").arg(size.height()).arg(size.width()));
+    else
+        shap->addProperty(QStringLiteral("style"), QString("height:%1pt;width:%2pt").arg(mediaFile->imgSize().height()).arg(mediaFile->imgSize().width()));
+
+    TagElement *shapChild = new TagElement(QStringLiteral("v:imagedata"));
+    shapChild->addProperty(QStringLiteral("r:id"), mediaFile->Id());
+    shapChild->addProperty(QStringLiteral("o:title"), QStringLiteral(""));
+    shap->addChild(shapChild);
+    pict->addChild(shap);
+
+    return pict;
+}
+
+DocxMediaFile * DocxInsertImagePrivate::mediafileInfo(const QString &imgName)
 {
     DocxMediaFile *mediaFile =  new DocxMediaFile(imgName);
     DocxMediaFile *img = findImg(mediaFile);
@@ -99,25 +141,7 @@ TagElement *DocxInsertImagePrivate::imageTagElement(const QString &imgName, cons
         delete mediaFile;
         mediaFile = img;
     }
-
-    TagElement *pict = new TagElement(QStringLiteral("w:pict"));
-    if (m_imgs.count() == 1)
-        pict->addChild(shapetypeStyle());
-    TagElement *shap = new TagElement(QStringLiteral("v:shape"));
-    shap->addProperty(QStringLiteral("id"), QString("_x0000_i") + QString::number(1000 + m_imgs.count()));
-    shap->addProperty(QStringLiteral("type"), QStringLiteral("#_x0000_t75"));
-    if (size.isValid())
-        shap->addProperty(QStringLiteral("style"), QString("height:%1pt;width:%2pt").arg(size.height()).arg(size.width()));
-    else
-        shap->addProperty(QStringLiteral("style"), QString("height:%1pt;width:%2pt").arg(mediaFile->imgSize().height()).arg(mediaFile->imgSize().width()));
-
-    TagElement *shapChild = new TagElement(QStringLiteral("v:imagedata"));
-    shapChild->addProperty(QStringLiteral("r:id"), mediaFile->Id());
-    shapChild->addProperty(QStringLiteral("o:title"), QStringLiteral(""));
-    shap->addChild(shapChild);
-    pict->addChild(shap);
-
-    return pict;
+    return mediaFile;
 }
 
 DocxMediaFile *DocxInsertImagePrivate::findImg(const DocxMediaFile *media) const
