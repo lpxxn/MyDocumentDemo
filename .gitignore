@@ -79,7 +79,6 @@ lib/MyDocx.pdb
 /lib/*.ilk
 /lib/*.pdb
 *.pdb
-*.zip
 *.manifest
 *.res
 *.txt

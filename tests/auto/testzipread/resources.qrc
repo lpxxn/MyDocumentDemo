@@ -3,4 +3,7 @@
         <file>Chrysanthemum.jpg</file>
         <file>Desert.jpg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>testDoc.zip</file>
+    </qresource>
 </RCC>

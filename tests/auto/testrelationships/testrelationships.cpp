@@ -40,6 +40,7 @@ private Q_SLOTS:
     void testListFormat();
     void testDocument();
     void testRelation();
+    void testImageHash();
     void mytestFun();
 
 };
@@ -330,6 +331,40 @@ void TestRelationShips::testRelation()
     writer.close();
 
 
+}
+
+void TestRelationShips::testImageHash()
+{
+    QImage img(chrysanImgName);
+    QByteArray ba;
+    QBuffer buffer(&ba);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer);
+    QByteArray hashKey = QCryptographicHash::hash(ba, QCryptographicHash::Md5);
+
+
+    QMimeDatabase database;
+
+    QMimeType type = database.mimeTypeForFile(chrysanImgName);
+    qDebug() << "suffixes  " << type.preferredSuffix() << "mime Type  " << type.name() << "  ";
+    qDebug() << "suffixes  " << type.genericIconName() << "  ";
+    QFileInfo fileInfo(chrysanImgName);
+    qDebug() << fileInfo.fileName();
+    qDebug() << img.width()  << img.widthMM() << img.height() << img.heightMM();
+    QImage img2(chrysanImgName);
+    if (img == img2) {
+        qDebug() << " img same as img2";
+    } else {
+        qDebug() << " img not same as img2";
+    }
+
+    QImage img3(QStringLiteral(":/images/Desert.jpg"));
+
+    if (img == img3) {
+        qDebug() << "same";
+    } else {
+        qDebug() << " img not same as img3";
+    }
 }
 
 void TestRelationShips::mytestFun()
