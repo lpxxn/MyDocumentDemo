@@ -29,7 +29,8 @@ HEADERS += \
     docxnumbering.h \
     docxmediafile.h \
     docxtable.h \
-    footandheader.h
+    footandheader.h \
+    mergetable.h
 
 SOURCES += \
     docxzipreader.cpp \
@@ -57,4 +58,5 @@ SOURCES += \
     docxnumbering.cpp \
     docxmediafile.cpp \
     docxtable.cpp \
-    footandheader.cpp
+    footandheader.cpp \
+    mergetable.cpp

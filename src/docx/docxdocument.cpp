@@ -1,6 +1,7 @@
 #include "docxdocument.h"
 #include "docxzipwriter.h"
 #include "docxtable.h"
+#include "docxzipreader.h"
 
 #include <QXmlStreamWriter>
 #include <QFile>
@@ -60,6 +61,16 @@ Document::Document()
 
 }
 
+Document::Document(const QString &docxName)
+    : Document(CreateFlag::F_LoadFromExists)
+{
+    if (QFile::exists(docxName)) {
+        QFile file(docxName);
+        if (file.open(QFile::ReadOnly))
+            loadFromXmlFile(&file);
+    }
+}
+
 Document::Document(CreateFlag flag)
     : AbstractOOXmlFile(flag), m_docName(QStringLiteral("word.docx")), m_numbering(flag),
       m_contentTypes(flag), m_docPropsApp(flag), m_docPropsCore(flag), m_docxTheme(flag),
@@ -67,9 +78,7 @@ Document::Document(CreateFlag flag)
 {
     m_inserImagePrivate = new DocxInsertImagePrivate(this);
     if (flag == CreateFlag::F_NewFromScratch) {
-        addParagraph();
-
-        //m_endElements.push_back(initDocumentEndElement());
+        addParagraph();      
     }
 }
 
@@ -153,9 +162,6 @@ void Document::writeList(const DocxListFormat &listStyle, const QString &outStr,
         writeList(listStyle, str, true);
     }
 }
-
-
-
 
 void Document::insertImage(const QString &imgName, const QSize &size)
 {
@@ -241,7 +247,30 @@ void Document::saveToXmlFile(QIODevice *device) const
 
 bool Document::loadFromXmlFile(QIODevice *device)
 {
-    return true;
+    DocxZipReader zipReader(device);
+    QStringList filePaths = zipReader.filePaths();
+
+    //Load Content_Types file
+    if (!filePaths.contains(QLatin1String("[Content_Types].xml")))
+        return false;
+
+    m_contentTypes.loadFromXmlData(zipReader.fileData(QStringLiteral("[Content_Types].xml")));
+    QMapIterator<QString, QString> contentFile(m_contentTypes.contentFiles());
+    while (contentFile.hasNext()) {
+        contentFile.next();
+
+        if (contentFile.key().contains(QString("app"))) {
+            m_docPropsApp.loadFromXmlData(zipReader.fileData(contentFile.key()));
+        } else if (contentFile.key().contains(QString("core"))) {
+            m_docPropsCore.loadFromXmlData(zipReader.fileData(contentFile.key()));
+        } else if (contentFile.key().contains(QString("document"))) {
+            this->loadFromXmlData(zipReader.fileData(contentFile.key()));
+        } else if (contentFile.key().contains(QString("footer"))) {
+            FootAndHeader *fh = new FootAndHeader(this);
+        } else {
+            m_otherFiles.insert(contentFile.key(), zipReader.fileData(contentFile.key()));
+        }
+    }
 }
 
 DocxFont &Document::font()

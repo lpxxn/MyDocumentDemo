@@ -61,6 +61,11 @@ void ContentTypes::addOverrideDefault()
     m_overrides.insert(QStringLiteral("/docProps/app.xml"), m_document_prefix + QStringLiteral(".extended-properties+xml"));
 }
 
+QMap<QString, QString> ContentTypes::contentFiles()
+{
+    return m_overrides;
+}
+
 
 void ContentTypes::saveToXmlFile(QIODevice *device) const
 {
@@ -97,7 +102,7 @@ bool ContentTypes::loadFromXmlFile(QIODevice *device)
     m_defaults.clear();
     m_overrides.clear();
     QXmlStreamReader reader(device);
-    while (reader.atEnd()) {
+    while (!reader.atEnd()) {
         QXmlStreamReader::TokenType token = reader.readNext();
         if (token == QXmlStreamReader::StartElement) {
             if (reader.name() == QLatin1String("Default")) {
@@ -106,11 +111,12 @@ bool ContentTypes::loadFromXmlFile(QIODevice *device)
                 QString type = attrs.value(QLatin1String("ContentType")).toString();
                 m_defaults.insert(extension, type);
             }
-        } else if (reader.name() == QLatin1String("Override")) {
-            QXmlStreamAttributes attrs = reader.attributes();
-            QString name =  attrs.value(QLatin1String("PartName")).toString();
-            QString type = attrs.value(QLatin1String("ContentType")).toString();
-            m_overrides.insert(name, type);
+            else if (reader.name() == QLatin1String("Override")) {
+                QXmlStreamAttributes attrs = reader.attributes();
+                QString name =  attrs.value(QLatin1String("PartName")).toString();
+                QString type = attrs.value(QLatin1String("ContentType")).toString();
+                m_overrides.insert(name, type);
+            }
         }
         if (reader.hasError()) {
             qDebug() << QStringLiteral("ContentTypes read error :") << reader.errorString();

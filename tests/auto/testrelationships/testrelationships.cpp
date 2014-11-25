@@ -6,6 +6,7 @@
 #include <QFont>
 #include <QTime>
 #include <QColor>
+#include <QDomDocument>
 
 #include "relationships.h"
 #include "docxzipwriter.h"
@@ -40,7 +41,7 @@ private Q_SLOTS:
     void testListFormat();
     void testDocument();
     void testRelation();
-    void testImageHash();
+    void testImageHash();    
     void mytestFun();
 
 };
@@ -309,7 +310,7 @@ void TestRelationShips::testRelation()
     writer.addFile(QStringLiteral("word/styles.xml"), style.saveToXmlData());
 
     // word/document.xml
-    Document document(AbstractOOXmlFile::CreateFlag::F_NewFromScratch);
+    Document document;
     document.writeln("aaaabbbbbb");
     DocxFont font("方正舒体");
     font.setSpace(2);
@@ -366,6 +367,8 @@ void TestRelationShips::testImageHash()
         qDebug() << " img not same as img3";
     }
 }
+
+
 
 void TestRelationShips::mytestFun()
 {

@@ -39,7 +39,7 @@ bool AbstractOOXmlFile::loadFromXmlData(const QByteArray &data)
 {
     QBuffer buffer;
     buffer.setData(data);
-    buffer.open(QIODevice::WriteOnly);
+    buffer.open(QIODevice::ReadOnly);
 
     return loadFromXmlFile(&buffer);
 }

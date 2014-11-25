@@ -267,7 +267,8 @@ void DocxStyle::saveToXmlFile(QIODevice *device) const
     writer.writeNamespace(w, QStringLiteral("w"));
     writer.writeNamespace(w14, QStringLiteral("w14"));
     writer.writeAttribute(mc, QStringLiteral("Ignorable"), QStringLiteral("w14"));
-    m_docDefaultsTag->saveToXmlElement(&writer);
+    if (m_docDefaultsTag)
+        m_docDefaultsTag->saveToXmlElement(&writer);
     device->write(mlatentStyle.toUtf8());
     m_defParagraph->saveToXmlElement(&writer);
     if (m_headingTags.count() > 0)

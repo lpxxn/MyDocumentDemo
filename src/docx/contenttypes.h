@@ -20,6 +20,7 @@ public:
     void addDocumentOverride(const QString &key, const QString &value);
     bool isContentKey(const QString &key);
     void addOverrideDefault();
+    QMap<QString, QString> contentFiles();
 
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);

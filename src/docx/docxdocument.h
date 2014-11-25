@@ -34,7 +34,7 @@ class DOCX_EXPORT Document : public AbstractOOXmlFile
 {
 public:
     Document();
-    Document(CreateFlag flag);
+    Document(const QString &docxName);
 
     void writeln();
     void writeln(const QString &text, const RunAlignment alignment = RunAlignment::None);
@@ -71,6 +71,7 @@ private:
     TagElement *HeaderOrFooterElement(FootAndHeader *hf);
 
 private:
+    Document(CreateFlag flag);
     QVector<DocxParagraph*> m_paragraphs;
     QString m_docName;
     DocxFont m_font;
@@ -90,6 +91,7 @@ private:
     QVector<FootAndHeader*> m_headers;
 
     QQueue<TagElement *> m_endElements;
+    QMap<QString ,QByteArray> m_otherFiles;
 
     DocxInsertImagePrivate *m_inserImagePrivate;
     bool m_haveImg = false;
