@@ -19,6 +19,7 @@
 #include "docxdocument.h"
 #include "contenttypes.h"
 #include "mergetable.h"
+#include "abstractooxmlfile.h"
 
 using namespace TDocx;
 
@@ -56,7 +57,7 @@ void TestZipDemo::loadTest()
     if (!filePaths.contains(QLatin1String("[Content_Types].xml")))
         qDebug() << " content Error";
 
-    ContentTypes type(Document::CreateFlag::F_LoadFromExists);
+    ContentTypes type(AbstractOOXmlFile::CreateFlag::F_LoadFromExists);
     type.loadFromXmlData(reader.fileData(QStringLiteral("[Content_Types].xml")));
     QByteArray data = type.saveToXmlData();
 

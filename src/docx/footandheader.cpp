@@ -1,5 +1,5 @@
 #include "footandheader.h"
-#include "docxdocument.h"
+#include "newdocument.h"
 #include "abstractooxmlfileprivate.h"
 
 #include <QXmlStreamWriter>
@@ -39,7 +39,7 @@ void FootAndHeader::setType(const QString &type)
 }
 
 
-FootAndHeader::FootAndHeader(const Document *doc, const HeaderFooterType &flag)
+FootAndHeader::FootAndHeader(const AbstractDocument *doc, const HeaderFooterType &flag)
     : FootAndHeader(CreateFlag::F_NewFromScratch)
 {
     m_doc = doc;

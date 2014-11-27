@@ -1,6 +1,6 @@
 #include "docxtable.h"
 #include "docxparagraph.h"
-#include "docxdocument.h"
+#include "newdocument.h"
 
 #include <QXmlStreamWriter>
 
@@ -102,7 +102,7 @@ void DocxTableRow::saveToXmlElement(QXmlStreamWriter *writer) const
 // end Row
 
 
-DocxTable::DocxTable(Document *doc)
+DocxTable::DocxTable(AbstractDocument *doc)
     : DocxParagraph(), m_doc(doc)
 {
     m_currentRow =  new DocxTableRow();

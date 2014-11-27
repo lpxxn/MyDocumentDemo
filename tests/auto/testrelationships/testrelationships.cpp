@@ -72,7 +72,7 @@ void TestRelationShips::testHeaderAndFooter()
     //    QFile file("header.zip");
     //    file.open(QIODevice::WriteOnly);
     //    DocxZipWriter writer(&file);
-    FootAndHeader *header = new FootAndHeader(&document, HeaderFooterType::HeaderPrimary);
+    FootAndHeader *header = new FootAndHeader(document.contentDocument(), HeaderFooterType::HeaderPrimary);
     header->setAlignment(RunAlignment::Center);
     header->write("aa");
     header->insertImg(chrysanImgName, QSize(200, 20));
@@ -80,7 +80,7 @@ void TestRelationShips::testHeaderAndFooter()
     //    writer.close();   
 
 
-    FootAndHeader *footer = new FootAndHeader(&document, HeaderFooterType::FooterPrimary);
+    FootAndHeader *footer = new FootAndHeader(document.contentDocument(), HeaderFooterType::FooterPrimary);
     footer->write("bb");
     footer->setAlignment(RunAlignment::Center);
     footer->showNumber();
@@ -95,11 +95,11 @@ void TestRelationShips::testHeaderAndFooter()
     document.writeln(content);
 
 
-    FootAndHeader *header2 = new FootAndHeader(&document, HeaderFooterType::HeaderPrimary);
+    FootAndHeader *header2 = new FootAndHeader(document.contentDocument(), HeaderFooterType::HeaderPrimary);
     header2->write("TestTitle");
     header2->setAlignment(RunAlignment::Right);
     header2->insertImg(chrysanImgName, QSize(100, 20));
-    FootAndHeader *footer2 = new FootAndHeader(&document, HeaderFooterType::FooterPrimary);
+    FootAndHeader *footer2 = new FootAndHeader(document.contentDocument(), HeaderFooterType::FooterPrimary);
     footer2->write("Number");
     footer2->showNumber();
     document.insertSectionFooterAndHeader({ header2, footer2 }, true);
@@ -121,7 +121,7 @@ void TestRelationShips::testTable()
     font.setItalic(true);
 
     document.writeln("TableTest", RunAlignment::Center);
-    DocxTable *tab = new DocxTable(&document);
+    DocxTable *tab = new DocxTable(document.contentDocument());
     tab->setCellFormat(RunAlignment::Right);
     tab->inertCell();
     tab->writeln("1111");
@@ -187,7 +187,7 @@ void TestRelationShips::testDocument()
 
     document.writeln("测试文字内容", font);
 
-    DocxTable *tab = new DocxTable(&document);
+    DocxTable *tab = new DocxTable(document.contentDocument());
     tab->inertCell();
     tab->writeln("1111");
     tab->inertCell();
@@ -327,11 +327,9 @@ void TestRelationShips::testRelation()
 
     DocxFont font2;
     document.writeln("测试大小", font2);
-    writer.addFile(QStringLiteral("word/document.xml"), document.saveToXmlData());
+    writer.addFile(QStringLiteral("word/document.xml"), document.contentDocument()->saveToXmlData());
 
     writer.close();
-
-
 }
 
 void TestRelationShips::testImageHash()

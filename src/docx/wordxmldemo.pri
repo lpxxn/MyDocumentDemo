@@ -1,4 +1,4 @@
-QT += core gui gui-private core
+QT += core gui gui-private core xml
 
 DEFINES += DOCX_LIBRARY
 
@@ -30,7 +30,9 @@ HEADERS += \
     docxmediafile.h \
     docxtable.h \
     footandheader.h \
-    mergetable.h
+    mergetable.h \
+    newdocument.h
+
 
 SOURCES += \
     docxzipreader.cpp \
@@ -59,4 +61,5 @@ SOURCES += \
     docxmediafile.cpp \
     docxtable.cpp \
     footandheader.cpp \
-    mergetable.cpp
+    mergetable.cpp \
+    newdocument.cpp

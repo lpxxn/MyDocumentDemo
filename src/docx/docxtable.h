@@ -10,7 +10,7 @@
 
 namespace TDocx
 {
-class Document;
+class AbstractDocument;
 
 class DOCX_EXPORT DocxTableCell : ISaveToXml
 {
@@ -48,7 +48,7 @@ private:
 class DOCX_EXPORT DocxTable : public DocxParagraph
 {
 public:
-    DocxTable(Document *doc);
+    DocxTable(AbstractDocument *doc);
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     void initTableStyle();
 
@@ -73,7 +73,7 @@ private:
     int m_cellCount = 0;
     DocxTableRow *m_currentRow;
     QVector<DocxTableRow*> m_rows;
-    Document *m_doc;
+    AbstractDocument *m_doc;
     RunAlignment m_runFormat = RunAlignment::None;
 
 };

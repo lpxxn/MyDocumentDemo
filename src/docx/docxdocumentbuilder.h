@@ -5,12 +5,11 @@
 #include "docxfont.h"
 namespace TDocx
 {
-class Document;
 
 class DOCX_EXPORT DocumentBuilder
 {
 public:
-    DocumentBuilder(const Document* doc);
+    DocumentBuilder();
     virtual ~DocumentBuilder(){}
 
     DocxFont& font();

@@ -13,11 +13,11 @@ enum class HeaderFooterType
     HeaderPrimary,
     FooterPrimary,
 };
-class Document;
+class AbstractDocument;
 class DOCX_EXPORT FootAndHeader : public AbstractOOXmlFile
 {
 public:
-    FootAndHeader(const Document *doc, const HeaderFooterType &flag = HeaderFooterType::HeaderPrimary);
+    FootAndHeader(const AbstractDocument *doc, const HeaderFooterType &flag = HeaderFooterType::HeaderPrimary);
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);
@@ -62,7 +62,7 @@ private:
 
 private:
     bool m_haveImg = false;
-    const Document *m_doc;
+    const AbstractDocument *m_doc;
     QString m_prefix;
     QString m_reference;
     QString m_type;

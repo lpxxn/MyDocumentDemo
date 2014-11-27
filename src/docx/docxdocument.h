@@ -1,46 +1,21 @@
 #ifndef DOCXDOCUMENT_H
 #define DOCXDOCUMENT_H
 #include "docx_global.h"
-#include "abstractooxmlfile.h"
-#include "docxdocumentbuilder.h"
-#include "docxparagraph.h"
-#include "docxfont.h"
-#include "relationships.h"
-#include "contenttypes.h"
-#include "docpropsapp.h"
-#include "docpropscore.h"
-#include "docxtheme.h"
-#include "docxfonttable.h"
-#include "docxsettings.h"
-#include "docxwebsetting.h"
-#include "docxstyle.h"
-#include "docxstyleheading.h"
-#include "docxlistformat.h"
-#include "docxnumbering.h"
-#include "docxmediafile.h"
-#include "footandheader.h"
+#include "newdocument.h"
 
-#include <QString>
-#include <QMap>
-#include <QQueue>
-
-#include <initializer_list>
 
 namespace TDocx
 {
-class DocxTable;
-
-class DOCX_EXPORT Document : public AbstractOOXmlFile
+class DOCX_EXPORT Document
 {
 public:
     Document();
-    Document(const QString &docxName);
+    Document(const QString &docxName);   
 
     void writeln();
     void writeln(const QString &text, const RunAlignment alignment = RunAlignment::None);
     void writeln(const QString &text, const DocxFont &font, const RunAlignment alignment = RunAlignment::None);
     void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont());
-
 
     void writeList(const DocxListFormat &listStyle, std::initializer_list<QString> outValus);
     void writeList(const DocxListFormat &listStyle, const QString &outStr, std::initializer_list<QString> inValus);
@@ -48,58 +23,21 @@ public:
     void insertImage(const QString &imgName, const QSize &size = QSize());
 
     void insertTable(DocxTable *table);
-
     void insertSectionFooterAndHeader(std::initializer_list<FootAndHeader *> hfs, bool restarNum = false);
-
-    DocxParagraph *lastParagraph();
-    void addParagraph();
-    DocxFont& font();
-    void setFont(const DocxFont &font);
 
     bool save();
     bool saveAs(const QString &name);
-    bool saveAs(QIODevice *device);   
+    bool saveAs(QIODevice *device);
 
     virtual ~Document();
 
-    TagElement *initDocumentEndElement() const;
+    AbstractDocument * contentDocument() const;
 
 private:
-    void writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent = false);
-    void saveToXmlFile(QIODevice *device) const;
-    bool loadFromXmlFile(QIODevice *device);
-    TagElement *HeaderOrFooterElement(FootAndHeader *hf);
-
-private:
-    Document(CreateFlag flag);
-    QVector<DocxParagraph*> m_paragraphs;
-    QString m_docName;
-    DocxFont m_font;
-
-    ContentTypes m_contentTypes;
-    DocPropsApp m_docPropsApp;
-    DocPropsCore m_docPropsCore;
-    DocxTheme m_docxTheme;
-    DocxfontTable m_docxfontTable;
-    DocxSettings m_docxSettings;
-    DocxWebSetting m_docxWebSetting;
-    DocxStyle m_docxStyle;
-    DocxNumbering m_numbering;
-    Relationships m_documentShips;
-    Relationships m_wordShips;
-    QMap<QString, QString> m_docrels;
-    QVector<FootAndHeader*> m_headers;
-
-    QQueue<TagElement *> m_endElements;
-    QMap<QString ,QByteArray> m_otherFiles;
-
-    DocxInsertImagePrivate *m_inserImagePrivate;
-    bool m_haveImg = false;
-    friend class DocxInsertImagePrivate;
-    friend class DocxTable;
-    friend class DocumentBuilder;    
-    friend class FootAndHeader;
+    QString m_docName;    
+    AbstractDocument *m_newDoc;
 
 };
+
 }
 #endif // DOCXDOCUMENT_H

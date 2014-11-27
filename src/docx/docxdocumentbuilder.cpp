@@ -1,9 +1,8 @@
 #include "docxdocumentbuilder.h"
-#include "docxdocument.h"
 
 namespace TDocx
 {
-DocumentBuilder::DocumentBuilder(const Document *doc)    
+DocumentBuilder::DocumentBuilder()
 {
     //m_doc = doc;
 }

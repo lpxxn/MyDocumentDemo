@@ -1,6 +1,6 @@
 #include "docxmediafile.h"
 #include "comdatafun.h"
-#include "docxdocument.h"
+#include "newdocument.h"
 
 #include <QBuffer>
 #include <QMimeType>
@@ -73,9 +73,15 @@ void DocxMediaFile::setImgSize(const QSize &imgSize)
 }
 // end DocxMediaFile;
 
-DocxInsertImagePrivate::DocxInsertImagePrivate(Document *doc)
-    : m_document(doc)
+//DocxInsertImagePrivate::DocxInsertImagePrivate(Document *doc)
+//    : m_doc(doc)
+//{
+//}
+
+DocxInsertImagePrivate::DocxInsertImagePrivate(AbstractDocument *doc)
+    : m_doc(doc)
 {
+
 }
 
 /*!
@@ -131,12 +137,12 @@ DocxMediaFile * DocxInsertImagePrivate::mediafileInfo(const QString &imgName)
         mediaFile->setName(QString("image%1.%2")
                            .arg(m_imgs.size()).arg(mediaFile->suffix()));
         // get save Id
-        m_document->m_documentShips.addDocumentRelationship(strRelactionType, QString("media/%1")
+        m_doc->m_documentShips.addDocumentRelationship(strRelactionType, QString("media/%1")
                                                             .arg(mediaFile->name()), strId);
 
         mediaFile->setId(strId);
-        if (!m_document->m_contentTypes.isContentKey(mediaFile->suffix()))
-            m_document->m_contentTypes.addDefault(mediaFile->suffix(), mediaFile->mimeType());
+        if (!m_doc->m_contentTypes.isContentKey(mediaFile->suffix()))
+            m_doc->m_contentTypes.addDefault(mediaFile->suffix(), mediaFile->mimeType());
     } else {
         delete mediaFile;
         mediaFile = img;
