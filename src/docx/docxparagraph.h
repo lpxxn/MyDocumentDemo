@@ -39,22 +39,18 @@ public:
 
     virtual ~DocxParagraph();
 
-    void setText(const QString &text);
-    DocxFont font() const;
-    void setFont(const DocxFont &font);
-    void addStyleProperty(TagElement *element);
-    void addContentElement(TagElement *element);    
+    void addStyleProperty(TagElement *element);    
     ParagraphTagIterator createIterator() const;
     void setAlignment(const RunAlignment &format);
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);    
-
+    void addTextChild(const QString &text, const DocxFont &font = DocxFont());
+    void addRunChild(ISaveToXml *child);
 
 protected:
     typedef QPair<QString, QString> pairValue;
-    QVector<pairValue> m_properties;    
-    DocxFont m_font;    
+    QVector<pairValue> m_properties;        
     DocxParagraphProperty m_property;
     QList<ISaveToXml *> m_childs;    
     friend class ParagraphTagIterator;

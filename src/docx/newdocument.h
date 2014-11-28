@@ -30,7 +30,7 @@ namespace TDocx
 {
 class DocxTable;
 
-class AbstractDocument  : public AbstractOOXmlFile
+class AbstractDocument : public AbstractOOXmlFile
 {
 public:
     AbstractDocument(CreateFlag flag);
@@ -55,18 +55,11 @@ public:
 
 
 protected:
-
-    DocxWebSetting m_docxWebSetting;
-    DocxNumbering m_numbering;
-    DocxSettings m_docxSettings;
-    DocPropsApp m_docPropsApp;
-    DocPropsCore m_docPropsCore;
-    DocxTheme m_docxTheme;
-    DocxfontTable m_docxfontTable;
-
     DocxStyle m_docxStyle;
     ContentTypes m_contentTypes;
     Relationships m_documentShips;
+
+protected:
     DocxInsertImagePrivate *m_inserImagePrivate;
     bool m_haveImg = false;
     friend class DocxInsertImagePrivate;
@@ -108,6 +101,15 @@ private:
     void iniElement();
     TagElement *HeaderOrFooterElement(FootAndHeader *hf);
     TagElement *initDocumentEndElement() const;
+
+private:
+    DocxWebSetting m_docxWebSetting;
+    DocxNumbering m_numbering;
+    DocxSettings m_docxSettings;
+    DocPropsApp m_docPropsApp;
+    DocPropsCore m_docPropsCore;
+    DocxTheme m_docxTheme;
+    DocxfontTable m_docxfontTable;
 
 private:
     QVector<DocxParagraph*> m_paragraphs;

@@ -131,16 +131,6 @@ FootAndHeader::~FootAndHeader()
 
 }
 
-DocxFont FootAndHeader::font() const
-{
-    return m_Paragraph.font();
-}
-
-void FootAndHeader::setFont(const DocxFont &font)
-{
-    m_Paragraph.setFont(font);
-}
-
 void FootAndHeader::saveToXmlFile(QIODevice *device) const
 {
     QXmlStreamWriter writer(device);
@@ -217,9 +207,8 @@ void FootAndHeader::setAlignment(const RunAlignment &alignment)
 void FootAndHeader::write(const QString &text)
 {
     if (text.isEmpty()) return;
-    TagElement *ele = new TagElement(QStringLiteral("w:t"));
-    ele->setCharaters(text);
-    m_Paragraph.addChild(ele);
+
+    m_Paragraph.addTextChild(text);
 }
 
 void FootAndHeader::write(const QString &text, const RunAlignment &alignment)
@@ -244,22 +233,22 @@ void FootAndHeader::insertImg(const QString &imgName, const QSize &size)
 }
 
 void FootAndHeader::showNumber()
-{
+{    
     TagElement *ele = new TagElement(QStringLiteral("w:fldChar"));
     ele->addProperty(QStringLiteral("w:fldCharType"), QStringLiteral("begin"));
-    m_Paragraph.addChild(ele);
+    m_Paragraph.addRunChild(ele);
 
     ele = new TagElement(QStringLiteral("w:instrText"));
     ele->setCharaters(QStringLiteral("PAGE"));
-    m_Paragraph.addChild(ele);
+    m_Paragraph.addRunChild(ele);
 
     ele = new TagElement(QStringLiteral("w:fldChar"));
     ele->addProperty(QStringLiteral("w:fldCharType"), QStringLiteral("separate"));
-    m_Paragraph.addChild(ele);
+    m_Paragraph.addRunChild(ele);
 
     ele = new TagElement(QStringLiteral("w:fldChar"));
     ele->addProperty(QStringLiteral("w:fldCharType"), QStringLiteral("end"));
-    m_Paragraph.addChild(ele);
+    m_Paragraph.addRunChild(ele);
 
 }
 // end AbsFootAndHeader

@@ -19,7 +19,7 @@ class DOCX_EXPORT DocxFont : public ISaveToXml
 {
 public:
     DocxFont();
-    DocxFont(const QString & family);
+    DocxFont(const QString & family);    
 
     virtual ~DocxFont();
 
@@ -44,6 +44,8 @@ public:
 
     bool isValid() const;
     void saveToXmlElement(QXmlStreamWriter *writer) const;
+
+    DocxFont *clone() const;
 
 private:
     QString enumToString(DocxUnderline under) const;

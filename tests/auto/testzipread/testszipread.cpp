@@ -13,6 +13,7 @@
 #include <QMapIterator>
 #include <QDomDocument>
 #include <QFile>
+#include <QXmlStreamReader>
 
 #include "docxzipwriter.h"
 #include "docxzipreader.h"
@@ -34,6 +35,7 @@ private Q_SLOTS:
     void loadTest();
     void testMerge();
     void read();
+    void xmlReaderTest();
 };
 
 TestZipDemo::TestZipDemo()
@@ -76,38 +78,38 @@ void TestZipDemo::loadTest()
 
 void TestZipDemo::testMerge()
 {
-//    MergeTable table("table1");
-//    table.setHorizontalHeaderLabels(QStringList()<< "id" << "name" << "age");
-//    QList<QStandardItem *> row;
-//    row.append(new QStandardItem("1"));
-//    row.append(new QStandardItem("zhangsan"));
-//    row.append(new QStandardItem("20"));
-//    table.appendRow(row);
-//    row.clear();
-//    row.append(new QStandardItem("2"));
-//    row.append(new QStandardItem("lisi"));
-//    row.append(new QStandardItem("19"));
-//    table.appendRow(row);
+    //    MergeTable table("table1");
+    //    table.setHorizontalHeaderLabels(QStringList()<< "id" << "name" << "age");
+    //    QList<QStandardItem *> row;
+    //    row.append(new QStandardItem("1"));
+    //    row.append(new QStandardItem("zhangsan"));
+    //    row.append(new QStandardItem("20"));
+    //    table.appendRow(row);
+    //    row.clear();
+    //    row.append(new QStandardItem("2"));
+    //    row.append(new QStandardItem("lisi"));
+    //    row.append(new QStandardItem("19"));
+    //    table.appendRow(row);
 
-//    row.clear();
-//    row.append(new QStandardItem("3"));
-//    row.append(new QStandardItem("wangwu"));
-//    row.append(new QStandardItem("9"));
-//    table.appendRow(row);
+    //    row.clear();
+    //    row.append(new QStandardItem("3"));
+    //    row.append(new QStandardItem("wangwu"));
+    //    row.append(new QStandardItem("9"));
+    //    table.appendRow(row);
 
-//    row.clear();
-//    row.append(new QStandardItem("4"));
-//    row.append(new QStandardItem("zhaoliu"));
-//    row.append(new QStandardItem("9"));
-//    table.appendRow(row);
+    //    row.clear();
+    //    row.append(new QStandardItem("4"));
+    //    row.append(new QStandardItem("zhaoliu"));
+    //    row.append(new QStandardItem("9"));
+    //    table.appendRow(row);
 
-//    for (int r = 0; r < table.rowCount(); r++)
-//    {
-//        for (int col = 0; col < table.columnCount(); col++) {
-//            QStandardItem *item = table.item(r, col);
-//            qDebug() << "Table element " << item->text();
-//        }
-//    }
+    //    for (int r = 0; r < table.rowCount(); r++)
+    //    {
+    //        for (int col = 0; col < table.columnCount(); col++) {
+    //            QStandardItem *item = table.item(r, col);
+    //            qDebug() << "Table element " << item->text();
+    //        }
+    //    }
 
     QString strName = QStringLiteral("doc.zip");
     QDomDocument xmlDom;
@@ -151,12 +153,12 @@ void TestZipDemo::testMerge()
 
 
 
-//    if (QFile::copy("://merge.zip", strName))
-//        qDebug() << "copy error";
+    //    if (QFile::copy("://merge.zip", strName))
+    //        qDebug() << "copy error";
 
-//    QFile fileout(strName);
-//    if (fileout.open(QIODevice::WriteOnly))
-//        qDebug() << "writeError";
+    //    QFile fileout(strName);
+    //    if (fileout.open(QIODevice::WriteOnly))
+    //        qDebug() << "writeError";
     //DocxZipWriter writer(&file);
 
     DocxZipWriter writer(strName);
@@ -180,6 +182,27 @@ void TestZipDemo::read()
 
     QVERIFY(files.contains("[Content_Types].xml"));
     QVERIFY(files.contains("_rels/.rels"));
+}
+
+void TestZipDemo::xmlReaderTest()
+{
+    QFile file(QStringLiteral("://document.xml"));
+
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << " read Error";
+        return;
+    }
+
+    QXmlStreamReader xmlReader;
+    xmlReader.setDevice(&file);
+    //xmlReader.addData(reader.fileData(QStringLiteral("word/document.xml")));
+    while (!xmlReader.atEnd()) {
+        xmlReader.readNextStartElement();
+        if (xmlReader.isStartElement())
+            qDebug() << "start xml element Name  " << xmlReader.name() << xmlReader.prefix();
+        else
+            qDebug() << "end xml element end   " << xmlReader.name() << xmlReader.prefix();
+    }
 }
 
 

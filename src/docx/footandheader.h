@@ -29,10 +29,7 @@ public:
     void insertImg(const QString &imgName, const QSize &size);
     void showNumber();
 
-    virtual ~FootAndHeader();
-
-    DocxFont font() const;
-    void setFont(const DocxFont &font);
+    virtual ~FootAndHeader();        
 
     void checkAlignment(const RunAlignment &alignment);
     QString name() const;

@@ -31,7 +31,8 @@ HEADERS += \
     docxtable.h \
     footandheader.h \
     mergetable.h \
-    newdocument.h
+    newdocument.h \
+    docxxmlreader.h
 
 
 SOURCES += \
@@ -62,4 +63,5 @@ SOURCES += \
     docxtable.cpp \
     footandheader.cpp \
     mergetable.cpp \
-    newdocument.cpp
+    newdocument.cpp \
+    docxxmlreader.cpp

@@ -28,9 +28,7 @@ const QString wps = QStringLiteral("http://schemas.microsoft.com/office/word/201
 
 
 AbstractDocument::AbstractDocument(AbstractOOXmlFile::CreateFlag flag)
-    : AbstractOOXmlFile(flag), m_contentTypes(flag), m_docxStyle(flag), m_numbering(flag)
-    , m_docxWebSetting(flag), m_docxSettings(flag), m_docPropsApp(flag), m_docPropsCore(flag)
-    , m_docxTheme(flag), m_docxfontTable(flag)
+    : AbstractOOXmlFile(flag), m_contentTypes(flag), m_docxStyle(flag)
 {
     m_inserImagePrivate = new DocxInsertImagePrivate(this);
 }
@@ -47,7 +45,9 @@ bool AbstractDocument::saveAs(const QString &name)
 
 
 NewDocument::NewDocument()
-    : AbstractDocument(CreateFlag::F_NewFromScratch)
+    : AbstractDocument(CreateFlag::F_NewFromScratch), m_numbering(CreateFlag::F_NewFromScratch)
+    , m_docxWebSetting(CreateFlag::F_NewFromScratch), m_docxSettings(CreateFlag::F_NewFromScratch), m_docPropsApp(CreateFlag::F_NewFromScratch), m_docPropsCore(CreateFlag::F_NewFromScratch)
+    , m_docxTheme(CreateFlag::F_NewFromScratch), m_docxfontTable(CreateFlag::F_NewFromScratch)
 {
     iniElement();
     addParagraph();
@@ -177,7 +177,7 @@ void NewDocument::writeln()
 void NewDocument::writeln(const QString &text, const RunAlignment alignment)
 {
     DocxParagraph* current = lastParagraph();
-    current->setText(text);
+    current->addTextChild(text);
     current->setAlignment(alignment);
     addParagraph();
 }
@@ -185,8 +185,7 @@ void NewDocument::writeln(const QString &text, const RunAlignment alignment)
 void NewDocument::writeln(const QString &text, const DocxFont &font, const RunAlignment alignment)
 {
     DocxParagraph* current = lastParagraph();
-    current->setFont(font);
-    current->setText(text);
+    current->addTextChild(text, font);
     current->setAlignment(alignment);
     addParagraph();
 }
@@ -203,9 +202,8 @@ void NewDocument::writeHeading(const QString &text, const HeadingLevel headLevel
 
     TagElement *styleElement = new TagElement(QStringLiteral("w:pStyle"));
     styleElement->addProperty(QStringLiteral("w:val"), head->headId());
-    current->addStyleProperty(styleElement);
-    current->setFont(font);
-    current->setText(text);
+    current->addStyleProperty(styleElement);    
+    current->addTextChild(text, font);
     addParagraph();
 }
 
@@ -229,7 +227,7 @@ void NewDocument::insertImage(const QString &imgName, const QSize &size)
     DocxParagraph* current = lastParagraph();
     TagElement *shap = m_inserImagePrivate->imageTagElement(imgName, size, !m_haveImg);
     m_haveImg = true;
-    current->addContentElement(shap);
+    current->addChild(shap);
     addParagraph();
 }
 
@@ -275,8 +273,7 @@ void NewDocument::writeList(const DocxListFormat &listStyle, const QString &outS
     styleElement->addChild(child);
 
     current->addStyleProperty(styleElement);
-    current->setFont(listStyle.font());
-    current->setText(outStr);
+    current->addTextChild(outStr, listStyle.font());
     addParagraph();
 }
 
@@ -377,17 +374,17 @@ bool ExistDocument::loadFromXmlFile(QIODevice *device)
     while (contentFile.hasNext()) {
         contentFile.next();
 
-        if (contentFile.key().contains(QString("app"))) {
-            m_docPropsApp.loadFromXmlData(zipReader.fileData(contentFile.key()));
-        } else if (contentFile.key().contains(QString("core"))) {
-            m_docPropsCore.loadFromXmlData(zipReader.fileData(contentFile.key()));
-        } else if (contentFile.key().contains(QString("document"))) {
-            this->loadFromXmlData(zipReader.fileData(contentFile.key()));
-        } else if (contentFile.key().contains(QString("footer"))) {
-            //FootAndHeader *fh = new FootAndHeader(this);
-        } else {
-            //m_otherFiles.insert(contentFile.key(), zipReader.fileData(contentFile.key()));
-        }
+//        if (contentFile.key().contains(QString("app"))) {
+//            m_docPropsApp.loadFromXmlData(zipReader.fileData(contentFile.key()));
+//        } else if (contentFile.key().contains(QString("core"))) {
+//            m_docPropsCore.loadFromXmlData(zipReader.fileData(contentFile.key()));
+//        } else if (contentFile.key().contains(QString("document"))) {
+//            this->loadFromXmlData(zipReader.fileData(contentFile.key()));
+//        } else if (contentFile.key().contains(QString("footer"))) {
+//            //FootAndHeader *fh = new FootAndHeader(this);
+//        } else {
+//            //m_otherFiles.insert(contentFile.key(), zipReader.fileData(contentFile.key()));
+//        }
     }
     return true;
 }

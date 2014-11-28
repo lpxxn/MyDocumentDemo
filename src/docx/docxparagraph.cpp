@@ -59,6 +59,30 @@ void DocxParagraph::remoevChild(ISaveToXml *child)
     }
 }
 
+void DocxParagraph::addTextChild(const QString &text, const DocxFont &font)
+{
+    TagElement *rchild = new TagElement(QStringLiteral("w:r"));
+    // font first
+    if (font.isValid()){
+        TagElement *fontchild = new TagElement(QStringLiteral("w:rPr"));
+        fontchild->addChild(font.clone());
+        rchild->addChild(fontchild);
+    }
+    // text second
+    TagElement *textElement = new TagElement("w:t");
+    textElement->setCharaters(text);
+    rchild->addChild(textElement);
+
+    addChild(rchild);
+}
+
+void DocxParagraph::addRunChild(ISaveToXml *child)
+{
+    TagElement *rchild = new TagElement(QStringLiteral("w:r"));
+    rchild->addChild(child);
+    addChild(rchild);
+}
+
 
 void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
 {
@@ -76,19 +100,10 @@ void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
     ParagraphTagIterator iter = createIterator();
 
     while(iter.hasNext()) {
-        // r
-        writer->writeStartElement(QStringLiteral("w:r"));
-
-        if (!m_font.family().isEmpty()){
-            writer->writeStartElement(QStringLiteral("w:rPr"));
-            m_font.saveToXmlElement(writer);
-            writer->writeEndElement(); // end w:rPr
-        }
+        // r        
 
         ISaveToXml *ele = iter.next();
-        ele->saveToXmlElement(writer);
-
-        writer->writeEndElement(); // end w:r
+        ele->saveToXmlElement(writer);       
     }
 
     writer->writeEndElement(); // end w:p
@@ -104,32 +119,9 @@ DocxParagraph::~DocxParagraph()
     m_childs.clear();
 }
 
-
-void DocxParagraph::setText(const QString &text)
-{
-    TagElement *textElement = new TagElement("w:t");
-    textElement->setCharaters(text);
-    addContentElement(textElement);
-}
-
-DocxFont DocxParagraph::font() const
-{
-    return m_font;
-}
-
-void DocxParagraph::setFont(const DocxFont &font)
-{
-    m_font = font;
-}
-
 void DocxParagraph::addStyleProperty(TagElement *element)
 {
     m_property.addChild(element);
-}
-
-void DocxParagraph::addContentElement(TagElement *element)
-{
-    addChild(element);
 }
 
 ParagraphTagIterator DocxParagraph::createIterator() const
@@ -146,6 +138,5 @@ void DocxParagraph::setAlignment(const RunAlignment &format)
     m_property.addChild(alignment);
 
 }
-
 
 }

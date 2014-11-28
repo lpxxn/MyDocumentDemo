@@ -86,6 +86,7 @@ void TestRelationShips::testHeaderAndFooter()
     footer->showNumber();
     footer->write("ddddddd");
     footer->write("cc", RunAlignment::Right);
+    //document.insertSectionFooterAndHeader({ header });
     document.insertSectionFooterAndHeader({ header, footer });
     //document.setDefaultHeaderOrFooter(footer);
     document.writeln("caaaaaaaaaaaaaaaaaaaaaaa");
@@ -98,7 +99,7 @@ void TestRelationShips::testHeaderAndFooter()
     FootAndHeader *header2 = new FootAndHeader(document.contentDocument(), HeaderFooterType::HeaderPrimary);
     header2->write("TestTitle");
     header2->setAlignment(RunAlignment::Right);
-    header2->insertImg(chrysanImgName, QSize(100, 20));
+    //header2->insertImg(chrysanImgName, QSize(100, 20));
     FootAndHeader *footer2 = new FootAndHeader(document.contentDocument(), HeaderFooterType::FooterPrimary);
     footer2->write("Number");
     footer2->showNumber();

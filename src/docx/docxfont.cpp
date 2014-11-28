@@ -119,8 +119,11 @@ void DocxFont::saveToXmlElement(QXmlStreamWriter *writer) const
         writer->writeEndElement(); // end w:u
     }
 
+}
 
-
+DocxFont *DocxFont::clone() const
+{
+    return new DocxFont(*this);
 }
 
 QString DocxFont::enumToString(DocxUnderline under) const
