@@ -20,6 +20,7 @@
 #include "docxdocument.h"
 #include "contenttypes.h"
 #include "mergetable.h"
+#include "docxxmlreader.h"
 #include "abstractooxmlfile.h"
 
 using namespace TDocx;
@@ -40,7 +41,18 @@ private Q_SLOTS:
 
 TestZipDemo::TestZipDemo()
 {
+    QFile file("://document.xml");
+    file.open(QIODevice::ReadOnly);
+    DocxXmlReader xmlReader(&file);
+    xmlReader.readStartElement();
 
+    QFile fileRead(QStringLiteral("loadDocument.zip"));
+    fileRead.open(QIODevice::WriteOnly);
+
+    DocxZipWriter writer(&fileRead);
+    writer.addFile("myTestDocument.xml", xmlReader.saveToXmlData());
+
+    writer.close();
 }
 
 void TestZipDemo::loadTest()
