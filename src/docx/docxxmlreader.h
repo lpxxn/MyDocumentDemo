@@ -16,13 +16,16 @@ public:
     void readStartElement(DocxParagraph * parent);
 
     void readPMark(DocxParagraph *parent);
-    void readRunMark(DocxParagraph *parent);
-    void readCommonMark(TagElement *parent);
+    //void readRunMark(ITagElement *parent);
+    void readCommonMark(ITagElement *parent);
+    //void readTMark(TagElement *parent);
 
-    void readCharactersMark(TagElement *parent);
+    //void readCharactersMark(ITagElement *parent);
     QString elementName() const;
     QByteArray saveToXmlData();
     void saveElement(QXmlStreamWriter *writer);
+
+    bool isEndElement(const QString &markName);
 
 private:
     void addMarketAtributes(DocxParagraph *para);
