@@ -39,9 +39,16 @@ void DocxXmlReader::readStartElement()
             //                para->addTextChild(m_xmlReader.text());
             //            }
             readPMark(para);
+            //readMark(para, strParagraph);
             m_paragraphs.append(para);
-        } else
-            m_xmlReader.readNextStartElement();
+        } else {
+            TagElement *ele = new TagElement(elementName());
+            addMarketAtributes(ele);
+            readMark(ele, m_xmlReader.name().toString());
+            readCommonMark(ele);
+            //m_xmlReader.readNextStartElement();
+            m_paragraphs.append(ele);
+        }
         qDebug() << " out line name " << m_xmlReader.name() << " type " << m_xmlReader.tokenString();
         if (m_xmlReader.tokenType() != QXmlStreamReader::StartElement)
             m_xmlReader.readNextStartElement();
@@ -68,7 +75,11 @@ void DocxXmlReader::readPMark(DocxParagraph *parent)
     readNextMark();
     // style Property
     if (m_xmlReader.name() == strpPr) {
-        readCommonMark(parent);
+        TagElement *eleStyle = new TagElement(elementName());
+        addMarketAtributes(eleStyle);
+        readMark(eleStyle, strpPr);
+        //readCommonMark(eleStyle);
+        parent->addStyleProperty(eleStyle);
         readNextMark();
     }
 
@@ -80,6 +91,24 @@ void DocxXmlReader::readPMark(DocxParagraph *parent)
         readNextMark();
     }
 }
+
+void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
+{
+    qDebug() << "enter element  : " << m_xmlReader.name().toString();
+    if (m_xmlReader.name().toString() != markName)
+        return;
+
+    readNextMark();
+
+    while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
+           && m_xmlReader.name().toString() != markName)
+    {
+        readCommonMark(parent);
+        readNextMark();
+    }
+}
+
+
 
 //void DocxXmlReader::readRunMark(ITagElement *parent)
 //{
@@ -263,7 +292,7 @@ QByteArray DocxXmlReader::saveToXmlData()
 
 void DocxXmlReader::saveElement(QXmlStreamWriter *writer)
 {
-    for (const DocxParagraph *ele: m_paragraphs)
+    for (const ITagElement *ele: m_paragraphs)
         ele->saveToXmlElement(writer);
 }
 

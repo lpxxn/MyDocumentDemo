@@ -16,6 +16,7 @@ public:
     void readStartElement(DocxParagraph * parent);
 
     void readPMark(DocxParagraph *parent);
+    void readMark(ITagElement *parent, const QString &markName);
     //void readRunMark(ITagElement *parent);
     void readCommonMark(ITagElement *parent);
     //void readTMark(TagElement *parent);
@@ -34,7 +35,7 @@ private:
     void checkSkipMark();
 
 private:
-    QList<DocxParagraph *> m_paragraphs;
+    QList<ITagElement *> m_paragraphs;
     QXmlStreamReader m_xmlReader;
 };
 }
