@@ -81,6 +81,11 @@ TagElementIterator TagElement::createIterator() const
     return  TagElementIterator(this);
 }
 
+bool TagElement::haveCharaters() const
+{
+    return m_charaters.isEmpty();
+}
+
 }
 
 

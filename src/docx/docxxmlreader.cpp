@@ -12,6 +12,7 @@ const QString strParagraph = QStringLiteral("p");
 const QString strpPr = QStringLiteral("pPr");
 const QString strRun = QStringLiteral("r");
 const QString strText = QStringLiteral("t");
+const QString strfldSimple = QStringLiteral("fldSimple");
 
 DocxXmlReader::DocxXmlReader(QIODevice *device)
 {
@@ -103,7 +104,10 @@ void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
     while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
            && m_xmlReader.name().toString() != markName)
     {
-        readCommonMark(parent);
+        if (m_xmlReader.name() == strfldSimple)
+            readfldSimpleMark(parent);
+        else
+            readCommonMark(parent);
         readNextMark();
     }
 }
@@ -188,6 +192,31 @@ void DocxXmlReader::readCommonMark(ITagElement *parent)
     }
 
     readCommonMark(parent);
+}
+
+void DocxXmlReader::readfldSimpleMark(ITagElement *parent)
+{
+    TagElement *rele = new TagElement(QStringLiteral("w:r"));
+    TagElement *wele = new TagElement(QStringLiteral("w:t"));
+    rele->addChild(wele);
+
+    for (;m_xmlReader.readNext();) {
+        if (m_xmlReader.name().toString() == strText) {
+
+            QString contentStr = m_xmlReader.readElementText().trimmed() + QStringLiteral("new NEW NEW");
+            wele->setCharaters(contentStr);
+
+            parent->addChild(rele);
+        }
+
+        if (isEndElement(strfldSimple)) {
+            break;
+        }
+    }
+    if (!wele->haveCharaters()) {
+        delete rele;
+        delete wele;
+    }
 }
 
 bool DocxXmlReader::isEndElement(const QString &markName)

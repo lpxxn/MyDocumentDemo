@@ -62,6 +62,7 @@ public:
     void remoevChild(ISaveToXml *child);
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     TagElementIterator createIterator() const;
+    bool haveCharaters() const;
 
 private:
     QString m_tagName;
