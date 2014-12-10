@@ -15,7 +15,7 @@ public:
     void readStartElement();
     void readStartElement(DocxParagraph * parent);
 
-    void readPMark(DocxParagraph *parent);
+    //void readPMark(DocxParagraph *parent);
     void readMark(ITagElement *parent, const QString &markName);
     //void readRunMark(ITagElement *parent);
     void readCommonMark(ITagElement *parent);

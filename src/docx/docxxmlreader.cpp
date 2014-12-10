@@ -38,8 +38,8 @@ void DocxXmlReader::readStartElement()
             //            if (m_xmlReader.isCharacters() && !m_xmlReader.isWhitespace()) {
             //                para->addTextChild(m_xmlReader.text());
             //            }
-            readPMark(para);
-            //readMark(para, strParagraph);
+            //readPMark(para);
+            readMark(para, strParagraph);
             m_paragraphs.append(para);
         } else {
             TagElement *ele = new TagElement(elementName());
@@ -64,33 +64,33 @@ void DocxXmlReader::readStartElement(DocxParagraph *parent)
     }
 }
 
-void DocxXmlReader::readPMark(DocxParagraph *parent)
-{
-    qDebug() << "enter element  : " << m_xmlReader.name().toString();
-    if (m_xmlReader.name().toString() != strParagraph)
-        return;
+//void DocxXmlReader::readPMark(DocxParagraph *parent)
+//{
+//    qDebug() << "enter element  : " << m_xmlReader.name().toString();
+//    if (m_xmlReader.name().toString() != strParagraph)
+//        return;
 
-    // p paragraph
+//    // p paragraph
 
-    readNextMark();
-    // style Property
-    if (m_xmlReader.name() == strpPr) {
-        TagElement *eleStyle = new TagElement(elementName());
-        addMarketAtributes(eleStyle);
-        readMark(eleStyle, strpPr);
-        //readCommonMark(eleStyle);
-        parent->addStyleProperty(eleStyle);
-        readNextMark();
-    }
+//    readNextMark();
+//    // style Property
+//    if (m_xmlReader.name() == strpPr) {
+//        TagElement *eleStyle = new TagElement(elementName());
+//        addMarketAtributes(eleStyle);
+//        readMark(eleStyle, strpPr);
+//        //readCommonMark(eleStyle);
+//        parent->addStyleProperty(eleStyle);
+//        readNextMark();
+//    }
 
-    // p content element
-    while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
-           && m_xmlReader.name().toString() != strParagraph)
-    {
-        readCommonMark(parent);
-        readNextMark();
-    }
-}
+//    // p content element
+//    while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
+//           && m_xmlReader.name().toString() != strParagraph)
+//    {
+//        readCommonMark(parent);
+//        readNextMark();
+//    }
+//}
 
 void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
 {
