@@ -168,6 +168,7 @@ void DocxXmlReader::readCommonMark(ITagElement *parent)
     QString markName = m_xmlReader.name().toString();
     if (markName.isEmpty() || m_xmlReader.tokenType() ==  QXmlStreamReader::EndElement)
         return;
+
     if (m_xmlReader.name() == strfldSimple)
         readfldSimpleMark(parent);
     else {
@@ -211,7 +212,7 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent)
 
     for (;m_xmlReader.readNext();) {
         if (m_xmlReader.name().toString() == strText) {
-
+            qDebug() << m_xmlReader.text();
             QString contentStr = m_xmlReader.readElementText().trimmed() + QStringLiteral("new NEW NEW");
             wele->setCharaters(contentStr);
 
