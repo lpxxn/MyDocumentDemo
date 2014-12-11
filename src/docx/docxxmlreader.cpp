@@ -66,34 +66,6 @@ void DocxXmlReader::readStartElement(DocxParagraph *parent)
     }
 }
 
-//void DocxXmlReader::readPMark(DocxParagraph *parent)
-//{
-//    qDebug() << "enter element  : " << m_xmlReader.name().toString();
-//    if (m_xmlReader.name().toString() != strParagraph)
-//        return;
-
-//    // p paragraph
-
-//    readNextMark();
-//    // style Property
-//    if (m_xmlReader.name() == strpPr) {
-//        TagElement *eleStyle = new TagElement(elementName());
-//        addMarketAtributes(eleStyle);
-//        readMark(eleStyle, strpPr);
-//        //readCommonMark(eleStyle);
-//        parent->addStyleProperty(eleStyle);
-//        readNextMark();
-//    }
-
-//    // p content element
-//    while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
-//           && m_xmlReader.name().toString() != strParagraph)
-//    {
-//        readCommonMark(parent);
-//        readNextMark();
-//    }
-//}
-
 void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
 {
     qDebug() << "enter element  : " << m_xmlReader.name().toString();
@@ -112,49 +84,6 @@ void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
         readNextMark();
     }
 }
-
-
-
-//void DocxXmlReader::readRunMark(ITagElement *parent)
-//{
-//    QString strName = m_xmlReader.name().toString();
-//    if (strName.isEmpty())
-//        return;
-//    TagElement *run = new TagElement(elementName());
-//    addMarketAtributes(run);
-
-//    if (strName == strText) {
-//        QString contentStr = m_xmlReader.readElementText().trimmed();
-//        run->setCharaters(contentStr);
-//        while (m_xmlReader.tokenType() == QXmlStreamReader::EndElement) {
-//            if (m_xmlReader.name().toString() == strRun) {
-//                parent->addChild(run);
-//                readNextMark();
-//                return;
-//            }
-//            readNextMark();
-//            if (m_xmlReader.tokenType() == QXmlStreamReader::StartElement || m_xmlReader.tokenType() == QXmlStreamReader::Characters)
-//                break;
-//        }
-//    }
-
-//    readNextMark();
-//    readCommonMark(run);
-
-//    parent->addChild(run);
-
-//    readNextMark();
-//    while (m_xmlReader.tokenType() == QXmlStreamReader::EndElement) {
-//        if (m_xmlReader.name().toString() == strRun) {
-//            readNextMark();
-//            return;
-//        }
-//        readNextMark();
-//        if (m_xmlReader.tokenType() == QXmlStreamReader::StartElement || m_xmlReader.tokenType() == QXmlStreamReader::Characters)
-//            break;
-//    }
-//    readRunMark(run);
-//}
 
 void DocxXmlReader::readCommonMark(ITagElement *parent)
 {
@@ -235,26 +164,6 @@ bool DocxXmlReader::isEndElement(const QString &markName)
     }
     return false;
 }
-
-
-/*!
- * \brief text mark
- *
- * <w:t>
- * \param parent
- */
-//void DocxXmlReader::readTMark(TagElement *parent)
-//{
-
-//}
-
-//void DocxXmlReader::readCharactersMark(ITagElement *parent)
-//{
-//    TagElement *chara =  new TagElement(elementName());
-//    addMarketAtributes(chara);
-//    chara->setCharaters(m_xmlReader.text().toString());
-//    parent->addChild(chara);
-//}
 
 /*!
  * \brief add property

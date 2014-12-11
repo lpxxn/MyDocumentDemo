@@ -15,14 +15,11 @@ public:
     void readStartElement();
     void readStartElement(DocxParagraph * parent);
 
-    //void readPMark(DocxParagraph *parent);
     void readMark(ITagElement *parent, const QString &markName);
-    //void readRunMark(ITagElement *parent);
+
     void readCommonMark(ITagElement *parent);
     void readfldSimpleMark(ITagElement* parent);
-    //void readTMark(TagElement *parent);
 
-    //void readCharactersMark(ITagElement *parent);
     QString elementName() const;
     QByteArray saveToXmlData();
     void saveElement(QXmlStreamWriter *writer);
