@@ -4,6 +4,7 @@
 
 namespace TDocx
 {
+const QString strStyle = QStringLiteral("w:style");
 // begin StyleTagElement
 StyleTagElement::StyleTagElement(StyleType type, const QString &styleId)
     : m_type(type), m_styleId(styleId)
@@ -32,7 +33,7 @@ void StyleTagElement::remoevChild(ISaveToXml *child)
 
 void StyleTagElement::saveToXmlElement(QXmlStreamWriter *writer) const
 {
-    writer->writeStartElement("w:style");
+    writer->writeStartElement(strStyle);
     writer->writeAttribute(QStringLiteral("w:type"), convertType(m_type));
     writer->writeAttribute(QStringLiteral("w:styleId"), m_styleId);
     if (m_properties.count() > 0)
@@ -50,6 +51,11 @@ void StyleTagElement::saveToXmlElement(QXmlStreamWriter *writer) const
 StyleTagIterator StyleTagElement::createIterator() const
 {
     return StyleTagIterator(this);
+}
+
+QString StyleTagElement::name() const
+{
+    return strStyle;
 }
 
 StyleTagElement::~StyleTagElement()

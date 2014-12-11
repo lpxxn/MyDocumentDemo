@@ -64,6 +64,11 @@ QString AbsHeading::headId() const
     return QString("Heading%1").arg(QString::number((int)headLevel()));
 }
 
+QString AbsHeading::name() const
+{
+    return headId();
+}
+
 
 
 // Heading1

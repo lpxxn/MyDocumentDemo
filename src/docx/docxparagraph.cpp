@@ -7,6 +7,7 @@
 
 namespace TDocx
 {
+const QString strP = QStringLiteral("w:p");
 
 QString runAlignmentToString(const RunAlignment &format)
 {
@@ -86,7 +87,7 @@ void DocxParagraph::addRunChild(ISaveToXml *child)
 
 void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const
 {
-    writer->writeStartElement(QStringLiteral("w:p"));
+    writer->writeStartElement(strP);
     writer->writeAttribute(QStringLiteral("w:rsidR"), ComDataFun::hexNumber());
 
     for (const pairValue &att : m_properties) {
@@ -117,6 +118,11 @@ DocxParagraph::~DocxParagraph()
         delete ele;
     }
     m_childs.clear();
+}
+
+QString DocxParagraph::name() const
+{
+    return strP;
 }
 
 void DocxParagraph::addStyleProperty(TagElement *element)

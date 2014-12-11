@@ -30,7 +30,7 @@ class ITagElement : public ISaveToXml
 public:
     virtual void addProperty(QString name, QString value) = 0;
     virtual ~ITagElement() {}
-
+    virtual QString name() const = 0;
     virtual void addChild(ISaveToXml *child) = 0;
     virtual void remoevChild(ISaveToXml *child) = 0;
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const = 0;
@@ -38,7 +38,7 @@ public:
 
 class TagElementIterator : public ITagIterator<ISaveToXml>
 {
-public:
+public:    
     TagElementIterator(const TagElement *element);
     bool hasNext() const;
     ISaveToXml *next() const;
@@ -60,7 +60,7 @@ public:
 
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);
-    void saveToXmlElement(QXmlStreamWriter *writer) const;
+    virtual void saveToXmlElement(QXmlStreamWriter *writer) const;
     TagElementIterator createIterator() const;
     bool haveCharaters() const;
 

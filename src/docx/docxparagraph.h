@@ -39,6 +39,7 @@ public:
 
     virtual ~DocxParagraph();
 
+    virtual QString name() const;
     void addStyleProperty(TagElement *element);    
     ParagraphTagIterator createIterator() const;
     void setAlignment(const RunAlignment &format);

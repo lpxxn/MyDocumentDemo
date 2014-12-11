@@ -2,12 +2,33 @@
 #define DOCXXMLREADER_H
 #include "docx_global.h"
 #include "docxparagraph.h"
-
+#include "mergetable.h"
 #include <QXmlStreamReader>
-
 
 namespace TDocx
 {
+class DocxXmlReader;
+class TableMergeInfo : TagElement
+{
+public:
+    TableMergeInfo();
+    TableMergeInfo(DocxXmlReader *xmlReader, ITagElement *parent =  nullptr);
+    void setParent(TagElement *parent);
+    QString tableName() const;
+    void setTableName(const QString &name);
+    void setEndTableMark();
+    void clearInfo();
+    bool isValid();
+    void appendMarks(const QString markName);
+    void saveToXmlElement(QXmlStreamWriter *writer) const;
+
+private:
+    QStringList m_marks;
+    QString m_tableName;
+    ITagElement *m_parent;
+    DocxXmlReader *m_xmlReader;
+};
+
 class DOCX_EXPORT DocxXmlReader
 {
 public:
@@ -17,8 +38,8 @@ public:
 
     void readMark(ITagElement *parent, const QString &markName);
 
-    void readCommonMark(ITagElement *parent);
-    void readfldSimpleMark(ITagElement* parent);
+    void readCommonMark(ITagElement *parent, ITagElement *preParent = nullptr);
+    void readfldSimpleMark(ITagElement* parent, ITagElement *preParent = nullptr);
 
     QString elementName() const;
     QByteArray saveToXmlData();
@@ -35,7 +56,15 @@ private:
 private:
     QList<ITagElement *> m_paragraphs;
     QXmlStreamReader m_xmlReader;
+    TableMergeInfo m_tableMergeInfo;
+    MergeTable *m_table;
+    QMap<QString, QString> m_singleEles;
+    friend class TableMergeInfo;
+
 };
+
+
+
 }
 
 #endif // DOCXXMLREADER_H

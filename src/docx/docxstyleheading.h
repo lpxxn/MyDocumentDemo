@@ -31,6 +31,7 @@ public:
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);
     QString headId() const;
+    QString name() const;
 
     virtual ITagElement* pPrElement() = 0;
     virtual ITagElement* rPrElement() = 0;

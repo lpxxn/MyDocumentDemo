@@ -4,6 +4,7 @@
 
 namespace TDocx
 {
+const QString strPrp = QStringLiteral("w:pPr");
 
 ParPropertyIterator::ParPropertyIterator(const DocxParagraphProperty *paragraph)
     : m_paragraph(paragraph), m_currentIndex(0)
@@ -40,6 +41,11 @@ DocxParagraphProperty::~DocxParagraphProperty()
     m_childs.clear();
 }
 
+QString DocxParagraphProperty::name() const
+{
+    return strPrp;
+}
+
 void DocxParagraphProperty::addProperty(QString name, QString value)
 {
     m_properties.append(pairValue(name, value));
@@ -63,7 +69,7 @@ void DocxParagraphProperty::saveToXmlElement(QXmlStreamWriter *writer) const
 {
     if (m_childs.isEmpty())
         return;
-    writer->writeStartElement("w:pPr");
+    writer->writeStartElement(strPrp);
     for (const pairValue &att : m_properties) {
         writer->writeAttribute(att.first, att.second);
     }
