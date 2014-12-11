@@ -35,8 +35,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
-
+Icon
 
 # Thumbnails
 ._*
@@ -87,6 +86,8 @@ lib/MyDocx.pdb
 *.exp
 *.ilk
 MyDocumentDemo.pro.user
+*.docx
+*.doc
 MyDocumentDemo.pro.user
 *.bak
 *.user
