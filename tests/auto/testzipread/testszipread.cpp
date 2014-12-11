@@ -41,7 +41,9 @@ private Q_SLOTS:
 
 TestZipDemo::TestZipDemo()
 {
-    QFile file("://document.xml");
+    //
+    //QFile file("://document.xml");
+    QFile file("://mergedocument .xml");
     file.open(QIODevice::ReadOnly);
     DocxXmlReader xmlReader(&file);
     xmlReader.readStartElement();

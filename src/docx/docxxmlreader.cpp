@@ -32,6 +32,12 @@ void DocxXmlReader::readStartElement()
         }
         qDebug() << " out line name " << m_xmlReader.name();
         if (m_xmlReader.name() == QStringLiteral("tbl")){
+            TagElement *ele = new TagElement(elementName());
+            addMarketAtributes(ele);
+            readMark(ele, m_xmlReader.name().toString());
+            //readCommonMark(ele);
+            //m_xmlReader.readNextStartElement();
+            m_paragraphs.append(ele);
             //DocxTable table = new DocxTable()
         } else if (m_xmlReader.name().toString() == strParagraph) {
             DocxParagraph *para = new DocxParagraph();
@@ -46,7 +52,7 @@ void DocxXmlReader::readStartElement()
             TagElement *ele = new TagElement(elementName());
             addMarketAtributes(ele);
             readMark(ele, m_xmlReader.name().toString());
-            readCommonMark(ele);
+            //readCommonMark(ele);
             //m_xmlReader.readNextStartElement();
             m_paragraphs.append(ele);
         }
@@ -162,35 +168,38 @@ void DocxXmlReader::readCommonMark(ITagElement *parent)
     QString markName = m_xmlReader.name().toString();
     if (markName.isEmpty() || m_xmlReader.tokenType() ==  QXmlStreamReader::EndElement)
         return;
+    if (m_xmlReader.name() == strfldSimple)
+        readfldSimpleMark(parent);
+    else {
 
-    TagElement *child = new TagElement(elementName());
-    addMarketAtributes(child);
-    parent->addChild(child);
+        TagElement *child = new TagElement(elementName());
+        addMarketAtributes(child);
+        parent->addChild(child);
 
 
-    if (m_xmlReader.name().toString() == strText) {
+        if (m_xmlReader.name().toString() == strText) {
 
-        QString contentStr = m_xmlReader.readElementText().trimmed();
-        child->setCharaters(contentStr);
+            QString contentStr = m_xmlReader.readElementText().trimmed();
+            child->setCharaters(contentStr);
+
+            if (isEndElement(markName)) {
+                return;
+            }
+        }
+
+        readNextMark();
+        if (isEndElement(markName))
+            return;
+
+        while (m_xmlReader.tokenType() == QXmlStreamReader::StartElement || m_xmlReader.tokenType() == QXmlStreamReader::Characters) {
+            readCommonMark(child);
+            readNextMark();
+        }
 
         if (isEndElement(markName)) {
             return;
         }
     }
-
-    readNextMark();
-    if (isEndElement(markName))
-        return;
-
-    while (m_xmlReader.tokenType() == QXmlStreamReader::StartElement || m_xmlReader.tokenType() == QXmlStreamReader::Characters) {
-        readCommonMark(child);
-        readNextMark();
-    }
-
-    if (isEndElement(markName)) {
-        return;
-    }
-
     readCommonMark(parent);
 }
 

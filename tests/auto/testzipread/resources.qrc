@@ -7,5 +7,6 @@
         <file>testDoc.zip</file>
         <file>merge.zip</file>
         <file>document.xml</file>
+        <file>mergedocument .xml</file>
     </qresource>
 </RCC>
