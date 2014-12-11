@@ -91,3 +91,6 @@ MyDocumentDemo.pro.user
 MyDocumentDemo.pro.user
 *.bak
 *.user
+mydocumentdemo.pro.user.3.2-pre1
+bin/DEBUG/loadDocument.zip
+bin/DEBUG/context.zip

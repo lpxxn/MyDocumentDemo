@@ -36,16 +36,11 @@ void DocxXmlReader::readStartElement()
             addMarketAtributes(ele);
             readMark(ele, m_xmlReader.name().toString());
             //readCommonMark(ele);
-            //m_xmlReader.readNextStartElement();
-            m_paragraphs.append(ele);
-            //DocxTable table = new DocxTable()
+
+            m_paragraphs.append(ele);            
         } else if (m_xmlReader.name().toString() == strParagraph) {
             DocxParagraph *para = new DocxParagraph();
-            addMarketAtributes(para);
-            //            if (m_xmlReader.isCharacters() && !m_xmlReader.isWhitespace()) {
-            //                para->addTextChild(m_xmlReader.text());
-            //            }
-            //readPMark(para);
+            addMarketAtributes(para);            
             readMark(para, strParagraph);
             m_paragraphs.append(para);
         } else {
