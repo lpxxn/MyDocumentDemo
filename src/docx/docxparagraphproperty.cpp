@@ -65,20 +65,28 @@ void DocxParagraphProperty::remoevChild(TDocx::ISaveToXml *child)
     }
 }
 
+void DocxParagraphProperty::setIsRead(bool isread)
+{
+    m_isread = isread;
+}
+
 void DocxParagraphProperty::saveToXmlElement(QXmlStreamWriter *writer) const
 {
     if (m_childs.isEmpty())
         return;
-    writer->writeStartElement(strPrp);
-    for (const pairValue &att : m_properties) {
-        writer->writeAttribute(att.first, att.second);
+    if (!m_isread) {
+        writer->writeStartElement(strPrp);
+        for (const pairValue &att : m_properties) {
+            writer->writeAttribute(att.first, att.second);
+        }
     }
     ParPropertyIterator iter = createIterator();
     while(iter.hasNext()) {
         ISaveToXml *e = iter.next();
         e->saveToXmlElement(writer);
     }
-    writer->writeEndElement();
+    if (!m_isread)
+        writer->writeEndElement();
 }
 
 ParPropertyIterator DocxParagraphProperty::createIterator() const

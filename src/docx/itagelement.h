@@ -59,6 +59,7 @@ public:
     virtual ~TagElement();
 
     void addChild(ISaveToXml *child);
+    ITagElement* parent();
     void remoevChild(ISaveToXml *child);
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const;
     TagElementIterator createIterator() const;
@@ -69,7 +70,7 @@ private:
     QString m_charaters;
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
-    QList<ISaveToXml *> m_childs;
+    QList<ISaveToXml *> m_childs;    
     friend class TagElementIterator;
 
 };

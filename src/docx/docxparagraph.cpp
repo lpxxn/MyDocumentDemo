@@ -51,6 +51,11 @@ void DocxParagraph::addChild(TDocx::ISaveToXml *child)
     m_childs.append(child);
 }
 
+void DocxParagraph::setIsRead(bool isread)
+{
+    m_isread = isread;
+}
+
 void DocxParagraph::remoevChild(ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
@@ -127,7 +132,13 @@ QString DocxParagraph::name() const
 
 void DocxParagraph::addStyleProperty(TagElement *element)
 {
+    m_property.setIsRead(m_isread);
     m_property.addChild(element);
+}
+
+int DocxParagraph::childCount() const
+{
+    return m_childs.size();
 }
 
 ParagraphTagIterator DocxParagraph::createIterator() const

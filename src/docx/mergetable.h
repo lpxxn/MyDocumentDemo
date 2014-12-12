@@ -33,6 +33,9 @@ public:
     QString value(int col, int row) const;
     void addRow(const std::initializer_list<QString> &cols);
     int rowCount();
+
+    ~MergeTable();
+
 private:
     QVector<MergeTableCol*> m_rows;
     QString m_tableName;

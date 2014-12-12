@@ -2,6 +2,8 @@
 #include "docxtable.h"
 #include "itagelement.h"
 #include "comdatafun.h"
+#include "docxparagraph.h"
+
 #include <QBuffer>
 #include <QRegExp>
 #include <QDebug>
@@ -43,22 +45,26 @@ void DocxXmlReader::readStartElement()
         if (m_xmlReader.name() == QStringLiteral("tbl")){
             TagElement *ele = new TagElement(elementName());
             addMarketAtributes(ele);
+            m_paragraphs.append(ele);
             readMark(ele, m_xmlReader.name().toString());
             //readCommonMark(ele);
 
-            m_paragraphs.append(ele);
+
         } else if (m_xmlReader.name().toString() == strParagraph) {
             DocxParagraph *para = new DocxParagraph();
-            addMarketAtributes(para);
-            readMark(para, strParagraph);
+            para->setIsRead(true);
             m_paragraphs.append(para);
+            addMarketAtributes(para);
+            //readMark(para, strParagraph);
+            readPeleMark(para, strParagraph);
         } else {
             TagElement *ele = new TagElement(elementName());
             addMarketAtributes(ele);
+            m_paragraphs.append(ele);
             readMark(ele, m_xmlReader.name().toString());
             //readCommonMark(ele);
             //m_xmlReader.readNextStartElement();
-            m_paragraphs.append(ele);
+
         }
         qDebug() << " out line name " << m_xmlReader.name() << " type " << m_xmlReader.tokenString();
         if (m_xmlReader.tokenType() != QXmlStreamReader::StartElement)
@@ -86,10 +92,41 @@ void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
     while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
            && m_xmlReader.name().toString() != markName)
     {
+
         if (m_xmlReader.name() == strfldSimple)
             readfldSimpleMark(parent);
         else
-            readCommonMark(parent);
+            readCommonMark(parent, parent);
+        readNextMark();
+    }
+}
+
+void DocxXmlReader::readPeleMark(DocxParagraph *parent, const QString &markName)
+{
+    qDebug() << "enter element  : " << m_xmlReader.name().toString();
+    if (m_xmlReader.name().toString() != markName)
+        return;
+
+    readNextMark();
+
+    while (m_xmlReader.tokenType() != QXmlStreamReader::EndElement
+           && m_xmlReader.name().toString() != markName)
+    {
+        // property
+        if (m_xmlReader.name() == strpPr) {
+            TagElement *eleStyle = new TagElement(elementName());
+            addMarketAtributes(eleStyle);
+
+            readMark(eleStyle, strpPr);
+            //readCommonMark(eleStyle);
+            parent->addStyleProperty(eleStyle);
+            readNextMark();
+        }
+
+        if (m_xmlReader.name() == strfldSimple)
+            readfldSimpleMark(parent);
+        else
+            readCommonMark(parent, parent);
         readNextMark();
     }
 }
@@ -122,8 +159,9 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
         if (isEndElement(markName))
             return;
 
-        while (m_xmlReader.tokenType() == QXmlStreamReader::StartElement || m_xmlReader.tokenType() == QXmlStreamReader::Characters) {
-            readCommonMark(child, parent);
+        while (m_xmlReader.tokenType() == QXmlStreamReader::StartElement
+               || m_xmlReader.tokenType() == QXmlStreamReader::Characters) {
+            readCommonMark(child, preParent);
             readNextMark();
         }
 
@@ -131,14 +169,15 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
             return;
         }
     }
-    readCommonMark(parent);
+    readCommonMark(parent, preParent);
 }
 // replace element method
 
 
 void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParent)
 {
-
+    if (preParent != nullptr)
+        qDebug() << " parent name " << preParent->name();
     QString contentStr = m_xmlReader.readElementText(QXmlStreamReader::IncludeChildElements);
     // capture string
     QRegExp reg(QStringLiteral("[a-zA-Z]+\:*[a-zA-Z]*"));
@@ -161,7 +200,7 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
         return;
     }
     if (m_tableMergeInfo.isValid()) {
-        m_tableMergeInfo.appendMarks(contentStr);
+        m_tableMergeInfo.appendMarks(contentStr, parent);
         return;
     }
 
@@ -230,6 +269,8 @@ bool DocxXmlReader::isEndElement(const QString &markName)
 void DocxXmlReader::addMarketAtributes(DocxParagraph *para)
 {
     for (const QXmlStreamAttribute &att : m_xmlReader.attributes()) {
+        if (att.name().toString() ==  QStringLiteral("rsidR"))
+            continue;
         QString attName = att.prefix().isEmpty() ? att.name().toString() : att.prefix().toString() + strcolon + att.name().toString();
         para->addProperty(attName, att.value().toString());
     }
@@ -296,8 +337,11 @@ void DocxXmlReader::saveElement(QXmlStreamWriter *writer)
         ele->saveToXmlElement(writer);
 }
 
+//********************************
+// begin TableMergeInfo
+//********************************
+
 TableMergeInfo::TableMergeInfo()
-    : TagElement(QStringLiteral("w:t"))
 {
 
 }
@@ -324,32 +368,60 @@ void TableMergeInfo::setTableName(const QString &name)
     m_tableName = name;
 }
 
+TagElement * TableMergeInfo::mergeParagraphElement(QString str, int rowIndex, QList<QString> cols)
+{
+    TagElement *pele = new TagElement("w:p");
+
+    pele->addChild(mergeRunElement(str, rowIndex, cols));
+
+    return pele;
+}
+
+TagElement *TableMergeInfo::mergeRunElement(QString str, int rowIndex, QList<QString> cols)
+{
+    TagElement *rele = new TagElement("w:r");
+    TagElement *tele = new TagElement("w:t");
+    rele->addChild(tele);
+    int colIndex = cols.indexOf(str);
+    if (colIndex > -1) {
+        QString str = m_xmlReader->m_table->value(colIndex, rowIndex);
+        tele->setCharaters(str);
+    } else {
+        tele->setCharaters("aaa");
+    }
+    return rele;
+}
+
+TagElement * TableMergeInfo::mergeTableElement(int rowIndex, QList<QString> cols)
+{
+    TagElement *rowEle = new TagElement("w:tr");
+    for (const QString &str : m_marks) {
+        TagElement *cEle = new TagElement("w:tc");
+        cEle->addChild(mergeParagraphElement(str, rowIndex, cols));
+
+        rowEle->addChild(cEle);
+    }
+    return rowEle;
+}
+
+
 void TableMergeInfo::setEndTableMark()
 {
     if (!isValid())
         return;
     QList<QString> cols = m_xmlReader->m_table->cols();
-    for (int rowIndex = 0; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
-        TagElement *rowEle = new TagElement("w:tc");
-        for (const QString &str : m_marks) {
-            TagElement *pele = new TagElement("w:p");
-            TagElement *rele = new TagElement("w:r");
-            pele->addChild(rele);
-            TagElement *tele = new TagElement("w:t");
-            rele->addChild(tele);
-            int colIndex = cols.indexOf(str);
-            if (colIndex > -1) {
-                QString str = m_xmlReader->m_table->value(colIndex, rowIndex);
-                tele->setCharaters(str);
-            } else {
-                tele->setCharaters("aaa");
-            }
-          rowEle->addChild(pele);
+    if (m_parent != nullptr && m_parent->name().contains("tbl", Qt::CaseInsensitive)) {
+        for (int rowIndex = 1; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
+            TagElement *ele = mergeTableElement(rowIndex, cols);
+            m_parent->addChild(ele);
         }
-
-        //ITagElement *lastEle = m_xmlReader->m_paragraphs.last();
-        //qDebug() << " name " << lastEle->name();
-        m_parent->addChild(rowEle);
+    } else {
+        // body add child
+        for (int rowIndex = 0; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
+            for (const QString &str : m_marks) {
+                m_xmlReader->m_paragraphs.append(mergeParagraphElement(str, rowIndex, cols));
+            }
+        }
     }
 }
 
@@ -363,15 +435,12 @@ bool TableMergeInfo::isValid()
     return !m_tableName.isEmpty();
 }
 
-void TableMergeInfo::appendMarks(const QString markName)
+void TableMergeInfo::appendMarks(const QString markName, ITagElement *parent)
 {
     m_marks.append(markName);
-}
-
-void TableMergeInfo::saveToXmlElement(QXmlStreamWriter *writer) const
-{
+    QList<QString> cols = m_xmlReader->m_table->cols();
+    parent->addChild(mergeRunElement(markName, 0, cols));
 
 }
-
 
 }

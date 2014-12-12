@@ -81,6 +81,11 @@ int MergeTable::rowCount()
     return m_rowCount;
 }
 
+MergeTable::~MergeTable()
+{
+    qDeleteAll(m_rows);
+}
+
 QList<QString> MergeTable::cols() const
 {
     return m_cols;

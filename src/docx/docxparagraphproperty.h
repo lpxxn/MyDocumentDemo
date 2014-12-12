@@ -31,6 +31,7 @@ public:
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
     void remoevChild(ISaveToXml *child);
+    void setIsRead(bool isread);
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     ParPropertyIterator createIterator() const;
 
@@ -38,6 +39,7 @@ private:
     typedef QPair<QString, QString> pairValue;
     QVector<pairValue> m_properties;
     QList<ISaveToXml*> m_childs;
+    bool m_isread = false;
     friend class ParPropertyIterator;
 };
 }

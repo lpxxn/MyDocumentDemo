@@ -8,7 +8,7 @@
 namespace TDocx
 {
 class DocxXmlReader;
-class TableMergeInfo : TagElement
+class TableMergeInfo
 {
 public:
     TableMergeInfo();
@@ -19,8 +19,11 @@ public:
     void setEndTableMark();
     void clearInfo();
     bool isValid();
-    void appendMarks(const QString markName);
-    void saveToXmlElement(QXmlStreamWriter *writer) const;
+    void appendMarks(const QString markName, ITagElement *parent);
+
+    TagElement *mergeTableElement(int rowIndex, QList<QString> cols);
+    TagElement *mergeParagraphElement(QString str, int rowIndex, QList<QString> cols);
+    TagElement *mergeRunElement(QString str, int rowIndex, QList<QString> cols);
 
 private:
     QStringList m_marks;
@@ -37,6 +40,7 @@ public:
     void readStartElement(DocxParagraph * parent);
 
     void readMark(ITagElement *parent, const QString &markName);
+    void readPeleMark(DocxParagraph *parent, const QString &markName);
 
     void readCommonMark(ITagElement *parent, ITagElement *preParent = nullptr);
     void readfldSimpleMark(ITagElement* parent, ITagElement *preParent = nullptr);
