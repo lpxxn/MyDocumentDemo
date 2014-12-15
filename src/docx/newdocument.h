@@ -19,6 +19,9 @@
 #include "docxnumbering.h"
 #include "docxmediafile.h"
 #include "footandheader.h"
+#include "mergetable.h"
+#include "docxxmlreader.h"
+#include "docxzipreader.h"
 
 #include <QString>
 #include <QMap>
@@ -71,7 +74,7 @@ protected:
 /*!
  * \brief create new document from scratch
  */
-class NewDocument : public AbstractDocument
+class DOCX_EXPORT NewDocument : public AbstractDocument
 {
 public:
     NewDocument();   
@@ -122,13 +125,14 @@ private:
 /*!
  * \brief Load a Exist Document
  */
-class ExistDocument : public AbstractDocument
+class DOCX_EXPORT ExistDocument : public AbstractDocument
 {
 public:
     ExistDocument(const QString &docxName);
     void saveToXmlFile(QIODevice *device) const;
     bool loadFromXmlFile(QIODevice *device);
 
+    bool saveAs(const QString &name);
     bool saveAs(QIODevice *device);
 
     void writeln();
@@ -144,8 +148,14 @@ public:
     void insertTable(DocxTable *table);
     void insertSectionFooterAndHeader(std::initializer_list<FootAndHeader *> hfs, bool restarNum = false);
 
-private:
+    void merge();
+    void addSignalMergeElement(const QString &name, const QString &value);
+    void addMergeTable(MergeTable *table);
 
+private:    
+    // m_zipReader;
+    DocxXmlReader *m_xmlReader;
+    QMap<QString, QByteArray> m_otherFiles;
 };
 
 }

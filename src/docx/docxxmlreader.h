@@ -36,8 +36,9 @@ class DOCX_EXPORT DocxXmlReader
 {
 public:
     DocxXmlReader(QIODevice *device);
+    DocxXmlReader(const QByteArray &data);
     void readStartElement();
-    void readStartElement(DocxParagraph * parent);
+    //void readStartElement(DocxParagraph * parent);
 
     void readMark(ITagElement *parent, const QString &markName);
     void readPeleMark(DocxParagraph *parent, const QString &markName);
@@ -49,7 +50,8 @@ public:
     QString elementName() const;
     QByteArray saveToXmlData();
     void saveElement(QXmlStreamWriter *writer);
-
+    void addSignalMergeElement(const QString &name, const QString &value);
+    void addMergeTable(MergeTable *table);
     bool isEndElement(const QString &markName);
 
 private:
@@ -62,7 +64,7 @@ private:
     QList<ITagElement *> m_paragraphs;
     QXmlStreamReader m_xmlReader;
     TableMergeInfo m_tableMergeInfo;
-    MergeTable *m_table;
+    MergeTable *m_table = nullptr;
     QMap<QString, QString> m_singleEles;
     friend class TableMergeInfo;
 

@@ -33,6 +33,8 @@ public:
     TestZipDemo();
 
 private Q_SLOTS:
+    void readDocument();
+    void readDocumentXml();
     void loadTest();
     void testMerge();
     void read();
@@ -41,12 +43,37 @@ private Q_SLOTS:
 
 TestZipDemo::TestZipDemo()
 {
+
+}
+
+void TestZipDemo::readDocument()
+{
+    ExistDocument docx(QStringLiteral("://merge.zip"));
+
+    docx.addSignalMergeElement("name", "usa");
+    docx.addSignalMergeElement("liM", "testtesttesttesttest");
+
+    MergeTable *table1 = new MergeTable(QStringLiteral("table1"));
+    table1->addColumn({"name", "id", "age"});
+    table1->addRow({"zhangsan", "1", "20"});
+    table1->addRow({"lisi", "2", "30"});
+    table1->addRow({"wangwu", "3", "40"});
+    docx.addMergeTable(table1);
+    docx.merge();
+    docx.saveAs("MyMergeResult.docx");
+
+}
+
+void TestZipDemo::readDocumentXml()
+{
     //
     //QFile file("://document.xml");
     //QFile file("://mergedocument .xml");
     QFile file("://documentmergelist.xml");
     file.open(QIODevice::ReadOnly);
-    DocxXmlReader xmlReader(&file);
+
+    //DocxXmlReader xmlReader(&file);
+    DocxXmlReader xmlReader(file.readAll());
     xmlReader.readStartElement();
 
     QFile fileRead(QStringLiteral("loadDocument.zip"));

@@ -22,27 +22,40 @@ const QString strfldChar = QStringLiteral("fldChar");
 DocxXmlReader::DocxXmlReader(QIODevice *device)
 {
     m_xmlReader.setDevice(device);
-    m_table = new MergeTable(QStringLiteral("mytable"));
-    m_table->addColumn({"name", "id", "age"});
-    m_table->addRow({"zhangsan", "1", "20"});
-    m_table->addRow({"lisi", "2", "30"});
-    m_table->addRow({"wangwu", "3", "40"});
-    m_singleEles.insert("name", "usa");
-    m_singleEles.insert("liM", "testtesttesttesttest");
+//    m_table = new MergeTable(QStringLiteral("mytable"));
+//    m_table->addColumn({"name", "id", "age"});
+//    m_table->addRow({"zhangsan", "1", "20"});
+//    m_table->addRow({"lisi", "2", "30"});
+//    m_table->addRow({"wangwu", "3", "40"});
+//    m_singleEles.insert("name", "usa");
+    //    m_singleEles.insert("liM", "testtesttesttesttest");
 }
+
+DocxXmlReader::DocxXmlReader(const QByteArray &data)
+{
+    //m_xmlReader = QXmlStreamReader(data);
+    m_xmlReader.addData(data);
+    if (!m_table) {
+        qDebug() << "tab;eL";
+    }
+}
+
 
 
 void DocxXmlReader::readStartElement()
 {
     m_xmlReader.readNextStartElement();
     while (!m_xmlReader.isEndElement()) {
+        qDebug() << " out line name " << m_xmlReader.name();
         if (m_xmlReader.tokenType() == QXmlStreamReader::StartDocument
+                || m_xmlReader.tokenType() == QXmlStreamReader::Comment
+                || m_xmlReader.tokenType() == QXmlStreamReader::Invalid
                 || m_xmlReader.name() == QStringLiteral("body")
                 || m_xmlReader.name() == QStringLiteral("document")) {
             m_xmlReader.readNextStartElement();
             continue;
         }
-        qDebug() << " out line name " << m_xmlReader.name();
+
         if (m_xmlReader.name() == QStringLiteral("tbl")){
             TagElement *ele = new TagElement(elementName());
             addMarketAtributes(ele);
@@ -73,19 +86,19 @@ void DocxXmlReader::readStartElement()
     }
 }
 
-void DocxXmlReader::readStartElement(DocxParagraph *parent)
-{
-    m_xmlReader.readNextStartElement();
-    if (!m_xmlReader.isEndElement()) {
-        TagElement *child = new TagElement(elementName());
-        parent->addChild(child);
-    }
-}
+//void DocxXmlReader::readStartElement(DocxParagraph *parent)
+//{
+//    m_xmlReader.readNextStartElement();
+//    if (!m_xmlReader.isEndElement()) {
+//        TagElement *child = new TagElement(elementName());
+//        parent->addChild(child);
+//    }
+//}
 
 void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
 {
     qDebug() << "enter element  : " << m_xmlReader.name().toString();
-    if (m_xmlReader.name().toString() != markName)
+    if (m_xmlReader.name().toString() != markName || markName.isEmpty())
         return;
 
     readNextMark();
@@ -349,6 +362,16 @@ void DocxXmlReader::saveElement(QXmlStreamWriter *writer)
         ele->saveToXmlElement(writer);
 }
 
+void DocxXmlReader::addSignalMergeElement(const QString &name, const QString &value)
+{
+    m_singleEles.insert(name, value);
+}
+
+void DocxXmlReader::addMergeTable(MergeTable *table)
+{
+    m_table = table;
+}
+
 //********************************
 // begin TableMergeInfo
 //********************************
@@ -422,7 +445,10 @@ void TableMergeInfo::setEndTableMark()
 {
     if (!isValid())
         return;
+    if (!m_xmlReader->m_table)
+        return;
     QList<QString> cols = m_xmlReader->m_table->cols();
+
     if (m_parent != nullptr && m_parent->name().contains("tbl", Qt::CaseInsensitive)) {
         for (int rowIndex = 1; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
             TagElement *ele = mergeTableElement(rowIndex, cols);
@@ -457,8 +483,11 @@ bool TableMergeInfo::isValid()
 
 void TableMergeInfo::appendMarks(const QString markName, ITagElement *parent)
 {
+    if (!m_xmlReader->m_table)
+        return;
     m_marks.append(markName);
     QList<QString> cols = m_xmlReader->m_table->cols();
+
     parent->addChild(mergeRunElement(markName, 0, cols));
 
 }
