@@ -48,7 +48,8 @@ TestZipDemo::TestZipDemo()
 
 void TestZipDemo::readDocument()
 {
-    ExistDocument docx(QStringLiteral("://merge.zip"));
+    //ExistDocument docx(QStringLiteral("://merge.zip"));
+    ExistDocument docx(QStringLiteral("://Mergelist.zip"));
 
     docx.addSignalMergeElement("name", "usa");
     docx.addSignalMergeElement("liM", "testtesttesttesttest");
