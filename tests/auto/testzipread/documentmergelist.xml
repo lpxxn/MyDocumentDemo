@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14">
+	<w:body>
+		<w:p w:rsidR="003429DD" w:rsidRDefault="00305EB9">
+			<w:r>
+				<w:rPr>
+					<w:rFonts w:hint="eastAsia"/>
+				</w:rPr>
+				<w:t>这是一</w:t>
+			</w:r>
+			<w:r w:rsidR="008B283A">
+				<w:fldChar w:fldCharType="begin"/>
+			</w:r>
+			<w:r w:rsidR="008B283A">
+				<w:instrText xml:space="preserve"> MERGEFIELD  name  \* MERGEFORMAT </w:instrText>
+			</w:r>
+			<w:r w:rsidR="008B283A">
+				<w:fldChar w:fldCharType="separate"/>
+			</w:r>
+			<w:r>
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:t>«name»</w:t>
+			</w:r>
+			<w:r w:rsidR="008B283A">
+				<w:rPr>
+					<w:noProof/>
+				</w:rPr>
+				<w:fldChar w:fldCharType="end"/>
+			</w:r>
+			<w:r>
+				<w:rPr>
+					<w:rFonts w:hint="eastAsia"/>
+				</w:rPr>
+				<w:t>个</w:t>
+			</w:r>
+		</w:p>
+		<w:p w:rsidR="00B109F4" w:rsidRDefault="008B283A" w:rsidP="008B283A">
+			<w:pPr>
+				<w:pStyle w:val="a3"/>
+				<w:numPr>
+					<w:ilvl w:val="0"/>
+					<w:numId w:val="2"/>
+				</w:numPr>
+				<w:ind w:firstLineChars="0"/>
+			</w:pPr>
+			<w:fldSimple w:instr=" MERGEFIELD  TableStart:table1  \* MERGEFORMAT ">
+				<w:r>
+					<w:rPr>
+						<w:noProof/>
+					</w:rPr>
+					<w:t>«TableStart:table1»</w:t>
+				</w:r>
+			</w:fldSimple>
+			<w:fldSimple w:instr=" MERGEFIELD  name  \* MERGEFORMAT ">
+				<w:r>
+					<w:rPr>
+						<w:noProof/>
+					</w:rPr>
+					<w:t>«name»</w:t>
+				</w:r>
+			</w:fldSimple>
+			<w:fldSimple w:instr=" MERGEFIELD  TableEnd:table1  \* MERGEFORMAT ">
+				<w:r>
+					<w:rPr>
+						<w:noProof/>
+					</w:rPr>
+					<w:t>«TableEnd:table1»</w:t>
+				</w:r>
+			</w:fldSimple>
+			<w:bookmarkStart w:id="0" w:name="_GoBack"/>
+			<w:bookmarkEnd w:id="0"/>
+		</w:p>
+		<w:p w:rsidR="00401852" w:rsidRDefault="00401852" w:rsidP="00401852">
+			<w:r>
+				<w:rPr>
+					<w:rFonts w:hint="eastAsia"/>
+				</w:rPr>
+				<w:t>表格</w:t>
+			</w:r>
+		</w:p>
+		<w:tbl>
+			<w:tblPr>
+				<w:tblStyle w:val="a4"/>
+				<w:tblW w:w="0" w:type="auto"/>
+				<w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+			</w:tblPr>
+			<w:tblGrid>
+				<w:gridCol w:w="2840"/>
+				<w:gridCol w:w="2841"/>
+				<w:gridCol w:w="2841"/>
+			</w:tblGrid>
+			<w:tr w:rsidR="000A785C" w:rsidTr="000A785C">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="2840" w:type="dxa"/>
+					</w:tcPr>
+					<w:p w:rsidR="000A785C" w:rsidRDefault="008B283A" w:rsidP="00401852">
+						<w:r>
+							<w:fldChar w:fldCharType="begin"/>
+						</w:r>
+						<w:r>
+							<w:instrText xml:space="preserve"> MERGEFIELD  TableStart:table1  \* MERGEFORMAT </w:instrText>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="separate"/>
+						</w:r>
+						<w:r w:rsidR="000A785C">
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:t>«TableStart:table1»</w:t>
+						</w:r>
+						<w:r>
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:fldChar w:fldCharType="end"/>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="begin"/>
+						</w:r>
+						<w:r>
+							<w:instrText xml:space="preserve"> MERGEFIELD  id  \* MERGEFORMAT </w:instrText>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="separate"/>
+						</w:r>
+						<w:r w:rsidR="000A785C">
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:t>«id»</w:t>
+						</w:r>
+						<w:r>
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:fldChar w:fldCharType="end"/>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="2841" w:type="dxa"/>
+					</w:tcPr>
+					<w:p w:rsidR="000A785C" w:rsidRDefault="008B283A" w:rsidP="00401852">
+						<w:r>
+							<w:fldChar w:fldCharType="begin"/>
+						</w:r>
+						<w:r>
+							<w:instrText xml:space="preserve"> MERGEFIELD  No  \* MERGEFORMAT </w:instrText>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="separate"/>
+						</w:r>
+						<w:r w:rsidR="000A785C">
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:t>«No»</w:t>
+						</w:r>
+						<w:r>
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:fldChar w:fldCharType="end"/>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="2841" w:type="dxa"/>
+					</w:tcPr>
+					<w:p w:rsidR="000A785C" w:rsidRDefault="008B283A" w:rsidP="00401852">
+						<w:r>
+							<w:fldChar w:fldCharType="begin"/>
+						</w:r>
+						<w:r>
+							<w:instrText xml:space="preserve"> MERGEFIELD  Age  \* MERGEFORMAT </w:instrText>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="separate"/>
+						</w:r>
+						<w:r w:rsidR="000A785C">
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:t>«Age»</w:t>
+						</w:r>
+						<w:r>
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:fldChar w:fldCharType="end"/>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="begin"/>
+						</w:r>
+						<w:r>
+							<w:instrText xml:space="preserve"> MERGEFIELD  TableEnd:table1  \* MERGEFORMAT </w:instrText>
+						</w:r>
+						<w:r>
+							<w:fldChar w:fldCharType="separate"/>
+						</w:r>
+						<w:r w:rsidR="000A785C">
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:t>«TableEnd:table1»</w:t>
+						</w:r>
+						<w:r>
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:fldChar w:fldCharType="end"/>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+		</w:tbl>
+		<w:p w:rsidR="00401852" w:rsidRDefault="00401852" w:rsidP="00401852"/>
+		<w:sectPr w:rsidR="00401852">
+			<w:pgSz w:w="11906" w:h="16838"/>
+			<w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="851" w:footer="992" w:gutter="0"/>
+			<w:cols w:space="425"/>
+			<w:docGrid w:type="lines" w:linePitch="312"/>
+		</w:sectPr>
+	</w:body>
+</w:document>

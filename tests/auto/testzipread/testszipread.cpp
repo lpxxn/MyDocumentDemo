@@ -43,7 +43,8 @@ TestZipDemo::TestZipDemo()
 {
     //
     //QFile file("://document.xml");
-    QFile file("://mergedocument .xml");
+    //QFile file("://mergedocument .xml");
+    QFile file("://documentmergelist.xml");
     file.open(QIODevice::ReadOnly);
     DocxXmlReader xmlReader(&file);
     xmlReader.readStartElement();

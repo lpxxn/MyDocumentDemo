@@ -8,5 +8,6 @@
         <file>merge.zip</file>
         <file>document.xml</file>
         <file>mergedocument .xml</file>
+        <file>documentmergelist.xml</file>
     </qresource>
 </RCC>

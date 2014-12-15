@@ -382,7 +382,8 @@ TagElement *TableMergeInfo::mergeRunElement(QString str, int rowIndex, QList<QSt
     TagElement *rele = new TagElement("w:r");
     TagElement *tele = new TagElement("w:t");
     rele->addChild(tele);
-    int colIndex = cols.indexOf(str);
+
+    int colIndex = cols.indexOf(str.toUpper());
     if (colIndex > -1) {
         QString str = m_xmlReader->m_table->value(colIndex, rowIndex);
         tele->setCharaters(str);
@@ -415,11 +416,18 @@ void TableMergeInfo::setEndTableMark()
             TagElement *ele = mergeTableElement(rowIndex, cols);
             m_parent->addChild(ele);
         }
-    } else {
+    } else {        
+        DocxParagraph *paraP = static_cast<DocxParagraph*>(m_xmlReader->m_paragraphs.last());
+
         // body add child
         for (int rowIndex = 0; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
             for (const QString &str : m_marks) {
-                m_xmlReader->m_paragraphs.append(mergeParagraphElement(str, rowIndex, cols));
+                TagElement *ele = mergeParagraphElement(str, rowIndex, cols);
+                if (paraP != nullptr) {
+                    DocxParagraphProperty *pstyle = new DocxParagraphProperty(paraP->property());
+                    ele->insertChild(pstyle);
+                }
+                m_xmlReader->m_paragraphs.append(ele);
             }
         }
     }

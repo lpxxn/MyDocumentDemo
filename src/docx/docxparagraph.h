@@ -51,9 +51,12 @@ public:
     void addTextChild(const QString &text, const DocxFont &font = DocxFont());
     void addRunChild(ISaveToXml *child);
 
-protected:    
+    DocxParagraphProperty property() const;
+    void setProperty(const DocxParagraphProperty &property);
+
+protected:
     typedef QPair<QString, QString> pairValue;
-    QVector<pairValue> m_properties;        
+    QVector<pairValue> m_properties;
     DocxParagraphProperty m_property;
     QList<ISaveToXml *> m_childs;
     bool m_isread = false;

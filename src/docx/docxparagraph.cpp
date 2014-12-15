@@ -88,6 +88,16 @@ void DocxParagraph::addRunChild(ISaveToXml *child)
     rchild->addChild(child);
     addChild(rchild);
 }
+DocxParagraphProperty DocxParagraph::property() const
+{
+    return m_property;
+}
+
+void DocxParagraph::setProperty(const DocxParagraphProperty &property)
+{
+    m_property = property;
+}
+
 
 
 void DocxParagraph::saveToXmlElement(QXmlStreamWriter *writer) const

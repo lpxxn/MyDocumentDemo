@@ -59,6 +59,7 @@ public:
     virtual ~TagElement();
 
     void addChild(ISaveToXml *child);
+    void insertChild(ISaveToXml *child ,int index = 0);
     ITagElement* parent();
     void remoevChild(ISaveToXml *child);
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const;

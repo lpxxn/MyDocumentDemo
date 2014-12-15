@@ -45,7 +45,7 @@ void MergeTable::addColumn(const QString &colName)
 void MergeTable::addColumn(const std::initializer_list<QString> &cols)
 {
     for (const QString &str : cols) {
-        m_cols.append(str);
+        m_cols.append(str.toUpper());
         m_rows.append(new MergeTableCol());
     }
     m_colCount += cols.size();
