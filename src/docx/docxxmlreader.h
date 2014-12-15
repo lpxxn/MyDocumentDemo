@@ -43,6 +43,7 @@ public:
     void readPeleMark(DocxParagraph *parent, const QString &markName);
 
     void readCommonMark(ITagElement *parent, ITagElement *preParent = nullptr);
+    void readcomplesFieldsMark(ITagElement* parent, ITagElement *preParent = nullptr);
     void readfldSimpleMark(ITagElement* parent, ITagElement *preParent = nullptr);
 
     QString elementName() const;

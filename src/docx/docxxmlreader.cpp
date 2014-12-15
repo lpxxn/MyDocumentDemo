@@ -17,6 +17,7 @@ const QString strpPr = QStringLiteral("pPr");
 const QString strRun = QStringLiteral("r");
 const QString strText = QStringLiteral("t");
 const QString strfldSimple = QStringLiteral("fldSimple");
+const QString strfldChar = QStringLiteral("fldChar");
 
 DocxXmlReader::DocxXmlReader(QIODevice *device)
 {
@@ -138,8 +139,12 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
     QString markName = m_xmlReader.name().toString();
     if (markName.isEmpty() || m_xmlReader.tokenType() ==  QXmlStreamReader::EndElement)
         return;
-    if (m_xmlReader.name() == strfldSimple)
+    if (m_xmlReader.name() == strfldSimple) {
         readfldSimpleMark(parent, preParent);
+    }
+    else if (m_xmlReader.name() == strfldChar) {
+        readcomplesFieldsMark(parent, preParent);
+    }
     else {
         TagElement *child = new TagElement(elementName());
         addMarketAtributes(child);
@@ -171,9 +176,35 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
     }
     readCommonMark(parent, preParent);
 }
+
 // replace element method
 
+// w:fldChar
+//http://officeopenxml.com/WPfields.php
+void DocxXmlReader::readcomplesFieldsMark(ITagElement *parent, ITagElement *preParent)
+{
+    if (preParent != nullptr)
+        qDebug() << " parent name " << preParent->name();
+    // begin fldChar
+    //    QString strType = m_xmlReader.attributes().value(QStringLiteral("fldCharType")).toString();
+    //    qDebug() << "name " << m_xmlReader.name() << " Type " << strType;
+    if (m_xmlReader.name() == strfldChar)
+        for (const QXmlStreamAttribute &att : m_xmlReader.attributes()) {
+            if (att.name() == QStringLiteral("fldCharType") && att.value() == QStringLiteral("end")) {
+                readNextMark();
+                return;
+            }
 
+        }
+
+    if (m_xmlReader.name() == strText) {
+        readfldSimpleMark(parent, preParent);
+    }
+    readNextMark();
+    readcomplesFieldsMark(parent, preParent);
+}
+// w:fldSimple
+// http://officeopenxml.com/WPfields.php
 void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParent)
 {
     if (preParent != nullptr)
@@ -219,25 +250,6 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
             break;
         }
     }
-
-
-
-    //    for (;m_xmlReader.readNext();) {
-    //        if (m_xmlReader.name().toString() == strText) {
-    //            qDebug() << m_xmlReader.text() << "  name  " << m_xmlReader.name().toString();
-    //            QString contentStr = m_xmlReader.readElementText().trimmed();
-    //            qDebug() << contentStr;
-    //            contentStr += QStringLiteral("new NEW NEW");
-    //            wele->setCharaters(contentStr);
-
-    //            parent->addChild(rele);
-    //        }
-
-    //        if (isEndElement(strfldSimple)) {
-    //            break;
-    //        }
-    //    }
-
 
     if (!wele->haveCharaters()) {
         delete rele;
@@ -416,11 +428,11 @@ void TableMergeInfo::setEndTableMark()
             TagElement *ele = mergeTableElement(rowIndex, cols);
             m_parent->addChild(ele);
         }
-    } else {        
+    } else {
         DocxParagraph *paraP = static_cast<DocxParagraph*>(m_xmlReader->m_paragraphs.last());
 
         // body add child
-        for (int rowIndex = 0; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
+        for (int rowIndex = 1; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
             for (const QString &str : m_marks) {
                 TagElement *ele = mergeParagraphElement(str, rowIndex, cols);
                 if (paraP != nullptr) {
