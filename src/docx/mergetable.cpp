@@ -37,7 +37,7 @@ void MergeTable::setTableName(const QString &tableName)
 
 void MergeTable::addColumn(const QString &colName)
 {
-    m_cols.append(colName);
+    m_cols.append(colName.toUpper());
     m_rows.append(new MergeTableCol());
     m_colCount ++;
 }

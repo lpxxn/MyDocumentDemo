@@ -35,9 +35,6 @@ DocxXmlReader::DocxXmlReader(const QByteArray &data)
 {
     //m_xmlReader = QXmlStreamReader(data);
     m_xmlReader.addData(data);
-    if (!m_table) {
-        qDebug() << "tab;eL";
-    }
 }
 
 
@@ -224,7 +221,7 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
         qDebug() << " parent name " << preParent->name();
     QString contentStr = m_xmlReader.readElementText(QXmlStreamReader::IncludeChildElements);
     // capture string
-    QRegExp reg(QStringLiteral("[a-zA-Z]+\:*[a-zA-Z]*"));
+    QRegExp reg(QStringLiteral("[a-zA-Z0-9]+\:*[a-zA-Z0-9]*"));
     int pos = reg.indexIn(contentStr);
     if (pos < 0)
         return;
@@ -285,6 +282,12 @@ bool DocxXmlReader::isEndElement(const QString &markName)
             return false;
     }
     return false;
+}
+
+DocxXmlReader::~DocxXmlReader()
+{
+    qDeleteAll(m_paragraphs);
+    qDeleteAll(m_tables);
 }
 
 /*!
@@ -369,7 +372,17 @@ void DocxXmlReader::addSignalMergeElement(const QString &name, const QString &va
 
 void DocxXmlReader::addMergeTable(MergeTable *table)
 {
-    m_table = table;
+    //m_table = table;
+    m_tables.append(table);
+}
+
+MergeTable *DocxXmlReader::currentTable(const QString &tableName)
+{
+    for (MergeTable * table : m_tables) {
+        if (tableName.toUpper() ==  table->tableName().toUpper())
+            return table;
+    }
+    return nullptr;
 }
 
 //********************************
@@ -401,6 +414,7 @@ QString TableMergeInfo::tableName() const
 void TableMergeInfo::setTableName(const QString &name)
 {
     m_tableName = name;
+    m_currentTable = m_xmlReader->currentTable(name);
 }
 
 TagElement * TableMergeInfo::mergeParagraphElement(QString str, int rowIndex, QList<QString> cols)
@@ -420,7 +434,7 @@ TagElement *TableMergeInfo::mergeRunElement(QString str, int rowIndex, QList<QSt
 
     int colIndex = cols.indexOf(str.toUpper());
     if (colIndex > -1) {
-        QString str = m_xmlReader->m_table->value(colIndex, rowIndex);
+        QString str = m_currentTable->value(colIndex, rowIndex);
         tele->setCharaters(str);
     } else {
         tele->setCharaters("aaa");
@@ -445,12 +459,12 @@ void TableMergeInfo::setEndTableMark()
 {
     if (!isValid())
         return;
-    if (!m_xmlReader->m_table)
+    if (!m_currentTable)
         return;
-    QList<QString> cols = m_xmlReader->m_table->cols();
+    QList<QString> cols = m_currentTable->cols();
 
     if (m_parent != nullptr && m_parent->name().contains("tbl", Qt::CaseInsensitive)) {
-        for (int rowIndex = 1; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
+        for (int rowIndex = 1; rowIndex < m_currentTable->rowCount(); rowIndex++) {
             TagElement *ele = mergeTableElement(rowIndex, cols);
             m_parent->addChild(ele);
         }
@@ -458,7 +472,7 @@ void TableMergeInfo::setEndTableMark()
         DocxParagraph *paraP = static_cast<DocxParagraph*>(m_xmlReader->m_paragraphs.last());
 
         // body add child
-        for (int rowIndex = 1; rowIndex < m_xmlReader->m_table->rowCount(); rowIndex++) {
+        for (int rowIndex = 1; rowIndex < m_currentTable->rowCount(); rowIndex++) {
             for (const QString &str : m_marks) {
                 TagElement *ele = mergeParagraphElement(str, rowIndex, cols);
                 if (paraP != nullptr) {
@@ -483,11 +497,11 @@ bool TableMergeInfo::isValid()
 
 void TableMergeInfo::appendMarks(const QString markName, ITagElement *parent)
 {
-    if (!m_xmlReader->m_table)
+    if (!m_currentTable)
         return;
     m_marks.append(markName);
-    QList<QString> cols = m_xmlReader->m_table->cols();
-
+    QList<QString> cols = m_currentTable->cols();
+    // merge element
     parent->addChild(mergeRunElement(markName, 0, cols));
 
 }

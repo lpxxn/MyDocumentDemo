@@ -60,6 +60,13 @@ void TestZipDemo::readDocument()
     table1->addRow({"lisi", "2", "30"});
     table1->addRow({"wangwu", "3", "40"});
     docx.addMergeTable(table1);
+
+    MergeTable *table2 = new MergeTable(QStringLiteral("table2"));
+    table2->addColumn("name");
+    table2->addRow({"A"});
+    table2->addRow({"B"});
+    table2->addRow({"C"});
+    docx.addMergeTable(table2);
     docx.merge();
     docx.saveAs("MyMergeResult.docx");
 

@@ -29,6 +29,7 @@ private:
     QStringList m_marks;
     QString m_tableName;
     ITagElement *m_parent;
+    MergeTable *m_currentTable = nullptr;
     DocxXmlReader *m_xmlReader;
 };
 
@@ -52,7 +53,10 @@ public:
     void saveElement(QXmlStreamWriter *writer);
     void addSignalMergeElement(const QString &name, const QString &value);
     void addMergeTable(MergeTable *table);
+    MergeTable *currentTable(const QString &tableName);
     bool isEndElement(const QString &markName);
+
+    ~DocxXmlReader();
 
 private:
     void addMarketAtributes(DocxParagraph *para);
@@ -63,8 +67,8 @@ private:
 private:
     QList<ITagElement *> m_paragraphs;
     QXmlStreamReader m_xmlReader;
-    TableMergeInfo m_tableMergeInfo;
-    MergeTable *m_table = nullptr;
+    TableMergeInfo m_tableMergeInfo;    
+    QVector<MergeTable *> m_tables;
     QMap<QString, QString> m_singleEles;
     friend class TableMergeInfo;
 
