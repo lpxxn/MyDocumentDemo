@@ -1,7 +1,6 @@
 #ifndef DOCXDOCUMENT_H
 #define DOCXDOCUMENT_H
 #include "docx_global.h"
-#include "existdocument.h"
 #include "abstractooxmlfile.h"
 #include "docxdocumentbuilder.h"
 #include "docxparagraph.h"
@@ -43,21 +42,6 @@ public:
     virtual void saveToXmlFile(QIODevice *device) const = 0;
     virtual bool loadFromXmlFile(QIODevice *device) = 0;
 
-    virtual void writeln() = 0;
-    virtual void writeln(const QString &text, const RunAlignment alignment = RunAlignment::None) = 0;
-    virtual void writeln(const QString &text, const DocxFont &font, const RunAlignment alignment = RunAlignment::None) = 0;
-    virtual void writeHeading(const QString &text, const HeadingLevel headLevel = HeadingLevel::head1, const DocxFont &font = DocxFont()) = 0;
-
-    virtual void writeList(const DocxListFormat &listStyle, std::initializer_list<QString> outValus) = 0;
-    virtual void writeList(const DocxListFormat &listStyle, const QString &outStr, std::initializer_list<QString> inValus) = 0;
-
-    virtual void insertImage(const QString &imgName, const QSize &size = QSize()) = 0;
-
-    virtual void insertTable(DocxTable *table) = 0;
-
-    virtual void insertSectionFooterAndHeader(std::initializer_list<FootAndHeader *> hfs, bool restarNum = false) = 0;
-
-
 protected:
     DocxStyle m_docxStyle;
     ContentTypes m_contentTypes;
@@ -71,6 +55,7 @@ protected:
     friend class FootAndHeader;
 
 };
+
 class DOCX_EXPORT Document : public AbstractDocument
 {
 public:
@@ -99,9 +84,7 @@ public:
     bool saveAs(const QString &name);
     bool saveAs(QIODevice *device);
 
-    virtual ~Document();
-
-    //AbstractDocument * contentDocument() const;
+    virtual ~Document();    
 
 private:
     void writeList(const DocxListFormat &listStyle, const QString &outStr, bool isindent = false);
@@ -119,7 +102,6 @@ private:
     DocxfontTable m_docxfontTable;
 
     QString m_docName;
-    //AbstractDocument *m_newDoc;
 
 private:
     QVector<DocxParagraph*> m_paragraphs;
@@ -127,6 +109,27 @@ private:
     Relationships m_wordShips;
     QQueue<TagElement *> m_endElements;
 
+};
+
+
+class DOCX_EXPORT ExistDocument : public AbstractDocument
+{
+public:
+    ExistDocument(const QString &docxName);
+    void saveToXmlFile(QIODevice *device) const;
+    bool loadFromXmlFile(QIODevice *device);
+
+    bool saveAs(const QString &name);
+    bool saveAs(QIODevice *device);
+
+    void merge();
+    void addSignalMergeElement(const QString &name, const QString &value);
+    void addMergeTable(MergeTable *table);
+
+private:
+    // m_zipReader;
+    DocxXmlReader *m_xmlReader;
+    QMap<QString, QByteArray> m_otherFiles;
 };
 
 }
