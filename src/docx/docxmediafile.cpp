@@ -1,6 +1,6 @@
 #include "docxmediafile.h"
 #include "comdatafun.h"
-#include "newdocument.h"
+#include "docxdocument.h"
 
 #include <QBuffer>
 #include <QMimeType>

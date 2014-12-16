@@ -1,6 +1,6 @@
 #include "docxtable.h"
 #include "docxparagraph.h"
-#include "newdocument.h"
+#include "docxdocument.h"
 
 #include <QXmlStreamWriter>
 

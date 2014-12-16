@@ -1,5 +1,5 @@
 #include "footandheader.h"
-#include "newdocument.h"
+#include "docxdocument.h"
 #include "abstractooxmlfileprivate.h"
 
 #include <QXmlStreamWriter>
