@@ -264,7 +264,7 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
             }
         return;
     }
-    if (m_tableMergeInfo.isValid()) {
+    if (m_tableMergeInfo.isMerged()) {
         m_tableMergeInfo.appendMarks(contentStr, parent);
         return;
     }
@@ -453,11 +453,11 @@ TagElement * TableMergeInfo::mergeParagraphElement(QString str, int rowIndex, QL
 TagElement *TableMergeInfo::mergeSingalElement(QString str, int rowIndex, QList<QString> cols)
 {
     // merge image
-    if (str.contains(insertImgStr, Qt::CaseInsensitive))
-        for (MergeImgInfo* img : m_xmlReader->m_Imgs) {
-            if (img->imgName.toUpper() == str.toUpper())
-                return m_xmlReader->imgElement(img->imgPath, img->imgSize);
-        }
+//    if (str.contains(insertImgStr, Qt::CaseInsensitive))
+//        for (MergeImgInfo* img : m_xmlReader->m_Imgs) {
+//            if (img->imgName.toUpper() == str.toUpper())
+//                return m_xmlReader->imgElement(img->imgPath, img->imgSize);
+//        }
 
     TagElement *rele = new TagElement("w:r");
     TagElement *tele = new TagElement("w:t");
@@ -488,7 +488,7 @@ TagElement * TableMergeInfo::mergeTableElement(int rowIndex, QList<QString> cols
 
 void TableMergeInfo::setEndTableMark()
 {
-    if (!isValid())
+    if (!isMerged())
         return;
     if (!m_currentTable)
         return;
@@ -514,6 +514,7 @@ void TableMergeInfo::setEndTableMark()
             }
         }
     }
+    m_isMerged = true;
 }
 
 void TableMergeInfo::clearInfo()
@@ -521,9 +522,9 @@ void TableMergeInfo::clearInfo()
     m_tableName.clear();
 }
 
-bool TableMergeInfo::isValid()
+bool TableMergeInfo::isMerged()
 {
-    return !m_tableName.isEmpty();
+    return !m_isMerged;
 }
 
 void TableMergeInfo::appendMarks(const QString markName, ITagElement *parent)

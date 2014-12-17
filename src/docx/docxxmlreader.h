@@ -19,7 +19,7 @@ public:
     void setTableName(const QString &name);
     void setEndTableMark();
     void clearInfo();
-    bool isValid();
+    bool isMerged();
     void appendMarks(const QString markName, ITagElement *parent);
 
     TagElement *mergeTableElement(int rowIndex, QList<QString> cols);
@@ -31,6 +31,7 @@ private:
     QString m_tableName;
     ITagElement *m_parent;
     MergeTable *m_currentTable = nullptr;
+    bool m_isMerged = false;
     DocxXmlReader *m_xmlReader;
 };
 
