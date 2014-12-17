@@ -41,6 +41,8 @@ public:
     virtual bool saveAs(QIODevice *device) = 0;
     virtual void saveToXmlFile(QIODevice *device) const = 0;
     virtual bool loadFromXmlFile(QIODevice *device) = 0;
+    void loadDocxRelaction(const QByteArray &data);
+    TagElement *imgElement(const QString &imgName, const QSize &size = QSize());
 
 protected:
     DocxStyle m_docxStyle;
@@ -123,13 +125,15 @@ public:
     bool saveAs(QIODevice *device);
 
     void merge();
-    void addSignalMergeElement(const QString &name, const QString &value);
+    void addSignalMergeElement(const QString &name, const QString &value);        
+    void addMergeImg(const QString &imgName, const QString &imgPath, const QSize &size = QSize());
     void addMergeTable(MergeTable *table);
 
 private:
     // m_zipReader;
     DocxXmlReader *m_xmlReader;
     QMap<QString, QByteArray> m_otherFiles;
+    friend class DocxXmlReader;
 };
 
 }

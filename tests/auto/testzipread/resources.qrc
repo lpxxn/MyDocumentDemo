@@ -10,5 +10,6 @@
         <file>mergedocument .xml</file>
         <file>documentmergelist.xml</file>
         <file>Mergelist.zip</file>
+        <file>MergeImgs.zip</file>
     </qresource>
 </RCC>

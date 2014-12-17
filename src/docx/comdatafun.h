@@ -7,9 +7,10 @@
 
 namespace TDocx
 {
-const QString ridStr = QStringLiteral("rId");
-const QString startMarkStr = QStringLiteral("tableStart");
-const QString endMarkStr   = QStringLiteral("tableEnd");
+const QString ridStr         = QStringLiteral("rId");
+const QString startMarkStr   = QStringLiteral("tableStart");
+const QString endMarkStr     = QStringLiteral("tableEnd");
+const QString insertImgStr   = QStringLiteral("insertImg");
 
 class ComDataFun
 {

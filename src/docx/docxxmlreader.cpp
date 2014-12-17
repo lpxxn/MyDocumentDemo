@@ -3,9 +3,11 @@
 #include "itagelement.h"
 #include "comdatafun.h"
 #include "docxparagraph.h"
+#include "docxdocument.h"
 
 #include <QBuffer>
 #include <QRegExp>
+#include <QFile>
 #include <QDebug>
 
 
@@ -19,24 +21,17 @@ const QString strText = QStringLiteral("t");
 const QString strfldSimple = QStringLiteral("fldSimple");
 const QString strfldChar = QStringLiteral("fldChar");
 
-DocxXmlReader::DocxXmlReader(QIODevice *device)
+DocxXmlReader::DocxXmlReader(QIODevice *device, ExistDocument *doc)
 {
+    m_doc = doc;
     m_xmlReader.setDevice(device);
-//    m_table = new MergeTable(QStringLiteral("mytable"));
-//    m_table->addColumn({"name", "id", "age"});
-//    m_table->addRow({"zhangsan", "1", "20"});
-//    m_table->addRow({"lisi", "2", "30"});
-//    m_table->addRow({"wangwu", "3", "40"});
-//    m_singleEles.insert("name", "usa");
-    //    m_singleEles.insert("liM", "testtesttesttesttest");
 }
 
-DocxXmlReader::DocxXmlReader(const QByteArray &data)
+DocxXmlReader::DocxXmlReader(const QByteArray &data, ExistDocument *doc)
 {
-    //m_xmlReader = QXmlStreamReader(data);
+    m_doc = doc;
     m_xmlReader.addData(data);
 }
-
 
 
 void DocxXmlReader::readStartElement()
@@ -83,14 +78,10 @@ void DocxXmlReader::readStartElement()
     }
 }
 
-//void DocxXmlReader::readStartElement(DocxParagraph *parent)
-//{
-//    m_xmlReader.readNextStartElement();
-//    if (!m_xmlReader.isEndElement()) {
-//        TagElement *child = new TagElement(elementName());
-//        parent->addChild(child);
-//    }
-//}
+TagElement *DocxXmlReader::imgElement(const QString &imgName, const QSize &size)
+{
+    return m_doc->imgElement(imgName, size);
+}
 
 void DocxXmlReader::readMark(ITagElement *parent, const QString &markName)
 {
@@ -213,6 +204,39 @@ void DocxXmlReader::readcomplesFieldsMark(ITagElement *parent, ITagElement *preP
     readNextMark();
     readcomplesFieldsMark(parent, preParent);
 }
+
+void DocxXmlReader::mergeSinglaElement(QString contentStr, ITagElement *parent)
+{
+    // merge image
+    if (contentStr.contains(insertImgStr, Qt::CaseInsensitive))
+        for (MergeImgInfo* img : m_Imgs) {
+            if (img->imgName.toUpper() == contentStr.toUpper()) {
+                parent->addChild(imgElement(img->imgPath, img->imgSize));
+                        return;
+            }
+        }
+
+    // merge text
+    TagElement *rele = new TagElement(QStringLiteral("w:r"));
+    TagElement *wele = new TagElement(QStringLiteral("w:t"));
+
+    rele->addChild(wele);
+
+    for (const QString &key : m_singleEles.keys()) {
+        if (key.toUpper() == contentStr.toUpper()) {
+            wele->setCharaters(m_singleEles.value(key));
+            break;
+        }
+    }
+
+    if (!wele->haveCharaters()) {
+        delete rele;
+        rele = nullptr;
+    } else {
+        parent->addChild(rele);
+    }
+}
+
 // w:fldSimple
 // http://officeopenxml.com/WPfields.php
 void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParent)
@@ -248,25 +272,7 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
     // end table
 
     // signal
-
-    TagElement *rele = new TagElement(QStringLiteral("w:r"));
-    TagElement *wele = new TagElement(QStringLiteral("w:t"));
-
-    rele->addChild(wele);
-
-    for (const QString &key : m_singleEles.keys()) {
-        if (key.toUpper() == contentStr.toUpper()) {
-            wele->setCharaters(m_singleEles.value(key));
-            break;
-        }
-    }
-
-    if (!wele->haveCharaters()) {
-        delete rele;
-        rele = nullptr;
-    } else {
-        parent->addChild(rele);
-    }
+    mergeSinglaElement(contentStr, parent);
 }
 
 // end replace element method
@@ -286,6 +292,7 @@ bool DocxXmlReader::isEndElement(const QString &markName)
 
 DocxXmlReader::~DocxXmlReader()
 {
+    qDeleteAll(m_Imgs);
     qDeleteAll(m_paragraphs);
     qDeleteAll(m_tables);
 }
@@ -367,7 +374,24 @@ void DocxXmlReader::saveElement(QXmlStreamWriter *writer)
 
 void DocxXmlReader::addSignalMergeElement(const QString &name, const QString &value)
 {
+    if (name.contains(insertImgStr, Qt::CaseInsensitive)) {
+        QFile file(value);
+        if (!file.exists())
+            Q_ASSERT(false);
+    }
     m_singleEles.insert(name, value);
+}
+
+void DocxXmlReader::addMergeImg(const QString &imgName, const QString &imgPath, const QSize &size)
+{
+    QFile imgFile(imgPath);
+    Q_ASSERT(imgFile.exists());
+
+    MergeImgInfo *imgInfo = new MergeImgInfo;
+    imgInfo->imgName = imgName;
+    imgInfo->imgPath = imgPath;
+    imgInfo->imgSize = size;
+    m_Imgs.append(imgInfo);
 }
 
 void DocxXmlReader::addMergeTable(MergeTable *table)
@@ -421,13 +445,20 @@ TagElement * TableMergeInfo::mergeParagraphElement(QString str, int rowIndex, QL
 {
     TagElement *pele = new TagElement("w:p");
 
-    pele->addChild(mergeRunElement(str, rowIndex, cols));
+    pele->addChild(mergeSingalElement(str, rowIndex, cols));
 
     return pele;
 }
 
-TagElement *TableMergeInfo::mergeRunElement(QString str, int rowIndex, QList<QString> cols)
+TagElement *TableMergeInfo::mergeSingalElement(QString str, int rowIndex, QList<QString> cols)
 {
+    // merge image
+    if (str.contains(insertImgStr, Qt::CaseInsensitive))
+        for (MergeImgInfo* img : m_xmlReader->m_Imgs) {
+            if (img->imgName.toUpper() == str.toUpper())
+                return m_xmlReader->imgElement(img->imgPath, img->imgSize);
+        }
+
     TagElement *rele = new TagElement("w:r");
     TagElement *tele = new TagElement("w:t");
     rele->addChild(tele);
@@ -502,7 +533,7 @@ void TableMergeInfo::appendMarks(const QString markName, ITagElement *parent)
     m_marks.append(markName);
     QList<QString> cols = m_currentTable->cols();
     // merge element
-    parent->addChild(mergeRunElement(markName, 0, cols));
+    parent->addChild(mergeSingalElement(markName, 0, cols));
 
 }
 

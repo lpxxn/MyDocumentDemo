@@ -7,6 +7,7 @@
 
 namespace TDocx
 {
+class ExistDocument;
 class DocxXmlReader;
 class TableMergeInfo
 {
@@ -23,7 +24,7 @@ public:
 
     TagElement *mergeTableElement(int rowIndex, QList<QString> cols);
     TagElement *mergeParagraphElement(QString str, int rowIndex, QList<QString> cols);
-    TagElement *mergeRunElement(QString str, int rowIndex, QList<QString> cols);
+    TagElement *mergeSingalElement(QString str, int rowIndex, QList<QString> cols);
 
 private:
     QStringList m_marks;
@@ -33,13 +34,21 @@ private:
     DocxXmlReader *m_xmlReader;
 };
 
+struct MergeImgInfo
+{
+    QString imgName;
+    QString imgPath;
+    QSize imgSize;
+};
+
 class DOCX_EXPORT DocxXmlReader
 {
 public:
-    DocxXmlReader(QIODevice *device);
-    DocxXmlReader(const QByteArray &data);
+    DocxXmlReader(QIODevice *device, ExistDocument *doc);
+    DocxXmlReader(const QByteArray &data, ExistDocument *doc);
     void readStartElement();
-    //void readStartElement(DocxParagraph * parent);
+
+    TagElement *imgElement(const QString &imgName, const QSize &size = QSize());
 
     void readMark(ITagElement *parent, const QString &markName);
     void readPeleMark(DocxParagraph *parent, const QString &markName);
@@ -52,11 +61,14 @@ public:
     QByteArray saveToXmlData();
     void saveElement(QXmlStreamWriter *writer);
     void addSignalMergeElement(const QString &name, const QString &value);
+    void addMergeImg(const QString &imgName, const QString &imgPath, const QSize &size = QSize());
     void addMergeTable(MergeTable *table);
     MergeTable *currentTable(const QString &tableName);
     bool isEndElement(const QString &markName);
 
     ~DocxXmlReader();
+
+    void mergeSinglaElement(QString contentStr, ITagElement *parent);
 
 private:
     void addMarketAtributes(DocxParagraph *para);
@@ -68,8 +80,10 @@ private:
     QList<ITagElement *> m_paragraphs;
     QXmlStreamReader m_xmlReader;
     TableMergeInfo m_tableMergeInfo;    
+    QVector<MergeImgInfo*> m_Imgs;
     QVector<MergeTable *> m_tables;
     QMap<QString, QString> m_singleEles;
+    ExistDocument *m_doc;
     friend class TableMergeInfo;
 
 };

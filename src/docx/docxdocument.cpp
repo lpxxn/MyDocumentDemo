@@ -5,6 +5,7 @@
 #include <QXmlStreamWriter>
 #include <QFile>
 #include <QBuffer>
+#include <QDebug>
 
 namespace TDocx
 {
@@ -38,6 +39,40 @@ bool AbstractDocument::saveAs(const QString &name)
     if (file.open(QIODevice::WriteOnly))
         return saveAs(&file);
     return false;
+}
+
+void AbstractDocument::loadDocxRelaction(const QByteArray &data)
+{
+    QBuffer buffer;
+    buffer.setData(data);
+    buffer.open(QIODevice::ReadOnly);
+
+    QXmlStreamReader reader(&buffer);
+    while (!reader.atEnd()) {
+        reader.readNextStartElement();
+
+        if (reader.name() == QLatin1String("Relationship")) {
+            QXmlStreamAttributes attrs = reader.attributes();
+            QString id =  attrs.value(QLatin1String("Id")).toString();
+            if (id.isEmpty())
+                continue;
+            QString type = attrs.value(QLatin1String("Type")).toString();
+            QString target = attrs.value(QLatin1String("Target")).toString();
+            m_documentShips.addLoadRelationship(id, type, target);
+        }
+
+        if (reader.hasError()) {
+            qDebug() << QStringLiteral("Document RelactionShip read error :") << reader.errorString();
+        }
+    }
+}
+
+TagElement * AbstractDocument::imgElement(const QString &imgName, const QSize &size)
+{
+    TagElement *shap = m_inserImagePrivate->imageTagElement(imgName, size, !m_haveImg);
+    m_haveImg = true;
+
+    return shap;
 }
 
 // end AbstractDocument
@@ -167,11 +202,12 @@ void Document::writeList(const DocxListFormat &listStyle, const QString &outStr,
     }
 }
 
+
+
 void Document::insertImage(const QString &imgName, const QSize &size)
 {
     DocxParagraph* current = lastParagraph();
-    TagElement *shap = m_inserImagePrivate->imageTagElement(imgName, size, !m_haveImg);
-    m_haveImg = true;
+    TagElement *shap = imgElement(imgName, size);
     current->addChild(shap);
     addParagraph();
 }
@@ -368,6 +404,8 @@ Document::~Document()
 
 // exist Document
 
+int imgCount = 0;
+
 ExistDocument::ExistDocument(const QString &docxName)
     : AbstractDocument(CreateFlag::F_LoadFromExists)
 {
@@ -429,11 +467,15 @@ bool ExistDocument::loadFromXmlFile(QIODevice *device)
     if (!filePaths.contains(QLatin1String("[Content_Types].xml")))
         return false;
     for (const QString &fpath : filePaths) {
-        if (fpath == QString("word/document.xml")) {
+        if (fpath == QStringLiteral("[Content_Types].xml")) {
+            m_contentTypes.loadFromXmlData(zipReader.fileData(QStringLiteral("[Content_Types].xml")));
+        } else if (fpath == QString("word/_rels/document.xml.rels")) {
+            loadDocxRelaction(zipReader.fileData(QStringLiteral("word/_rels/document.xml.rels")));
+        } else if (fpath == QString("word/document.xml")) {
 
             QByteArray data = zipReader.fileData(fpath);
 
-            m_xmlReader = new DocxXmlReader(data);
+            m_xmlReader = new DocxXmlReader(data, this);
 
         } else {
             QByteArray data = zipReader.fileData(fpath);
@@ -479,7 +521,17 @@ bool ExistDocument::saveAs(QIODevice *device)
     }
     // word/document.xml
     writer.addFile(QStringLiteral("word/document.xml"), this->saveToXmlData());
-    //this->saveToXmlFile(device);
+    // [Content_Types].xml
+    writer.addFile(QStringLiteral("[Content_Types].xml"), m_contentTypes.saveToXmlData());
+
+    // word/_rels/document.xml.rels
+    writer.addFile(QStringLiteral("word/_rels/document.xml.rels"), m_documentShips.saveToXmlData());
+
+    // media/image
+    for (const DocxMediaFile *img : m_inserImagePrivate->imgs()) {
+        writer.addFile(QString("word/media/%1").arg(img->name()), img->content());
+    }
+
     writer.close();
     return true;
 }
@@ -494,13 +546,13 @@ void ExistDocument::addSignalMergeElement(const QString &name, const QString &va
     m_xmlReader->addSignalMergeElement(name, value);
 }
 
+void ExistDocument::addMergeImg(const QString &imgName, const QString &imgPath, const QSize &size)
+{
+    m_xmlReader->addMergeImg(imgName, imgPath, size);
+}
+
 void ExistDocument::addMergeTable(MergeTable *table)
 {
-//    m_table = new MergeTable(QStringLiteral("mytable"));
-//    m_table->addColumn({"name", "id", "age"});
-//    m_table->addRow({"zhangsan", "1", "20"});
-//    m_table->addRow({"lisi", "2", "30"});
-//    m_table->addRow({"wangwu", "3", "40"});
     m_xmlReader->addMergeTable(table);
 }
 

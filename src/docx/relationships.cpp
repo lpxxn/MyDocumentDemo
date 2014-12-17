@@ -113,4 +113,13 @@ void Relationships::addRelationship(const QString &type, const QString &target, 
     relactionship.target = target;
     m_relationShips.append(relactionship);
 }
+
+void Relationships::addLoadRelationship(const QString &id, const QString &type, const QString &target)
+{
+    DocxRelationship relactionship;
+    relactionship.id = id;
+    relactionship.type = type;
+    relactionship.target = target;
+    m_relationShips.append(relactionship);
+}
 }

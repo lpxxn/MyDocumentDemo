@@ -49,7 +49,8 @@ TestZipDemo::TestZipDemo()
 void TestZipDemo::readDocument()
 {
     //ExistDocument docx(QStringLiteral("://merge.zip"));
-    ExistDocument docx(QStringLiteral("://Mergelist.zip"));
+    //ExistDocument docx(QStringLiteral("://Mergelist.zip"));
+    ExistDocument docx("://MergeImgs.zip");
 
     docx.addSignalMergeElement("name", "usa");
     docx.addSignalMergeElement("liM", "testtesttesttesttest");
@@ -67,6 +68,10 @@ void TestZipDemo::readDocument()
     table2->addRow({"B"});
     table2->addRow({"C"});
     docx.addMergeTable(table2);
+
+    docx.addMergeImg("insertImg1", ":/images/Chrysanthemum.jpg", QSize(30, 50));
+    docx.addMergeImg("insertImg2", ":/images/Desert.jpg", QSize(100, 80));
+
     docx.merge();
     docx.saveAs("MyMergeResult.docx");
 
@@ -81,7 +86,7 @@ void TestZipDemo::readDocumentXml()
     file.open(QIODevice::ReadOnly);
 
     //DocxXmlReader xmlReader(&file);
-    DocxXmlReader xmlReader(file.readAll());
+    DocxXmlReader xmlReader(file.readAll(), nullptr);
     xmlReader.readStartElement();
 
     QFile fileRead(QStringLiteral("loadDocument.zip"));
