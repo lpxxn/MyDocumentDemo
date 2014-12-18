@@ -70,20 +70,6 @@ private:
     QString m_id;
 };
 
-//class DOCX_EXPORT DocxFooter : public FootAndHeader
-//{
-//public:
-//    DocxFooter();
-//    QString startElement() const;
-//};
-
-//class DOCX_EXPORT DocxHeader : public FootAndHeader
-//{
-//public:
-//    DocxHeader();
-//    QString startElement() const;
-//};
-
 }
 
 #endif // ABSFOOTANDHEADER_H

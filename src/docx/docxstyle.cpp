@@ -411,16 +411,8 @@ void DocxStyle::initTag()
     child->addProperty(QStringLiteral("w:val"), QStringLiteral("No List"));
     m_defnumbering->addChild(child);
 
-//    child  = new TagElement(QStringLiteral("w:uiPriority"));
-//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("99"));
-//    m_defnumbering->addChild(child);
-
     child  = new TagElement(QStringLiteral("w:semiHidden"));
     m_defnumbering->addChild(child);
-
-//    child  = new TagElement(QStringLiteral("w:unhideWhenUsed"));
-//    m_defnumbering->addChild(child);
-
 }
 QVector<AbsHeading *> DocxStyle::headingTags() const
 {

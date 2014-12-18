@@ -44,4 +44,3 @@ defineReplace(copyFile) {
 }
 
 CONFIG += c++11
-

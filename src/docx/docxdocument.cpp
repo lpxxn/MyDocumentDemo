@@ -396,12 +396,6 @@ Document::~Document()
 {
 }
 
-//AbstractDocument *Document::contentDocument() const
-//{
-//    return nullptr;//m_newDoc;
-//}
-
-
 // exist Document
 
 int imgCount = 0;
@@ -443,15 +437,7 @@ void ExistDocument::saveToXmlFile(QIODevice *device) const
     m_xmlReader->saveElement(&writer);
 
     writer.writeComment(QStringLiteral("end"));
-    //device->write(strEndpr.toUtf8());
-    //m_DocEndElement->saveToXmlElement(&writer);
-//    if (!m_endElements.isEmpty()) {
-//        TagElement *ele = m_endElements.back();
-//        ele->saveToXmlElement(&writer);
-//    } else {
-//        TagElement *ele = initDocumentEndElement();
-//        ele->saveToXmlElement(&writer);
-//    }
+
     writer.writeEndElement();// end body
 
     writer.writeEndElement(); // end w:document
@@ -487,23 +473,7 @@ bool ExistDocument::loadFromXmlFile(QIODevice *device)
     }
     if (mediaImgCount > 0)
         m_inserImagePrivate->setLoadImgCount(mediaImgCount);
-//    m_contentTypes.loadFromXmlData(zipReader.fileData(QStringLiteral("[Content_Types].xml")));
-//    QMapIterator<QString, QString> contentFile(m_contentTypes.contentFiles());
-//    while (contentFile.hasNext()) {
-//        contentFile.next();
-//        QString strKey = contentFile.key();
-//        strKey = strKey.remove(0, 1);
-//        if (contentFile.key().contains(QString("document"))) {
 
-//            QByteArray data = zipReader.fileData(strKey);
-
-//            m_xmlReader = new DocxXmlReader(data);
-
-//        } else {
-//            QByteArray data = zipReader.fileData(strKey);
-//            m_otherFiles.insert(strKey, data);
-//        }
-//    }
     return true;
 }
 

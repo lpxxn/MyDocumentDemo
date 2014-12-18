@@ -253,33 +253,6 @@ void FootAndHeader::showNumber()
 }
 // end AbsFootAndHeader
 
-
-// begin DocxFooter
-//DocxFooter::DocxFooter()
-//    : FootAndHeader(CreateFlag::F_NewFromScratch)
-//{
-
-//}
-
-//QString DocxFooter::startElement() const
-//{
-//    return QStringLiteral("w:ftr");
-//}
-//// end DocxFooter
-
-//// begin DocxHeader
-//DocxHeader::DocxHeader()
-//    : FootAndHeader(CreateFlag::F_NewFromScratch)
-//{
-
-//}
-
-//QString DocxHeader::startElement() const
-//{
-//    return QStringLiteral("w:hdr");
-//}
-// end DocxHeader
-
 }
 
 

@@ -2,7 +2,6 @@
 #define DOCXFONTTABLE_H
 #include "docx_global.h"
 #include "abstractooxmlfile.h"
-//#include "itagelement.h"
 #include <QString>
 #include <QPair>
 #include <QVector>

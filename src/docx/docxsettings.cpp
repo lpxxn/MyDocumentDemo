@@ -56,14 +56,6 @@ void DocxSettings::initTags()
     element = new TagElement(QStringLiteral("w:noPunctuationKerning"));
     m_wTags.append(element);
 
-//    element = new TagElement(QStringLiteral("w:displayHorizontalDrawingGridEvery"));
-//    element->addProperty(QStringLiteral("w:val"), QStringLiteral("0"));
-//    m_wTags.append(element);
-
-//    element = new TagElement(QStringLiteral("w:displayVerticalDrawingGridEvery"));
-//    element->addProperty(QStringLiteral("w:val"), QStringLiteral("2"));
-//    m_wTags.append(element);
-
     element = new TagElement(QStringLiteral("w:characterSpacingControl"));
     element->addProperty(QStringLiteral("w:val"), QStringLiteral("doNotCompress"));
     m_wTags.append(element);
@@ -103,30 +95,6 @@ void DocxSettings::initTags()
     child = new TagElement(QStringLiteral("w:cachedColBalance"));
     element->addChild(child);
 
-
-//    child = new TagElement(QStringLiteral("w:compatSetting"));
-//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("compatibilityMode"));
-//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("14"));
-//    element->addChild(child);
-
-//    child = new TagElement(QStringLiteral("w:compatSetting"));
-//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("overrideTableStyleFontSizeAndJustification"));
-//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-//    element->addChild(child);
-
-//    child = new TagElement(QStringLiteral("w:compatSetting"));
-//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("enableOpenTypeFeatures"));
-//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-//    element->addChild(child);
-
-//    child = new TagElement(QStringLiteral("w:compatSetting"));
-//    child->addProperty(QStringLiteral("w:name"), QStringLiteral("doNotFlipMirrorIndents"));
-//    child->addProperty(QStringLiteral("w:uri"), QStringLiteral("http://schemas.microsoft.com/office/word"));
-//    child->addProperty(QStringLiteral("w:val"), QStringLiteral("1"));
-//    element->addChild(child);
 
     m_wTags.append(element);
 

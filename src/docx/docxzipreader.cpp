@@ -38,7 +38,7 @@ QByteArray DocxZipReader::fileData(const QString &fileName) const
 }
 
 /*!
- * \brief 读取路径
+ * \brief
  */
 void DocxZipReader::init()
 {

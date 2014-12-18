@@ -17,8 +17,7 @@ public:
     void writeln(const QString &str);
     void addParagraph() const;
 
-private:
-    //Document* m_doc;
+private:    
     DocxFont m_font;
 };
 }

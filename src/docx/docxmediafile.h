@@ -45,8 +45,7 @@ private:
 class AbstractDocument;
 class DocxInsertImagePrivate
 {
-public:
-    //DocxInsertImagePrivate(Document *doc);
+public:    
     DocxInsertImagePrivate(AbstractDocument *doc);
     TagElement * imageTagElement(const QString &imgName, const QSize &size, bool firstImg = false);
     DocxMediaFile *findImg(const DocxMediaFile *media) const;

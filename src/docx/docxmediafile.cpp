@@ -73,11 +73,6 @@ void DocxMediaFile::setImgSize(const QSize &imgSize)
 }
 // end DocxMediaFile;
 
-//DocxInsertImagePrivate::DocxInsertImagePrivate(Document *doc)
-//    : m_doc(doc)
-//{
-//}
-
 DocxInsertImagePrivate::DocxInsertImagePrivate(AbstractDocument *doc)
     : m_doc(doc)
 {

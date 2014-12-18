@@ -41,7 +41,7 @@ void DocPropsCore::saveToXmlFile(QIODevice *device) const
     writer.writeEndElement();
 
     writer.writeStartElement(dcterms, QStringLiteral("modified"));
-    //writer.writeTextElement(dcterms, QStringLiteral("modified"), QStringLiteral("2014-10-27T14:18:00Z"));
+
     writer.writeAttribute(xsi, QStringLiteral("type"), QStringLiteral("dcterms:W3CDTF"));
     writer.writeCharacters(QDateTime::currentDateTime().toString(Qt::ISODate));
     writer.writeEndElement();
