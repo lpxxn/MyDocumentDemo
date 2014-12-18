@@ -56,11 +56,13 @@ public:
 
     DocxMediaFile *mediafileInfo(const QString &imgName);
     TagElement * imageTagElement(DocxMediaFile *mediaFile, const QSize &size, bool firstImg);
+    void setLoadImgCount(int count);
 private:
     TagElement *shapetypeStyle();
     const DocxMediaFile* media(const QByteArray hashkey);
 
 private:    
+    int m_loadImgCount = 0;
     AbstractDocument *m_doc;
     QVector<DocxMediaFile*> m_imgs;
 };

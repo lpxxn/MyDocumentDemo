@@ -53,6 +53,7 @@ void TestZipDemo::readDocument()
     ExistDocument docx("://MergeImgs.zip");
 
     docx.addSignalMergeElement("name", "usa");
+    docx.addSignalMergeElement("name2", "peng.li");
     docx.addSignalMergeElement("liM", "testtesttesttesttest");
 
     MergeTable *table1 = new MergeTable(QStringLiteral("table1"));

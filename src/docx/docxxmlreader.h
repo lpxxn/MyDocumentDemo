@@ -69,7 +69,7 @@ public:
 
     ~DocxXmlReader();
 
-    void mergeSinglaElement(QString contentStr, ITagElement *parent);
+    void mergeSinglaElement(QString contentStr, ITagElement *parent, ITagElement *preParent);
 
 private:
     void addMarketAtributes(DocxParagraph *para);

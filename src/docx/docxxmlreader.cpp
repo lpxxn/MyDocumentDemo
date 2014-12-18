@@ -144,6 +144,7 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
         readfldSimpleMark(parent, preParent);
     }
     else if (m_xmlReader.name() == strfldChar) {
+        qDebug() << preParent->name();
         readcomplesFieldsMark(parent, preParent);
     }
     else {
@@ -205,7 +206,7 @@ void DocxXmlReader::readcomplesFieldsMark(ITagElement *parent, ITagElement *preP
     readcomplesFieldsMark(parent, preParent);
 }
 
-void DocxXmlReader::mergeSinglaElement(QString contentStr, ITagElement *parent)
+void DocxXmlReader::mergeSinglaElement(QString contentStr, ITagElement *parent, ITagElement *preParent)
 {
     // merge image
     if (contentStr.contains(insertImgStr, Qt::CaseInsensitive))
@@ -261,10 +262,11 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
                 m_tableMergeInfo.setTableName(strList.at(1));
             } else if (strList.at(0).toUpper() == endMarkStr.toUpper()) {
                 m_tableMergeInfo.setEndTableMark();
+                m_tableMergeInfo.setTableName("");
             }
         return;
     }
-    if (m_tableMergeInfo.isMerged()) {
+    if (!m_tableMergeInfo.tableName().isEmpty() && m_tableMergeInfo.isMerged()) {
         m_tableMergeInfo.appendMarks(contentStr, parent);
         return;
     }
@@ -272,7 +274,7 @@ void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParen
     // end table
 
     // signal
-    mergeSinglaElement(contentStr, parent);
+    mergeSinglaElement(contentStr, parent, preParent);
 }
 
 // end replace element method
@@ -468,7 +470,7 @@ TagElement *TableMergeInfo::mergeSingalElement(QString str, int rowIndex, QList<
         QString str = m_currentTable->value(colIndex, rowIndex);
         tele->setCharaters(str);
     } else {
-        tele->setCharaters("aaa");
+        tele->setCharaters("");
     }
     return rele;
 }

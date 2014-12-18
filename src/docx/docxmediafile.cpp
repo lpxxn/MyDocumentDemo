@@ -126,6 +126,11 @@ TagElement * DocxInsertImagePrivate::imageTagElement(DocxMediaFile *mediaFile, c
     return pict;
 }
 
+void DocxInsertImagePrivate::setLoadImgCount(int count)
+{
+    m_loadImgCount = count;
+}
+
 DocxMediaFile * DocxInsertImagePrivate::mediafileInfo(const QString &imgName)
 {
     DocxMediaFile *mediaFile =  new DocxMediaFile(imgName);
@@ -135,7 +140,7 @@ DocxMediaFile * DocxInsertImagePrivate::mediafileInfo(const QString &imgName)
         QString strRelactionType = QStringLiteral("/image");
         m_imgs.append(mediaFile);
         mediaFile->setName(QString("image%1.%2")
-                           .arg(m_imgs.size()).arg(mediaFile->suffix()));
+                           .arg(m_imgs.size() + m_loadImgCount).arg(mediaFile->suffix()));
         // get save Id
         m_doc->m_documentShips.addDocumentRelationship(strRelactionType, QString("media/%1")
                                                             .arg(mediaFile->name()), strId);

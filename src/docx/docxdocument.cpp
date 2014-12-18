@@ -463,6 +463,7 @@ bool ExistDocument::loadFromXmlFile(QIODevice *device)
     DocxZipReader zipReader(device);
     QStringList filePaths = zipReader.filePaths();
 
+    int mediaImgCount = 0;
     //Load Content_Types file
     if (!filePaths.contains(QLatin1String("[Content_Types].xml")))
         return false;
@@ -478,10 +479,14 @@ bool ExistDocument::loadFromXmlFile(QIODevice *device)
             m_xmlReader = new DocxXmlReader(data, this);
 
         } else {
+            if (fpath.contains(QStringLiteral("word/media/image"), Qt::CaseInsensitive))
+                ++mediaImgCount;
             QByteArray data = zipReader.fileData(fpath);
             m_otherFiles.insert(fpath, data);
         }
     }
+    if (mediaImgCount > 0)
+        m_inserImagePrivate->setLoadImgCount(mediaImgCount);
 //    m_contentTypes.loadFromXmlData(zipReader.fileData(QStringLiteral("[Content_Types].xml")));
 //    QMapIterator<QString, QString> contentFile(m_contentTypes.contentFiles());
 //    while (contentFile.hasNext()) {
