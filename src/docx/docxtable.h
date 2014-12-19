@@ -12,7 +12,7 @@ namespace TDocx
 {
 class AbstractDocument;
 
-class DOCX_EXPORT DocxTableCell : ISaveToXml
+class DOCX_EXPORT DocxTableCell : public ISaveToXml
 {
 public:
     DocxTableCell();
@@ -26,7 +26,7 @@ private:
     QVector<DocxParagraph *> m_pars;
 };
 
-class DOCX_EXPORT DocxTableRow : ISaveToXml
+class DOCX_EXPORT DocxTableRow : public ISaveToXml
 {
 public:
     DocxTableRow();
