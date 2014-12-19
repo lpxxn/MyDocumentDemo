@@ -502,7 +502,7 @@ void TableMergeInfo::setEndTableMark()
             m_parent->addChild(ele);
         }
     } else {
-        DocxParagraph *paraP = static_cast<DocxParagraph*>(m_xmlReader->m_paragraphs.last());
+        DocxParagraph *paraP = dynamic_cast<DocxParagraph*>(m_xmlReader->m_paragraphs.last());
 
         // body add child
         for (int rowIndex = 1; rowIndex < m_currentTable->rowCount(); rowIndex++) {
