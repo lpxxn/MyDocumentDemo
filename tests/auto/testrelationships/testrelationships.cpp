@@ -209,6 +209,7 @@ void TestRelationShips::testDocument()
     document.writeln();
     document.writeln("测试文字内容");
     font.setItalic(false);
+    font.setFamily("隶书");
     font.setColor(Qt::red);
 
     FootAndHeader *header = new FootAndHeader(&document, HeaderFooterType::HeaderPrimary);
