@@ -210,6 +210,22 @@ void TestRelationShips::testDocument()
     document.writeln("测试文字内容");
     font.setItalic(false);
     font.setColor(Qt::red);
+
+    FootAndHeader *header = new FootAndHeader(&document, HeaderFooterType::HeaderPrimary);
+    header->setAlignment(RunAlignment::Center);
+    header->write("aa");
+    header->insertImg(chrysanImgName, QSize(200, 20));
+    //  writer.addFile(QStringLiteral("header.xml"), header.saveToXmlData());
+    //    writer.close();
+
+    FootAndHeader *footer = new FootAndHeader(&document, HeaderFooterType::FooterPrimary);
+    footer->write("bb");
+    footer->setAlignment(RunAlignment::Center);
+    footer->showNumber();
+    footer->write("ddddddd");
+    footer->write("cc", RunAlignment::Right);
+    document.insertSectionFooterAndHeader({ header, footer });
+
     document.writeHeading("标题", HeadingLevel::head2, font);
     document.writeln("测试文字内容");
 
@@ -217,6 +233,15 @@ void TestRelationShips::testDocument()
 
     document.insertImage(chrysanImgName, QSize(300, 500));
     document.insertImage(desert, QSize(500, 800));
+
+    FootAndHeader *header2 = new FootAndHeader(&document, HeaderFooterType::HeaderPrimary);
+    header2->write("TestTitle");
+    header2->setAlignment(RunAlignment::Right);
+    //header2->insertImg(chrysanImgName, QSize(100, 20));
+    FootAndHeader *footer2 = new FootAndHeader(&document, HeaderFooterType::FooterPrimary);
+    footer2->write("Number");
+    footer2->showNumber();
+    document.insertSectionFooterAndHeader({ header2, footer2 }, true);
 
     document.writeHeading("标题", HeadingLevel::head3);
     document.writeln("测试文字内容");

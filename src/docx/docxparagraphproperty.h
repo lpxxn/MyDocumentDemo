@@ -27,8 +27,8 @@ public:
 
     virtual ~DocxParagraphProperty();
 
-    QString name() const;
-    void addProperty(QString name, QString value);
+    QString tagName() const;
+    void addProperty(QString tagName, QString value);
     void addChild(ISaveToXml *child);
     void removeChild(ISaveToXml *child);
     void setIsRead(bool isread);

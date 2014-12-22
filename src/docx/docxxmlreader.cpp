@@ -144,7 +144,7 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
         readfldSimpleMark(parent, preParent);
     }
     else if (m_xmlReader.name() == strfldChar) {
-        qDebug() << preParent->name();
+        qDebug() << preParent->tagName();
         readcomplesFieldsMark(parent, preParent);
     }
     else {
@@ -186,7 +186,7 @@ void DocxXmlReader::readCommonMark(ITagElement *parent, ITagElement *preParent)
 void DocxXmlReader::readcomplesFieldsMark(ITagElement *parent, ITagElement *preParent)
 {
     if (preParent != nullptr)
-        qDebug() << " parent name " << preParent->name();
+        qDebug() << " parent name " << preParent->tagName();
     // begin fldChar
     //    QString strType = m_xmlReader.attributes().value(QStringLiteral("fldCharType")).toString();
     //    qDebug() << "name " << m_xmlReader.name() << " Type " << strType;
@@ -243,7 +243,7 @@ void DocxXmlReader::mergeSinglaElement(QString contentStr, ITagElement *parent, 
 void DocxXmlReader::readfldSimpleMark(ITagElement *parent, ITagElement *preParent)
 {
     if (preParent != nullptr)
-        qDebug() << " parent name " << preParent->name();
+        qDebug() << " parent name " << preParent->tagName();
     QString contentStr = m_xmlReader.readElementText(QXmlStreamReader::IncludeChildElements);
     // capture string
     QRegExp reg(QStringLiteral("[a-zA-Z0-9]+\:*[a-zA-Z0-9]*"));
@@ -496,7 +496,7 @@ void TableMergeInfo::setEndTableMark()
         return;
     QList<QString> cols = m_currentTable->cols();
 
-    if (m_parent != nullptr && m_parent->name().contains("tbl", Qt::CaseInsensitive)) {
+    if (m_parent != nullptr && m_parent->tagName().contains("tbl", Qt::CaseInsensitive)) {
         for (int rowIndex = 1; rowIndex < m_currentTable->rowCount(); rowIndex++) {
             TagElement *ele = mergeTableElement(rowIndex, cols);
             m_parent->addChild(ele);

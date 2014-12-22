@@ -28,9 +28,9 @@ public:
 class ITagElement : public ISaveToXml
 {
 public:
-    virtual void addProperty(QString name, QString value) = 0;
+    virtual void addProperty(QString tagName, QString value) = 0;
     virtual ~ITagElement() {}
-    virtual QString name() const = 0;
+    virtual QString tagName() const = 0;
     virtual void addChild(ISaveToXml *child) = 0;
     virtual void removeChild(ISaveToXml *child) = 0;
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const = 0;
@@ -51,9 +51,9 @@ private:
 class TagElement : public ITagElement
 {
 public:
-    TagElement(const QString &name);
-    void addProperty(QString name, QString value);
-    QString name() const { return m_tagName; }
+    TagElement(const QString &tagName);
+    void addProperty(QString tagName, QString value);
+    QString tagName() const { return m_tagName; }
     void setCharaters(const QString &test);
 
     virtual ~TagElement();

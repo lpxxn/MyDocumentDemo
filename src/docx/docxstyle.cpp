@@ -53,7 +53,7 @@ StyleTagIterator StyleTagElement::createIterator() const
     return StyleTagIterator(this);
 }
 
-QString StyleTagElement::name() const
+QString StyleTagElement::tagName() const
 {
     return strStyle;
 }

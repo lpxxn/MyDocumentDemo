@@ -135,7 +135,7 @@ DocxParagraph::~DocxParagraph()
     m_childs.clear();
 }
 
-QString DocxParagraph::name() const
+QString DocxParagraph::tagName() const
 {
     return strP;
 }

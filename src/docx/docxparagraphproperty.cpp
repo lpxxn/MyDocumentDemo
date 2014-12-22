@@ -41,7 +41,7 @@ DocxParagraphProperty::~DocxParagraphProperty()
     m_childs.clear();
 }
 
-QString DocxParagraphProperty::name() const
+QString DocxParagraphProperty::tagName() const
 {
     return strPrp;
 }

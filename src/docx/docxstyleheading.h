@@ -27,11 +27,11 @@ public:
     virtual ~AbsHeading(){}
 
     void saveToXmlElement(QXmlStreamWriter *writer) const;
-    void addProperty(QString name, QString value);
+    void addProperty(QString tagName, QString value);
     void addChild(ISaveToXml *child);
     void removeChild(ISaveToXml *child);
     QString headId() const;
-    QString name() const;
+    QString tagName() const;
 
     virtual ITagElement* pPrElement() = 0;
     virtual ITagElement* rPrElement() = 0;

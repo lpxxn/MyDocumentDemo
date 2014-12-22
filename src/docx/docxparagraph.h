@@ -39,12 +39,12 @@ public:
 
     virtual ~DocxParagraph();
 
-    virtual QString name() const;
+    virtual QString tagName() const;
     void addStyleProperty(TagElement *element);        
     int childCount() const;
     ParagraphTagIterator createIterator() const;
     void setAlignment(const RunAlignment &format);
-    void addProperty(QString name, QString value);
+    void addProperty(QString tagName, QString value);
     void addChild(ISaveToXml *child);
     void setIsRead(bool isread);
     void removeChild(ISaveToXml *child);

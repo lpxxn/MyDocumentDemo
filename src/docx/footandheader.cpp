@@ -222,12 +222,14 @@ void FootAndHeader::insertImg(const QString &imgName, const QSize &size)
 {
     DocxMediaFile *imgInfo = m_doc->m_inserImagePrivate->mediafileInfo(imgName);
     // get save Id
+    if (!imgInfo->Id().isEmpty())
+        imgInfo = new DocxMediaFile(*imgInfo);
     QString strId;
     m_dprivate->relationships->addDocumentRelationship(QStringLiteral("/image"), QString("media/%1")
                                                         .arg(imgInfo->name()), strId);
     imgInfo->setId(strId);
     TagElement *ele = m_doc->m_inserImagePrivate->imageTagElement(imgInfo, size, !m_haveImg);
-    m_dprivate->relationships->addDocumentRelationship(QStringLiteral("/image"), QString("media/%1").arg(imgInfo->Id()));
+    //m_dprivate->relationships->addDocumentRelationship(QStringLiteral("/image"), QString("media/%1").arg(imgInfo->name()));
     m_haveImg = true;
     m_Paragraph.addChild(ele);
 }
