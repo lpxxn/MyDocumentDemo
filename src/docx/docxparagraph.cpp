@@ -56,7 +56,7 @@ void DocxParagraph::setIsRead(bool isread)
     m_isread = isread;
 }
 
-void DocxParagraph::remoevChild(ISaveToXml *child)
+void DocxParagraph::removeChild(ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);

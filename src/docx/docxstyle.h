@@ -36,7 +36,7 @@ public:
     StyleTagElement(StyleType type, const QString &styleId);
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
-    void remoevChild(ISaveToXml *child);
+    void removeChild(ISaveToXml *child);
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     StyleTagIterator createIterator() const;
     QString name() const;

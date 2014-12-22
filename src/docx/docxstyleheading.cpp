@@ -54,9 +54,9 @@ void AbsHeading::addChild(ISaveToXml *child)
     m_head->addChild(child);
 }
 
-void AbsHeading::remoevChild(ISaveToXml *child)
+void AbsHeading::removeChild(ISaveToXml *child)
 {
-    m_head->remoevChild(child);
+    m_head->removeChild(child);
 }
 
 QString AbsHeading::headId() const

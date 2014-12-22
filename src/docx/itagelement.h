@@ -32,7 +32,7 @@ public:
     virtual ~ITagElement() {}
     virtual QString name() const = 0;
     virtual void addChild(ISaveToXml *child) = 0;
-    virtual void remoevChild(ISaveToXml *child) = 0;
+    virtual void removeChild(ISaveToXml *child) = 0;
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const = 0;
 };
 
@@ -61,7 +61,7 @@ public:
     void addChild(ISaveToXml *child);
     void insertChild(ISaveToXml *child ,int index = 0);
     ITagElement* parent();
-    void remoevChild(ISaveToXml *child);
+    void removeChild(ISaveToXml *child);
     virtual void saveToXmlElement(QXmlStreamWriter *writer) const;
     TagElementIterator createIterator() const;
     bool haveCharaters() const;

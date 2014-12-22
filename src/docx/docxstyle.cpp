@@ -22,7 +22,7 @@ void StyleTagElement::addChild(ISaveToXml *child)
     m_childs.append(child);
 }
 
-void StyleTagElement::remoevChild(ISaveToXml *child)
+void StyleTagElement::removeChild(ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);

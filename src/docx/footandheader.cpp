@@ -61,7 +61,7 @@ void FootAndHeader::addChild(TDocx::ISaveToXml *child)
 
 void FootAndHeader::remoevChild(TDocx::ISaveToXml *child)
 {
-    m_Paragraph.remoevChild(child);
+    m_Paragraph.removeChild(child);
 }
 
 QString FootAndHeader::startElement() const

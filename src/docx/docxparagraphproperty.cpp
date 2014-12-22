@@ -56,7 +56,7 @@ void DocxParagraphProperty::addChild(ISaveToXml *child)
     m_childs.append(child);
 }
 
-void DocxParagraphProperty::remoevChild(TDocx::ISaveToXml *child)
+void DocxParagraphProperty::removeChild(TDocx::ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);

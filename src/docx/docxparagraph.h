@@ -47,7 +47,7 @@ public:
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
     void setIsRead(bool isread);
-    void remoevChild(ISaveToXml *child);
+    void removeChild(ISaveToXml *child);
     void addTextChild(const QString &text, const DocxFont &font = DocxFont());
     void addRunChild(ISaveToXml *child);
 

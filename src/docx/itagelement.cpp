@@ -55,7 +55,7 @@ void TagElement::insertChild(ISaveToXml *child, int index)
     m_childs.insert(index, child);
 }
 
-void TagElement::remoevChild(ISaveToXml *child)
+void TagElement::removeChild(ISaveToXml *child)
 {
     if (m_childs.contains(child)) {
         m_childs.removeOne(child);

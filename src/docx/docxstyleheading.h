@@ -29,7 +29,7 @@ public:
     void saveToXmlElement(QXmlStreamWriter *writer) const;
     void addProperty(QString name, QString value);
     void addChild(ISaveToXml *child);
-    void remoevChild(ISaveToXml *child);
+    void removeChild(ISaveToXml *child);
     QString headId() const;
     QString name() const;
 
